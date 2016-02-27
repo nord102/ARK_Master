@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8f6383f752e4415478071395be51ac06
+timeCreated: 1456607086
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - MainMenuObj: {instanceID: 0}
+  - AboutMenuObj: {instanceID: 0}
+  - OptionsMenuObj: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
