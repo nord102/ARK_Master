@@ -1,0 +1,22 @@
+*DING*
+Hey. Hey, buddy. Yeah, you. Come here a second.
+So, you're the tech on scheduled maintenance, eh? Can't say you look like much, but I'm not the one with a degree, right?
+I'm OTIS. The Omnipotent Terminal Interface System. You could say I run the place. That makes you the hired help, Bud.
+But don't worry; I'm a good boss. I'm here to give you a hand if you ever need help or advice. 
+See that tool there. That's the WRENCH. It's your all purpose handy-man's utility aparatus.
+You'll see that it's got 3 slots inside. The designers said it would be too easy if it did everything, so you can only fit 3 functions at a time.
+You can swap out known functions on your down time though, so change it up depending on the event at hand.
+Now, your memory might be a little fuzzy, so here's where I come in.
+You'll need to fit the rooms on this ship back together yourself. It sounds simple because it is.
+See those numbers in the top rght?Those are ship resources. 
+You can build rooms using Scrap, power them with Energy, and Life Support... well, that's not important right now.
+Let's try building a room, shall we? Open up the Build Menu by pressing (B).
+Good. You can scroll back and forth between the different room types and sizes until you find the one you like.
+Looks like you've only got enough for a Small Storage Room though, so line them up and confirm by pressing (X).
+Now you'll have to drag the room to a good spot. You can only place rooms where a door on the room you're building meets a door of an existing room. 
+That's to prevent any space/time anomalies. 
+There. Now that you've placed the room, it's accessible. 
+But hold up. Seems like something's happening in there. I detect some life forms. 
+Just to be safe, you better put a weapon function in your WRENCH before you head in. 
+Press (F) to open the Function Menu and click and drag the function you want to your toolbar. 
+Good. You're all set now. Good luck.
