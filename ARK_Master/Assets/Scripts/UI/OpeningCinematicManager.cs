@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OpeningCinematicManager : MonoBehaviour
 {
@@ -35,6 +36,14 @@ public class OpeningCinematicManager : MonoBehaviour
         img1.SetActive(true);
     }
 
+    void Update()
+    {
+        if(textBoxManager.currentLine > textBoxManager.endAtLine && !textBoxManager.isActive)
+        {
+            SceneManager.LoadScene("GamePlay");
+        }
+    }
+
     public void UpdateImages()
     {
         if (textBoxManager.currentLine == 1 || textBoxManager.currentLine == 3 || textBoxManager.currentLine == 4 ||
@@ -46,9 +55,10 @@ public class OpeningCinematicManager : MonoBehaviour
                 images[count].SetActive(true);
                 Debug.Log("Showing Image: " + count);
                 count++;
-
             }
         }
+
+        
     }
 
 }
