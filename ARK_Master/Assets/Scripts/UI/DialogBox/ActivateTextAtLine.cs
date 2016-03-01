@@ -50,6 +50,7 @@ public class ActivateTextAtLine : MonoBehaviour {
     // must have a box collider.
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("Trigger entered");
         if(other.name == "Player")
         {
             // if the script requires a button press, skip this function and set waitForPress instead.

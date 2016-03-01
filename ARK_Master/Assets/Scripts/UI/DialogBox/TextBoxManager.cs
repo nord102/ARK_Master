@@ -33,12 +33,12 @@ public class TextBoxManager : MonoBehaviour
 
     public float typeSpeed;             // how quickly the text appears in the dialog box. Measured in seconds, NOT milliseconds.
 
-    //public PlayerController player;     // the player script (used for freezing the player object in place).
+    public Player player;     // the player script (used for freezing the player object in place).
 
     // Use this for initialization
     void Start()
     {
-        //player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<Player>();
         cinematic = FindObjectOfType<OpeningCinematicManager>();
 
         // find the text file if there is one.
@@ -130,6 +130,7 @@ public class TextBoxManager : MonoBehaviour
     // Called when Enabling the dialog box from within another script. 
     public void EnableTextBox()
     {
+        stopPlayerMovement = true;
         textBox.SetActive(true);
         isActive = true;
 
@@ -140,6 +141,7 @@ public class TextBoxManager : MonoBehaviour
     // Called when Disabling the dialog box from within another script. 
     public void DisableTextBox()
     {
+        stopPlayerMovement = false;
         textBox.SetActive(false);
         isActive = false;
     }
