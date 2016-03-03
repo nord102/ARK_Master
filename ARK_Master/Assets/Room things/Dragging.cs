@@ -7,12 +7,7 @@ public class Dragging : MonoBehaviour
     public float yStep = 6f;
     public int gridStepsX = 0;
     public int gridStepsY = 0;
-
-
-
-
-
-
+    
 
 
     public GameObject gameObjectToDrag;
@@ -88,6 +83,35 @@ public class Dragging : MonoBehaviour
                 
                 //Set position
                 gameObjectToDrag.transform.position = pos;
+
+                //IF THE ROOM IS OVERLAPPING ANOTHER ROOM
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    
+                    //HIGHLIGHT RED FOR ERROR 
+                    foreach (Transform child in gameObjectToDrag.transform)
+                    {
+                        foreach (Transform smallerChild in child.transform)
+                        {
+                            Renderer rend = smallerChild.GetComponent<Renderer>();
+                            rend.material.SetColor("_Color", Color.red);
+                        }
+
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha5))
+                {
+                    //NO HIGHLIGHT FOR NO ERROR
+                    foreach (Transform child in gameObjectToDrag.transform)
+                    {
+                        foreach (Transform smallerChild in child.transform)
+                        {
+                            Renderer rend = smallerChild.GetComponent<Renderer>();
+                            rend.material.SetColor("_Color", Color.white);
+                        }
+
+                    }
+                }
 
             }
         }

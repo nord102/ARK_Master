@@ -21,8 +21,7 @@ public class StateMachine : MonoBehaviour {
 	public List<PlayerInfo> PreviousPlayers;
 
 	public Sprite FireImage = new Sprite();
-
-
+    
 
 	// Use this for initialization
 	void Start () {
@@ -145,6 +144,8 @@ public class StateMachine : MonoBehaviour {
 
 		//Generate Rooms
 		//Start Intro Tutorial
+        
+        //Generate Room
 
 	}
 
