@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Dragging : MonoBehaviour
 {
-    public float xStep = 6f;
-    public float yStep = 6f;
+    public float xStep = 7f;
+    public float yStep = 7f;
     public int gridStepsX = 0;
     public int gridStepsY = 0;
-    
 
+   
 
     public GameObject gameObjectToDrag;
 
@@ -24,31 +24,52 @@ public class Dragging : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-	
+        
 	}
+
+    public void StartDragRace()
+    {
+     
+        gameObjectToDrag = Generate.instance.GenRoom();
+    
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        //if (Physics.Raycast(ray, out hit))
+        //{
+            //gameObjectToDrag = hit.collider.gameObject;
+            GOCenter = gameObjectToDrag.transform.position;
+            touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            offset = touchPosition - GOCenter;
+            draggingMode = true;
+
+            
+        //}
+    }
+
 
 	// Update is called once per frame
 	void Update ()
     {
-        //to check what will be getting dragged
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        ////to check what will be getting dragged
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if(Physics.Raycast(ray,out hit))
-            {
-                gameObjectToDrag = hit.collider.gameObject;
-                GOCenter = gameObjectToDrag.transform.position;
-                touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                offset = touchPosition - GOCenter;
-                draggingMode = true;
-            }
+        //    if(Physics.Raycast(ray,out hit))
+        //    {
+        //        gameObjectToDrag = hit.collider.gameObject;
+        //        GOCenter = gameObjectToDrag.transform.position;
+        //        touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //        offset = touchPosition - GOCenter;
+        //        draggingMode = true;
+        //    }
 
-        }
+        //}
 
         //while dragging
-        if(Input.GetMouseButton(0))
+        if(Input.GetMouseButton(0) || true)
         {
+            Debug.Log(draggingMode);
             if(draggingMode)
             {
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -116,7 +137,12 @@ public class Dragging : MonoBehaviour
         }
 
         //after release
-        if(Input.GetMouseButtonUp(0))
+        //if (Input.GetMouseButtonUp(0) || false)
+        //{
+        //    draggingMode = false;
+        //}
+
+        if (Input.GetMouseButton(0) && draggingMode)
         {
             draggingMode = false;
         }
