@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+//using UnityEngine.SceneManagement;
 
 public class OpeningCinematicManager : MonoBehaviour
 {
@@ -40,7 +40,7 @@ public class OpeningCinematicManager : MonoBehaviour
     {
         if(textBoxManager.currentLine > textBoxManager.endAtLine && !textBoxManager.isActive)
         {
-            SceneManager.LoadScene("GamePlay");
+            //SceneManager.LoadScene("GamePlay");
         }
     }
 
