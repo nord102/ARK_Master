@@ -82,11 +82,10 @@ public class Generate : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && boo)
         {
             //PopulateStartRoom();
-<<<<<<< HEAD
-=======
+
             Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
             Vector3 wordPos;
->>>>>>> e7c0e97fd064c8ace5a45cd77a2d4a24404010c2
+
 
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
