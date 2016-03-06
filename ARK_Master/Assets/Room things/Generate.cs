@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class Generate : MonoBehaviour 
 {
+    public static Generate instance = null;
+
+
     public GameObject startRoom;
 
     private GameObject cloneStartRoom;
@@ -30,6 +33,11 @@ public class Generate : MonoBehaviour
     void Start()
     {
         PlaceStartRoom();
+
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
     }
 
 
@@ -47,6 +55,32 @@ public class Generate : MonoBehaviour
     {
 
 
+    }
+
+    public GameObject GenRoom()
+    {
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
+        Vector3 wordPos;
+
+        Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+        RaycastHit hit;
+
+
+        if (Physics.Raycast(ray, out hit, 1000f))
+        {
+            wordPos = hit.point;
+        }
+        else
+        {
+            wordPos = Camera.main.ScreenToWorldPoint(mousePos);
+        }
+
+        cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x - 10, wordPos.y - 10, 0f), Quaternion.identity) as GameObject;
+
+        Debug.Log("I WAS HERE");
+
+        return cloneStartRoom;
     }
 
     
@@ -79,6 +113,9 @@ public class Generate : MonoBehaviour
 
     void Update()
     {
+<<<<<<< HEAD
+       
+=======
         if (Input.GetMouseButtonDown(0) && boo)
         {
             //PopulateStartRoom();
@@ -106,6 +143,7 @@ public class Generate : MonoBehaviour
             boo = false;
            
         }
+>>>>>>> refs/remotes/origin/master
     }
 	
     
