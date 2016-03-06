@@ -7,7 +7,6 @@ using System.Collections;
 ///
 public class FireTheLasers : MonoBehaviour
 {
-
     const float INITIAL_SPEED = 5f;
     public float speed = 3f;
     
@@ -77,7 +76,7 @@ public class FireTheLasers : MonoBehaviour
         //Debug.Log(this.transform.position);
 
         //Debug.Log(this.direction);
-        Debug.Log(this.angle);
+        //Debug.Log(this.angle);
     }
 
 }
