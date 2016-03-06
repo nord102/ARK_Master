@@ -10,7 +10,6 @@ public class RoomObject
     public bool objectState { get; set; }
 
     public int posX { get; set; }
-
     public int posY { get; set; }
 
 
