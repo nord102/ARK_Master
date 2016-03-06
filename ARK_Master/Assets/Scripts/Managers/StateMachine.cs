@@ -16,6 +16,20 @@ public class StateMachine : MonoBehaviour {
 	private bool CharacterSheetOpen = false;
 	private bool MainMenuOpen = false;
 	private bool MiniMapOpen = false;
+    private bool BuildingMenuOpen = false;
+
+    public GameObject Module1;
+    public GameObject Module2;
+    public GameObject Module3;
+
+    public GameObject BuildingMenu;
+
+    private Dictionary<GameObject, bool> UIModules = new Dictionary<GameObject,bool>();
+    private List<object[]> UIModules2 = new List<object[]>();
+    public Canvas UI;
+
+    public enum RoomType { Basic=1, MedBay=2, Engineering=3 };
+    public enum RoomShape { OneByOne=1, OneByTwo=2, TwoByOne=3, OneByThree=4 };
 
 	private string PreviousPlayerFilePath = "Sinister.txt";
 	public List<PlayerInfo> PreviousPlayers;
@@ -132,12 +146,52 @@ public class StateMachine : MonoBehaviour {
 		LoadDeadCharacters ();
 	}
 
+    void UpdateUI()
+    {
+        //Update Modules in wrench  
+        foreach (object[] obj in UIModules2)
+        {
+            GameObject g = (GameObject)obj[0];
+            obj[1] = false;
+            Image temp = (Image)g.GetComponent<Image>();
+            temp.sprite = null;
+        }
+
+        foreach (Skills s in AllAvailableSkills)
+        {
+            if (s.isActive)
+            {
+                bool added = false;
+                foreach (object[] obj in UIModules2)
+                {
+                    GameObject g = (GameObject)obj[0];
+                    Image temp = (Image)g.GetComponent<Image>();
+                    if (!(bool)obj[1] && !added)
+                    {
+                        temp.sprite = s.symbol;
+                        obj[1] = true;
+                        added = true;
+                    }
+                }
+
+            }
+        }
+
+        //Update Info Panel
+
+        
+    }
+
 	void Setup() {
 		//PlayerInfo.InitializePlayerInfo (0);
 		pInfo = new PlayerInfo (0);
 		sInfo = new ShipInfo ();
 		GenerateAvailableSkills ();
 		LoadSettings ();
+
+        UIModules2.Add(new object[] { Module1, false });
+        UIModules2.Add(new object[] { Module2, false });
+        UIModules2.Add(new object[] { Module3, false });
 
 		//Get Player to input their name
 		//pInfo.PlayerName = GetPlayerName();
@@ -156,10 +210,12 @@ public class StateMachine : MonoBehaviour {
 			if (InventoryOpen)
 			{
 				//ShowInventory();
+
 			}
 			else
 			{
 				//HideInventory();
+
 			}
 		}
 		else if (Input.GetKeyDown(KeyCode.C)) {
