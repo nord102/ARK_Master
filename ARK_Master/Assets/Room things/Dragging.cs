@@ -26,7 +26,7 @@ public class Dragging : MonoBehaviour
     {
 	
 	}
-	
+
 	// Update is called once per frame
 	void Update ()
     {
@@ -53,7 +53,6 @@ public class Dragging : MonoBehaviour
             {
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 newGOCenter = touchPosition - offset;
-                //gameObjectToDrag.transform.position = new Vector3(newGOCenter.x, newGOCenter.y, GOCenter.z);
 
                 
                 ///GRID BASED MOVEMENT
