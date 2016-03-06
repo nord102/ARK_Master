@@ -77,6 +77,7 @@ public class Enemy : MonoBehaviour {
         bool inRange = false;
 
         Vector3 playerPos = playerLocation.transform.position;
+		//Vector3 playerPos = new Vector3(0,0,-10);
 
         float x = playerPos.x - transform.position.x;
         float y = playerPos.y - transform.position.y;
@@ -101,6 +102,7 @@ public class Enemy : MonoBehaviour {
         bool currentX = false;
 
         Vector3 playerPos = playerLocation.transform.position;
+		//Vector3 playerPos = new Vector3(0,0,-10);
 
 
         float x = playerPos.x - transform.position.x;

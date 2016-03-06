@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-/// \class PortalSound
+/// \class AlienAttack
 /// \brief This class plays the portal sound.
 ///
 [RequireComponent(typeof(AudioSource))]

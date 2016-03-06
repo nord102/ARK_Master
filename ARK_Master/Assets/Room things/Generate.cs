@@ -6,7 +6,13 @@ public class Generate : MonoBehaviour
 {
     public GameObject startRoom;
 
+    private GameObject cloneStartRoom;
 
+    private List<Room> roomList = new List<Room>();
+
+
+
+    //--
     public GameObject object1;
     public GameObject object2;
     public GameObject object3;
@@ -15,12 +21,9 @@ public class Generate : MonoBehaviour
     private GameObject cloneObject2;
     private GameObject cloneObject3;
 
-    private GameObject cloneStartRoom;
+    private bool boo = true;
+    //--
 
-    private List<Room> roomList = new List<Room>();
-
-    
-    
     //Create Image for the first room
     //Create list of rooms and add first room to it
 
@@ -34,8 +37,16 @@ public class Generate : MonoBehaviour
     {
         cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
 
-        Room newRoom = new Room(roomList.Count, 1,"Explored");
+        Room newRoom = new Room(roomList.Count, 10,"Explored",0,0);
+        newRoom.draggingState = false;
         roomList.Add(newRoom);
+    }
+
+
+    void PopulateRoom(int roomID)
+    {
+
+
     }
 
     
@@ -46,8 +57,8 @@ public class Generate : MonoBehaviour
 
         for (int i = 0; i < 3; i++)
         {
-            tempX = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
-            tempY = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
+            //tempX = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
+            //tempY = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
 
             RoomObject newRoomObject = new RoomObject(roomList[0].objectList.Count, "Banana", true, tempX, tempY);
             roomList[0].objectList.Add(newRoomObject);
@@ -68,12 +79,34 @@ public class Generate : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && boo)
         {
-            PopulateStartRoom();
+            //PopulateStartRoom();
+<<<<<<< HEAD
+=======
+            Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
+            Vector3 wordPos;
+>>>>>>> e7c0e97fd064c8ace5a45cd77a2d4a24404010c2
 
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+            RaycastHit hit;
+
+
+            if (Physics.Raycast(ray, out hit, 1000f))
+            {
+                wordPos = hit.point;
+            }
+            else
+            {
+                wordPos = Camera.main.ScreenToWorldPoint(mousePos);
+            }
+
+            cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x,wordPos.y,0f), Quaternion.identity) as GameObject;
+
+            boo = false;
+           
         }
-
     }
 	
     
