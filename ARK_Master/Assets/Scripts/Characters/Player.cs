@@ -9,16 +9,19 @@ public class Player : MonoBehaviour
     public int laserQty = 100;
     private GameObject laserClone;
     public GameObject laser;
-    public Text output;
+    //public Text output;
     public Camera cam;
 
-    public Text positionOutput;
+    //public Text positionOutput;
 
     private int health;
     private int mana;
 
     public Animator animator;
     private float lastDirection = 0;
+
+	public GameObject alien;
+	public GameObject alienClone;
 
     void Awake()
     {
@@ -45,11 +48,28 @@ public class Player : MonoBehaviour
 
         horizontal = (int)(Input.GetAxisRaw("Horizontal"));
 
-        if (horizontal != lastDirection && horizontal != 0)
-        {
-            animator.SetTrigger("direction");
-            lastDirection = horizontal;
-        }
+//		if (horizontal != lastDirection || vertical != 0 || horizontal != 0) {
+//			animator.SetTrigger ("direction");
+//			lastDirection = horizontal;
+//			animator.SetBool ("standStatus", false);
+//
+//		} else 
+
+		if (horizontal == 0 && vertical == 0) {
+			animator.SetBool ("standStatus", true);
+		} else {
+			animator.SetBool ("standStatus", false);
+
+			if (horizontal < 0) {
+				animator.SetBool ("direction", true);
+			} else {
+				animator.SetBool ("direction", false);
+
+			}
+		
+		}
+
+		Debug.Log (horizontal);
 
 
         vertical = (int)(Input.GetAxisRaw("Vertical"));
@@ -60,12 +80,14 @@ public class Player : MonoBehaviour
 
         this.gameObject.transform.position = pos;
 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            FireTheLaser();
-        }
+		if (Input.GetButtonDown ("Fire1")) {
+			FireTheLaser ();
+		} else if (Input.GetButtonDown ("Fire2")) {
+			alienClone = Instantiate(alien, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+			alienClone.SetActive (true);
+		}
 
-        this.positionOutput.text = this.transform.position.ToString();
+        //this.positionOutput.text = this.transform.position.ToString();
 
 
         
@@ -77,7 +99,8 @@ public class Player : MonoBehaviour
 
         if (health == 0)
         {
-            gameObject.SetActive(false);
+             //gameObject.SetActive(false);
+			//cam.gameObject.SetActive (true);
         }
     }
 
@@ -98,10 +121,10 @@ public class Player : MonoBehaviour
 
             Vector3 c = cam.ScreenToWorldPoint(temp);
 
-            c.x *= -1;
-            c.y *= -1;
+            //c.x *= -1;
+            //c.y *= -1;
             c.z = 0;
-            output.text = c.ToString();
+           // output.text = c.ToString();
 
 
             laserQty--;

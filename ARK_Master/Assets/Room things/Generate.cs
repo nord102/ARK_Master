@@ -70,7 +70,7 @@ public class Generate : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            PopulateStartRoom();
+            //PopulateStartRoom();
 
         }
 
