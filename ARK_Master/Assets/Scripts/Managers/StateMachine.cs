@@ -35,6 +35,7 @@ public class StateMachine : MonoBehaviour {
 	public List<PlayerInfo> PreviousPlayers;
 
 	public Sprite FireImage = new Sprite();
+
     
 
 	// Use this for initialization
