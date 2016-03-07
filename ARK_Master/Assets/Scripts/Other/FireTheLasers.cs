@@ -52,7 +52,7 @@ public class FireTheLasers : MonoBehaviour
         float step = speed;
        // transform.position = Vector3.MoveTowards(transform.position, this.direction, step);
 
-        transform.position += (this.direction - this.start) * speed * Time.deltaTime;
+       transform.position += (this.direction - this.start) * speed * Time.deltaTime;
 
 
 

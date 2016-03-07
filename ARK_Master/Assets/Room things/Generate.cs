@@ -97,7 +97,7 @@ public class Generate : MonoBehaviour
             RoomObject newRoomObject = new RoomObject(roomList[0].objectList.Count, "Banana", true, tempX, tempY);
             roomList[0].objectList.Add(newRoomObject);
 
-            cloneObject1 = Instantiate(object1, new Vector3(tempX, tempY,0f), Quaternion.identity) as GameObject;
+            //cloneObject1 = Instantiate(object1, new Vector3(tempX, tempY,0f), Quaternion.identity) as GameObject;
         }
 
 
@@ -114,22 +114,24 @@ public class Generate : MonoBehaviour
     void Update()
     {
 <<<<<<< HEAD
-       
 =======
         if (Input.GetMouseButtonDown(0) && boo)
         {
             //PopulateStartRoom();
-<<<<<<< HEAD
-=======
+
             Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
             Vector3 wordPos;
->>>>>>> e7c0e97fd064c8ace5a45cd77a2d4a24404010c2
+
 
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
             RaycastHit hit;
+>>>>>>> origin/master
 
+       
 
+<<<<<<< HEAD
+=======
             if (Physics.Raycast(ray, out hit, 1000f))
             {
                 wordPos = hit.point;
@@ -144,7 +146,7 @@ public class Generate : MonoBehaviour
             boo = false;
            
         }
->>>>>>> refs/remotes/origin/master
+>>>>>>> origin/master
     }
 	
     
