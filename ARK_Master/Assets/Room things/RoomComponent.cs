@@ -4,6 +4,7 @@ using System.Collections;
 public class RoomComponent
 {
     public int componentID { get; private set; }
+    public int roomID { get; set; }
 
     public int [,] layout {get;set;}
     private int dimension = 5;

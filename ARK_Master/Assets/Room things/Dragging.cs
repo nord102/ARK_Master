@@ -3,29 +3,26 @@ using System.Collections;
 
 public class Dragging : MonoBehaviour
 {
-    public float xStep = 7f;
-    public float yStep = 7f;
-    public int gridStepsX = 0;
-    public int gridStepsY = 0;
+    private float xStep = 7f;
+    private float yStep = 7f;
+    private int gridStepsX = 0;
+    private int gridStepsY = 0;
 
    
 
     public GameObject gameObjectToDrag;
 
-    public Vector3 GOCenter;
-    public Vector3 touchPosition;
-    public Vector3 offset;
-    public Vector3 newGOCenter;
+    private Vector3 GOCenter;
+    private Vector3 touchPosition;
+    private Vector3 offset;
+    private Vector3 newGOCenter;
 
     RaycastHit hit;
 
     public bool draggingMode = false;
 
     // Use this for initialization
-    void Start ()
-    {
-        
-	}
+    
 
     public void StartDragRace()
     {

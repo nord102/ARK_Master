@@ -8,7 +8,7 @@ public class Room
 
     public int roomType { get; set; }
     public List<RoomComponent> componentList { get; set; }
-    private int dimension = 7;
+    public int dimension = 7;
 
 
 
@@ -55,7 +55,6 @@ public class Room
         posY = newPosY;
 
         componentList = new List<RoomComponent>();
-
         AssignComponents();
 
         
@@ -91,6 +90,7 @@ public class Room
         for (int i = 0; i < numComponents; i++)
         {
             RoomComponent component = new RoomComponent(i);
+            component.roomID = roomID;
             componentList.Add(component);
         }
 
