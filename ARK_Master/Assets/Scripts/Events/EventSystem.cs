@@ -25,7 +25,8 @@ public static class EventSystem{
 		}
 
 		//Pick a random index number, that's the type of event
-		return new Events (availableEvents[Random.Range (0, availableEvents.Count - 1)]);
+		//return new Events (availableEvents[Random.Range (0, availableEvents.Count - 1)]);
+        return new Events(0);
 
 		//For Testing only - Generate only the fire event
 		//return new Events (0);

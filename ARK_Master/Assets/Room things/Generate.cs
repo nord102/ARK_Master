@@ -52,7 +52,7 @@ public class Generate : MonoBehaviour
     {
         cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
 
-        Room newRoom = new Room(roomList.Count, 10, cloneStartRoom, "Explored", 0, 0);
+        Room newRoom = new Room(roomList.Count, 10,0, cloneStartRoom, "Explored", 0, 0);
         newRoom.draggingState = false;
         roomList.Add(newRoom);
 
@@ -90,6 +90,8 @@ public class Generate : MonoBehaviour
                     //Add to Connected room door list?
                     Room connectingRoom = roomList[globalRoomCom.roomID];
 
+                    connectingRoom.roomDoorList.Add(newDoor);
+
                     //Make Physical Door
                     //Replace Wall Quad with Door Quad
 
@@ -102,7 +104,10 @@ public class Generate : MonoBehaviour
                             if(smallerChild.transform.position.x == newDoor.posX && smallerChild.transform.position.y == newDoor.posY)
                             {                                
                                 cloneDoor = Instantiate(door, new Vector3(smallerChild.transform.position.x, smallerChild.transform.position.y,0f), Quaternion.identity) as GameObject;
-                                //Destroy(smallerChild); 
+                                newDoor.doorGameObject = cloneDoor;
+
+ 
+
                                 smallerChild.gameObject.SetActive(false);
                             }
                         }
@@ -117,14 +122,13 @@ public class Generate : MonoBehaviour
                             //Destroy and replace smallerchild
                             if (smallerChild.transform.position.x == newDoor.posX && smallerChild.transform.position.y == newDoor.posY)
                             {
-                                //cloneDoor = Instantiate(door, new Vector3(smallerChild.transform.position.x, smallerChild.transform.position.y, 0f), Quaternion.identity) as GameObject;
-                                //Destroy(smallerChild); 
                                 smallerChild.gameObject.SetActive(false);
                             }
                         }
 
                     }
 
+                   
                     Debug.Log(newDoor.posX + " " + newDoor.posY);
 
                     //recentRoomCom.layout[newDoor.posX, newDoor.posY] = 2;

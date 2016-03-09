@@ -6,11 +6,17 @@ public class Room
 {
     public int roomID { get; private set; }
 
-    public int roomType { get; set; }
+    public int roomShape { get; set; } 
+
+    public int roomType { get; set; } //Medic Bay, Storage Bay
+
+    public Events roomEvent { get; set; }
+
     public List<RoomComponent> componentList { get; set; }
     public int dimension = 7;
 
     public GameObject roomGameObject { get; set; }
+
 
 
 
@@ -45,10 +51,11 @@ public class Room
 
     }
 
-    public Room(int newRoomID, int newRoomType, GameObject newRoomGameObject, string newRoomState, int newPosX, int newPosY)
+    public Room(int newRoomID, int newRoomShape, int newRoomType, GameObject newRoomGameObject, string newRoomState, int newPosX, int newPosY)
     {
         roomID = newRoomID;
         roomState = newRoomState;
+        roomShape = newRoomShape;
         roomType = newRoomType;
 
         posX = newPosX;
@@ -72,19 +79,19 @@ public class Room
     {
         int numComponents = 0;
 
-        if (roomType == 1) //1
+        if (roomShape == 1) //1
         {
             numComponents = 1;
         }
-        else if (roomType == 2 || roomType == 3) //2
+        else if (roomShape == 2 || roomShape == 3) //2
         {
             numComponents = 2;
         }
-        else if (roomType == 4 || roomType == 5 || roomType == 6 || roomType == 7 || roomType == 8 || roomType == 9) //3
+        else if (roomShape == 4 || roomShape == 5 || roomShape == 6 || roomShape == 7 || roomShape == 8 || roomShape == 9) //3
         {
             numComponents = 3;
         }
-        else if (roomType == 10) //4
+        else if (roomShape == 10) //4
         {
             numComponents = 4;
         }
@@ -96,7 +103,7 @@ public class Room
             componentList.Add(component);
         }
 
-        switch (roomType)
+        switch (roomShape)
         {
             #region 1x1
             //Type: 1x1 
