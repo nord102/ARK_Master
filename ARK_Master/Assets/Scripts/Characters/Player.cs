@@ -20,8 +20,8 @@ public class Player : MonoBehaviour
     public Animator animator;
     private float lastDirection = 0;
 
-	public GameObject alien;
-	public GameObject alienClone;
+	//public GameObject alien;
+	//public GameObject alienClone;
 
     void Awake()
     {
@@ -77,8 +77,8 @@ public class Player : MonoBehaviour
 		if (Input.GetButtonDown ("Fire1")) {
 			FireTheLaser ();
 		} else if (Input.GetButtonDown ("Fire2")) {
-			alienClone = Instantiate(alien, this.gameObject.transform.position, Quaternion.identity) as GameObject;
-			alienClone.SetActive (true);
+			//alienClone = Instantiate(alien, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+			//alienClone.SetActive (true);
 		}
 
         //this.positionOutput.text = this.transform.position.ToString();

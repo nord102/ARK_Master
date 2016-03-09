@@ -51,12 +51,15 @@ public class Events : MonoBehaviour {
 		}
 
 		//Determine the 3 rewards
-		SuccessRewards.Add (new Rewards (lootTableBronze, eventType));
-		SuccessRewards.Add (new Rewards (lootTableSilver, eventType));
-		SuccessRewards.Add (new Rewards (lootTableGold, eventType));
+		//SuccessRewards.Add (new Rewards (lootTableBronze, eventType));
+		//SuccessRewards.Add (new Rewards (lootTableSilver, eventType));
+		//SuccessRewards.Add (new Rewards (lootTableGold, eventType));
+        SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableBronze));
+        SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableSilver));
+        SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableGold));
 
-		//Determine the bad guys based on room type, difficulty?
-		Enemies.Add (1);
+        //Determine the bad guys based on room type, difficulty?
+        Enemies.Add (1);
 		Enemies.Add (1);
 		Enemies.Add (2);
 

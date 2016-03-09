@@ -2,8 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class UIRoomList : MonoBehaviour {
-
+public class UIRoomList : MonoBehaviour 
+{
     public Image roomImage;
     public string roomPrice;
 
@@ -12,5 +12,4 @@ public class UIRoomList : MonoBehaviour {
         roomImage = i;
         roomPrice = p;
     }
-
 }

@@ -35,11 +35,15 @@ public class StateMachine : MonoBehaviour {
 	public List<PlayerInfo> PreviousPlayers;
 
 	public Sprite FireImage = new Sprite();
+    public Slider playerHealthBar;
+    public Slider playerShieldBar;
+    public Text shipResources;
 
-    
+    public GameObject DialogueBox;
+    public Database db;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		if (instance == null)
 			instance = this;
 		else if (instance != this)
@@ -184,8 +188,11 @@ public class StateMachine : MonoBehaviour {
     }
 
 	void Setup() {
-		//PlayerInfo.InitializePlayerInfo (0);
-		pInfo = new PlayerInfo (0);
+        db = new Database(Application.dataPath);
+        PreviousPlayers = new List<PlayerInfo>();
+
+        //PlayerInfo.InitializePlayerInfo (0);
+        pInfo = new PlayerInfo (0);
 		sInfo = new ShipInfo ();
 		GenerateAvailableSkills ();
 		LoadSettings ();
@@ -211,7 +218,7 @@ public class StateMachine : MonoBehaviour {
 			if (InventoryOpen)
 			{
 				//ShowInventory();
-
+                sInfo.SetResources(10);
 			}
 			else
 			{
@@ -267,4 +274,19 @@ public class StateMachine : MonoBehaviour {
 		//For Testing Only - Return 1
 		return 1;
 	}
+
+    public void FireEvent()
+    {
+        Events myEvent = EventSystem.GenerateRoomEvent(1);
+
+        MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
+
+        canvasScript.StartEvent(myEvent);
+    }
+
+    //After user has clicked to confirm the event
+    public void StartEvent()
+    {
+        DialogueBox.SetActive(false);
+    }
 }
