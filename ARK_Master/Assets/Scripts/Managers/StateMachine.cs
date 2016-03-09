@@ -32,7 +32,7 @@ public class StateMachine : MonoBehaviour {
     public enum RoomShape { OneByOne=1, OneByTwo=2, TwoByOne=3, OneByThree=4 };
 
 	private string PreviousPlayerFilePath = "Sinister.txt";
-	public List<PlayerInfo> PreviousPlayers;
+	public List<PlayerInfo> PreviousPlayers = new List<PlayerInfo> ();
 
 	public Sprite FireImage = new Sprite();
     public Slider playerHealthBar;
@@ -60,12 +60,18 @@ public class StateMachine : MonoBehaviour {
 			StreamReader sr = File.OpenText (PreviousPlayerFilePath);
 			string s = sr.ReadToEnd ();
 			sr.Close ();
+
+
 			//Now parse out the relevant information into PreviousPlayers
-			char[] delimiterChars = { '|'};
+			char[] delimiterChars = {'|'};
 			string[] players = s.Split(delimiterChars);
+
+			Debug.Log (players.Length);
 			
 			foreach (string player in players)
 			{
+				if (player.Equals(""))
+					continue;
 				char[] delChars = { '\n'};
 				string[] lines = player.Split(delChars);
 				PlayerInfo p = new PlayerInfo(int.Parse(lines[0]));
