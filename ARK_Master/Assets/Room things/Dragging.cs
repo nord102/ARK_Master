@@ -110,7 +110,7 @@ public class Dragging : MonoBehaviour
         {
             draggingMode = false;
 
-            Room newRoom = new Room(Generate.instance.roomList.Count, 10, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+            Room newRoom = new Room(Generate.instance.roomList.Count, 10,0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
 
             Generate.instance.roomList.Add(newRoom);
 
@@ -121,6 +121,10 @@ public class Dragging : MonoBehaviour
 
             Debug.Log("Calling Doors");
             Generate.instance.checkForDoors();
+
+            newRoom.roomEvent = EventSystem.GenerateRoomEvent(0);
+
+            Debug.Log(newRoom.roomEvent.eventName);
 
         }
 

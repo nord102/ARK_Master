@@ -50,6 +50,8 @@ public class Events : MonoBehaviour {
 			break;
 		}
 
+       
+
 		//Determine the 3 rewards
 		//SuccessRewards.Add (new Rewards (lootTableBronze, eventType));
 		//SuccessRewards.Add (new Rewards (lootTableSilver, eventType));
