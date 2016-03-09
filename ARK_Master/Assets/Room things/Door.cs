@@ -22,6 +22,8 @@ public class Door
     {
         doorID = newDoorID;
         roomID_1 = newRoomID_1;
+        posX = newPosX;
+        posY = newPosY;
         doorstate = newDoorState;
     }
 }
