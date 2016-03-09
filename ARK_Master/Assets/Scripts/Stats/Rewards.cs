@@ -56,7 +56,7 @@ public class Rewards : MonoBehaviour
         StateMachine.instance.pInfo.SetHealth(HPChange);
         StateMachine.instance.pInfo.SetEnergy(EnergyChange);
         StateMachine.instance.pInfo.SetShield(ShieldChange);
-        StateMachine.instance.sInfo.Resources += ShipResourcesFound;
+        StateMachine.instance.sInfo.SetResources(ShipResourcesFound);
         if (SkillFound != -1)
         {
             StateMachine.instance.AllAvailableSkills[SkillFound].isOwned = true;

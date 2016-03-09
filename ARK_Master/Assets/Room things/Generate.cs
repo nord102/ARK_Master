@@ -8,15 +8,22 @@ public class Generate : MonoBehaviour
 
     public GameObject door;
 
+<<<<<<< HEAD
     private GameObject cloneDoor;
 
+=======
+>>>>>>> refs/remotes/origin/master
     public GameObject startRoom;
 
     private GameObject cloneStartRoom;
 
     public List<Room> roomList = new List<Room>();
 
+<<<<<<< HEAD
     public List<RoomComponent> roomComponentList = new List<RoomComponent>();
+=======
+
+>>>>>>> refs/remotes/origin/master
 
     //--
     public GameObject object1;
@@ -46,11 +53,12 @@ public class Generate : MonoBehaviour
 
     void PlaceStartRoom()
     {
-        cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
+        //cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
 
         Room newRoom = new Room(roomList.Count, 10, cloneStartRoom, "Explored", 0, 0);
         newRoom.draggingState = false;
         roomList.Add(newRoom);
+<<<<<<< HEAD
 
         foreach (RoomComponent roomCom in newRoom.componentList)
         {
@@ -145,6 +153,8 @@ public class Generate : MonoBehaviour
         }
 
 
+=======
+>>>>>>> refs/remotes/origin/master
     }
 
 
@@ -175,7 +185,13 @@ public class Generate : MonoBehaviour
         }
 
         cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x - 10, wordPos.y - 10, 0f), Quaternion.identity) as GameObject;
+<<<<<<< HEAD
         
+=======
+
+        Debug.Log("I WAS HERE");
+
+>>>>>>> refs/remotes/origin/master
         return cloneStartRoom;
     }
 
@@ -193,7 +209,7 @@ public class Generate : MonoBehaviour
             RoomObject newRoomObject = new RoomObject(roomList[0].objectList.Count, "Banana", true, tempX, tempY);
             roomList[0].objectList.Add(newRoomObject);
 
-            //cloneObject1 = Instantiate(object1, new Vector3(tempX, tempY,0f), Quaternion.identity) as GameObject;
+            cloneObject1 = Instantiate(object1, new Vector3(tempX, tempY,0f), Quaternion.identity) as GameObject;
         }
 
 
@@ -209,8 +225,33 @@ public class Generate : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0) && boo)
+        {
+            //PopulateStartRoom();
+
+            Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
+            Vector3 wordPos;
 
 
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+
+            RaycastHit hit;
+
+
+            if (Physics.Raycast(ray, out hit, 1000f))
+            {
+                wordPos = hit.point;
+            }
+            else
+            {
+                wordPos = Camera.main.ScreenToWorldPoint(mousePos);
+            }
+
+            cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x,wordPos.y,0f), Quaternion.identity) as GameObject;
+
+            boo = false;
+           
+        }
     }
 	
     

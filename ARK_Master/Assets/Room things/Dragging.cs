@@ -40,7 +40,11 @@ public class Dragging : MonoBehaviour
         //while dragging
         if(Input.GetMouseButton(0) || true)
         {
+<<<<<<< HEAD
             
+=======
+           // Debug.Log(draggingMode);
+>>>>>>> refs/remotes/origin/master
             if(draggingMode)
             {
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

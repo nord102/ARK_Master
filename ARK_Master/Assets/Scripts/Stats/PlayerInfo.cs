@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PlayerInfo {
 
@@ -28,7 +29,7 @@ public class PlayerInfo {
 		if (CurrentHealth + value > MaxHealth) {
 			CurrentHealth = MaxHealth;
 		}
-		else if ( CurrentHealth - value <= 0)
+		else if ( CurrentHealth + value <= 0)
 		{
 			CurrentHealth = 0;
 			StateMachine.instance.GameOver ();
@@ -36,6 +37,9 @@ public class PlayerInfo {
 		} else {
 			CurrentHealth += value;
 		}
+
+        // Set the health bar's value to the current health.
+        StateMachine.instance.playerHealthBar.value = (float)CurrentHealth;
 	}
 
 	public void SetShield(double value)
@@ -48,6 +52,8 @@ public class PlayerInfo {
 		} else {
 			CurrentShield += value;
 		}
+        // Set the health bar's value to the current health.
+        StateMachine.instance.playerShieldBar.value = (float)CurrentShield;
 	}
 
 	public void SetEnergy(double value)

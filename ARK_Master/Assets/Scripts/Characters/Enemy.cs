@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour {
         if (other.gameObject.name.Contains("Player"))
         {
 
-            animator.SetTrigger("attack");
+            animator.SetTrigger ("attack");
             Player.instance.Damage(5);
             AlienAttack.instance.PlaySound();
 
@@ -114,6 +114,7 @@ public class Enemy : MonoBehaviour {
             {
                 vel.x -= speed;
                 currentX = true;
+				animator.SetBool("runDirection", true);
 
             }
 
@@ -121,14 +122,13 @@ public class Enemy : MonoBehaviour {
             {
                 vel.x += speed;
                 currentX = false;
+				animator.SetBool("runDirection", false);
 
             }
 
             if (y < 0)
             {
                 vel.y -= speed;
-                
-
             }
 
             else if (y > 0)
@@ -137,11 +137,11 @@ public class Enemy : MonoBehaviour {
                 
             }
 
-            if (currentX  != lastX)
-            {
-                lastX = currentX;
-                animator.SetTrigger("direction");
-            }
+            //if (currentX  != lastX)
+            //{
+              //  lastX = currentX;
+                //animator.SetBool("runDirection", false);
+            //}
 
 
             vel.z = 0;

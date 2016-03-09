@@ -47,6 +47,7 @@ public class Player : MonoBehaviour
 
 
         horizontal = (int)(Input.GetAxisRaw("Horizontal"));
+		vertical = (int)(Input.GetAxisRaw("Vertical"));
 
 //		if (horizontal != lastDirection || vertical != 0 || horizontal != 0) {
 //			animator.SetTrigger ("direction");
@@ -62,19 +63,12 @@ public class Player : MonoBehaviour
 
 			if (horizontal < 0) {
 				animator.SetBool ("direction", true);
-			} else {
+			} else if (horizontal > 0){
 				animator.SetBool ("direction", false);
-
 			}
 		
 		}
-
-		Debug.Log (horizontal);
-
-
-        vertical = (int)(Input.GetAxisRaw("Vertical"));
-
-
+			
         Vector3 pos = new Vector3(this.gameObject.transform.position.x + horizontal / SPEED, this.gameObject.transform.position.y + vertical / SPEED);
 
 
