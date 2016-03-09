@@ -1546,7 +1546,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 6132082, guid: 123c16c65758167469c380bdafa8923c, type: 2}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5058248, guid: 123c16c65758167469c380bdafa8923c, type: 2}
       propertyPath: m_IsKinematic
@@ -1785,7 +1785,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 287913223}
   m_HandleRect: {fileID: 287913222}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3268,6 +3268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc662c4863b82554581a2218c576e5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  door: {fileID: 128482, guid: cc714434bd1128844bf58676a1d8fcaf, type: 2}
   startRoom: {fileID: 117440, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
   object1: {fileID: 0}
   object2: {fileID: 0}
@@ -3690,6 +3691,6 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -6.7}
+  m_AnchoredPosition: {x: -0.000061035156, y: -6.7}
   m_SizeDelta: {x: 0, y: 293.3}
   m_Pivot: {x: 0, y: 1}
