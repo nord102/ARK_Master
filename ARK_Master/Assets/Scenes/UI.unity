@@ -1576,6 +1576,10 @@ Prefab:
       propertyPath: alien
       value: 
       objectReference: {fileID: 685741539}
+    - target: {fileID: 429960, guid: 123c16c65758167469c380bdafa8923c, type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 123c16c65758167469c380bdafa8923c, type: 2}
   m_IsPrefabParent: 0
