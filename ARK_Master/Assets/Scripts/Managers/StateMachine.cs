@@ -37,6 +37,7 @@ public class StateMachine : MonoBehaviour {
 	public Sprite FireImage = new Sprite();
     public Slider playerHealthBar;
     public Slider playerShieldBar;
+    public Text shipResources;
 
     public GameObject DialogueBox;
     public Database db;
@@ -217,7 +218,7 @@ public class StateMachine : MonoBehaviour {
 			if (InventoryOpen)
 			{
 				//ShowInventory();
-
+                sInfo.SetResources(10);
 			}
 			else
 			{
