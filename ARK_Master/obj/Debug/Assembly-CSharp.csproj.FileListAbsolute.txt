@@ -65,3 +65,5 @@ C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEn
 C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.Networking.xml
 C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\obj\Debug\Assembly-CSharp.pdb
 >>>>>>> master
+C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\Temp\bin\Debug\Mono.Data.Sqlite.dll
+C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\Temp\bin\Debug\System.Data.dll

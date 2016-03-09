@@ -35,6 +35,8 @@ public class StateMachine : MonoBehaviour {
 	public List<PlayerInfo> PreviousPlayers;
 
 	public Sprite FireImage = new Sprite();
+    public Slider playerHealthBar;
+    public Slider playerShieldBar;
 
     public GameObject DialogueBox;
     public Database db;
