@@ -44,7 +44,7 @@ public class Generate : MonoBehaviour
 
     void PlaceStartRoom()
     {
-        cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
+        //cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
 
         Room newRoom = new Room(roomList.Count, 10,"Explored",0,0);
         newRoom.draggingState = false;
@@ -128,7 +128,7 @@ public class Generate : MonoBehaviour
             wordPos = Camera.main.ScreenToWorldPoint(mousePos);
         }
 
-        cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x - 10, wordPos.y - 10, 0f), Quaternion.identity) as GameObject;
+        //cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x - 10, wordPos.y - 10, 0f), Quaternion.identity) as GameObject;
 
      
 
@@ -167,6 +167,23 @@ public class Generate : MonoBehaviour
     {
 
 
+<<<<<<< HEAD
+            if (Physics.Raycast(ray, out hit, 1000f))
+            {
+                wordPos = hit.point;
+            }
+            else
+            {
+                wordPos = Camera.main.ScreenToWorldPoint(mousePos);
+            }
+
+            //cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x,wordPos.y,0f), Quaternion.identity) as GameObject;
+
+            boo = false;
+           
+        }
+=======
+>>>>>>> 6303f74b5325a09f2e9f5e2046b3d060db210e38
     }
 	
     

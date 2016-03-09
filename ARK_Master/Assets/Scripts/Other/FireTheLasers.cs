@@ -8,9 +8,9 @@ using System.Collections;
 public class FireTheLasers : MonoBehaviour
 {
     const float INITIAL_SPEED = 5f;
-    public float speed = 3f;
+    public float speed = 10f;
     
-    private Rigidbody rb;
+	private Rigidbody2D rb;
     public float angle = 0f;
 
     Vector3 start;
@@ -22,7 +22,7 @@ public class FireTheLasers : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+		rb = GetComponent<Rigidbody2D>();
         Debug.Log(this.transform.position);
         start = this.transform.position;
 
@@ -49,10 +49,15 @@ public class FireTheLasers : MonoBehaviour
     ///
     void Update()
     {    
-        float step = speed;
+		Vector3 direction = this.direction - this.start;
+		direction.Normalize ();
+
+		this.rb.velocity = direction * this.speed;
+
+        //float step = speed;
        // transform.position = Vector3.MoveTowards(transform.position, this.direction, step);
 
-       transform.position += (this.direction - this.start) * speed * Time.deltaTime;
+       //transform.position += (this.direction - this.start) * speed * Time.deltaTime;
 
 
 
