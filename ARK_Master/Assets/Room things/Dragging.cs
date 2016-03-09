@@ -40,11 +40,6 @@ public class Dragging : MonoBehaviour
         //while dragging
         if(Input.GetMouseButton(0) || true)
         {
-<<<<<<< HEAD
-            
-=======
-           // Debug.Log(draggingMode);
->>>>>>> refs/remotes/origin/master
             if(draggingMode)
             {
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -72,7 +67,7 @@ public class Dragging : MonoBehaviour
                 { pos.y += Mathf.Abs(gridStepsY); }
                 else if (pos.y > 0)
                 { pos.y -= Mathf.Abs(gridStepsY); }
-                //Debug.Log("GRID:" + gridStepsY + " POS" + pos.y);
+                
                 //Z POSITION
                 pos.z = GOCenter.z;
                 
