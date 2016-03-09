@@ -29,7 +29,7 @@ public class PlayerInfo {
 		if (CurrentHealth + value > MaxHealth) {
 			CurrentHealth = MaxHealth;
 		}
-		else if ( CurrentHealth - value <= 0)
+		else if ( CurrentHealth + value <= 0)
 		{
 			CurrentHealth = 0;
 			StateMachine.instance.GameOver ();
