@@ -26,7 +26,7 @@ public class Dragging : MonoBehaviour
 
     public void StartDragRace()
     {     
-        gameObjectToDrag = Generate.instance.GenRoom();
+        gameObjectToDrag = Generate.instance.GenRoom(10);
         GOCenter = gameObjectToDrag.transform.position;
         touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         offset = touchPosition - GOCenter;
@@ -119,12 +119,12 @@ public class Dragging : MonoBehaviour
                 Generate.instance.roomComponentList.Add(roomCom);
             }
 
-            Debug.Log("Calling Doors");
+           
             Generate.instance.checkForDoors();
 
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0);
 
-            Debug.Log(newRoom.roomEvent.eventName);
+            
 
         }
 
