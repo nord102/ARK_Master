@@ -1546,7 +1546,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 6132082, guid: 123c16c65758167469c380bdafa8923c, type: 2}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5058248, guid: 123c16c65758167469c380bdafa8923c, type: 2}
       propertyPath: m_IsKinematic
@@ -1786,7 +1786,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 287913222}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3268,7 +3268,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc662c4863b82554581a2218c576e5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  door: {fileID: 128482, guid: cc714434bd1128844bf58676a1d8fcaf, type: 2}
   startRoom: {fileID: 117440, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
+  room_1x1: {fileID: 0}
+  room_1x2: {fileID: 0}
+  room_2x1: {fileID: 0}
+  room_1x3: {fileID: 0}
+  room_3x1: {fileID: 0}
+  room_LShape_Normal: {fileID: 0}
+  room_LShape_HFlip: {fileID: 0}
+  room_LShape_VFlip: {fileID: 0}
+  room_LShape_HVFlip: {fileID: 0}
+  room_2x2: {fileID: 117440, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
   object1: {fileID: 0}
   object2: {fileID: 0}
   object3: {fileID: 0}
@@ -3638,15 +3649,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c3efe3425ce3b1448030b374745ac99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Module1: {fileID: 374068943}
-  Module2: {fileID: 448236520}
-  Module3: {fileID: 1893296003}
+  Module1: {fileID: 0}
+  Module2: {fileID: 0}
+  Module3: {fileID: 0}
   BuildingMenu: {fileID: 0}
-  UI: {fileID: 1446544712}
-  FireImage: {fileID: 21300000, guid: be19e9b240e0bd942ba046e5473b5017, type: 3}
-  playerHealthBar: {fileID: 564308779}
-  playerShieldBar: {fileID: 630386770}
-  shipResources: {fileID: 1636828493}
+  UI: {fileID: 0}
+  FireImage: {fileID: 0}
+  playerHealthBar: {fileID: 0}
+  playerShieldBar: {fileID: 0}
+  shipResources: {fileID: 0}
   DialogueBox: {fileID: 0}
 --- !u!4 &1965047332
 Transform:
@@ -3690,6 +3701,6 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -6.7}
+  m_AnchoredPosition: {x: 0.000030517578, y: -6.7}
   m_SizeDelta: {x: 0, y: 293.3}
   m_Pivot: {x: 0, y: 1}

@@ -281,9 +281,8 @@ public class StateMachine : MonoBehaviour {
 		return 1;
 	}
 
-    public void FireEvent()
+    public void FireEvent(Events myEvent)
     {
-        Events myEvent = EventSystem.GenerateRoomEvent(1);
 
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
 

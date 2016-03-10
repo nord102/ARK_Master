@@ -5,7 +5,7 @@ public class TempButton : MonoBehaviour {
 
 	public void DoIt()
 	{
-        StateMachine.instance.FireEvent();
+        //StateMachine.instance.FireEvent();
 	}
 
     public void StartEvent()

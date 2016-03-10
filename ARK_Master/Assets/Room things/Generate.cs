@@ -6,13 +6,37 @@ public class Generate : MonoBehaviour
 {
     public static Generate instance = null;
 
+    public GameObject door;
+    private GameObject cloneDoor;
+
 
     public GameObject startRoom;
-
     private GameObject cloneStartRoom;
 
-    private List<Room> roomList = new List<Room>();
+    public GameObject room_1x1;
+    public GameObject room_1x2;
+    public GameObject room_2x1;
+    public GameObject room_1x3;
+    public GameObject room_3x1;
+    public GameObject room_LShape_Normal;
+    public GameObject room_LShape_HFlip;
+    public GameObject room_LShape_VFlip;
+    public GameObject room_LShape_HVFlip;
+    public GameObject room_2x2;
 
+    private GameObject cloneRoom_1x1;
+    private GameObject cloneRoom_1x2;
+    private GameObject cloneRoom_2x1;
+    private GameObject cloneRoom_1x3;
+    private GameObject cloneRoom_3x1;
+    private GameObject cloneRoom_LShape_Normal;
+    private GameObject cloneRoom_LShape_HFlip;
+    private GameObject cloneRoom_LShape_VFlip;
+    private GameObject cloneRoom_LShape_HVFlip;
+    private GameObject cloneRoom_2x2;
+
+    public List<Room> roomList = new List<Room>();
+    public List<RoomComponent> roomComponentList = new List<RoomComponent>();
 
 
     //--
@@ -24,7 +48,7 @@ public class Generate : MonoBehaviour
     private GameObject cloneObject2;
     private GameObject cloneObject3;
 
-    private bool boo = true;
+  
     //--
 
     //Create Image for the first room
@@ -43,11 +67,122 @@ public class Generate : MonoBehaviour
 
     void PlaceStartRoom()
     {
-        //cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
+        cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
 
-        Room newRoom = new Room(roomList.Count, 10,"Explored",0,0);
+        Room newRoom = new Room(roomList.Count, 10,0, cloneStartRoom, "Explored", 0, 0);
         newRoom.draggingState = false;
         roomList.Add(newRoom);
+
+        foreach (RoomComponent roomCom in newRoom.componentList)
+        {
+            roomComponentList.Add(roomCom);
+        }
+    }
+
+    public void checkForDoors()
+    {
+        bool doorMade = false;
+
+        //get the room that was just placed 
+        Room recentRoom = roomList[roomList.Count - 1];
+
+        Door newDoor = new Door();
+
+        //Check all of the recent Room Components for neighbours       
+        foreach (RoomComponent recentRoomCom in recentRoom.componentList)
+        {            
+            foreach (RoomComponent globalRoomCom in roomComponentList)
+            {
+                //X+ Y (RIGHT)
+                if (((recentRoomCom.posX + (recentRoom.dimension - 1) == globalRoomCom.posX) && (recentRoomCom.posY == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
+                {                    
+                    //Make Door (X+,Y+1/2)
+                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                        (recentRoomCom.posX + recentRoom.dimension-1), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
+
+                    newDoor = tempDoor;
+                    doorMade = true; 
+                }
+                //X- Y (LEFT)
+                else if (((recentRoomCom.posX - (recentRoom.dimension - 1) == globalRoomCom.posX) && (recentRoomCom.posY == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    //Make Door (X,Y+1/2)
+                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                        (recentRoomCom.posX), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
+
+                    newDoor = tempDoor;
+                    doorMade = true;                     
+                }
+                //X Y+ (UP)
+                else if (((recentRoomCom.posX == globalRoomCom.posX) && (recentRoomCom.posY + (recentRoom.dimension - 1) == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    //Make Door (X+1/2,Y+)
+                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                        (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), (recentRoomCom.posY + (recentRoom.dimension - 1)), true);
+
+                    newDoor = tempDoor;
+                    doorMade = true;
+                }
+                //X Y- (DOWN)
+                else if (((recentRoomCom.posX == globalRoomCom.posX) && (recentRoomCom.posY - (recentRoom.dimension - 1) == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    //Make Door (X+1/2,Y)
+                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                        (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), recentRoomCom.posY, true);
+
+                    newDoor = tempDoor;
+                    doorMade = true;
+                }
+
+                if (doorMade)
+                {
+                    doorMade = false;
+
+                    //Add to Recent room door list
+                    recentRoom.roomDoorList.Add(newDoor);
+
+                    //Add to Connected room door list
+                    Room connectingRoom = roomList[globalRoomCom.roomID];
+                    connectingRoom.roomDoorList.Add(newDoor);
+                    
+                    //Create Door
+                    //Take out the Wall on the Dragged Room
+                    foreach (Transform child in recentRoom.roomGameObject.transform)
+                    {
+                        foreach (Transform smallerChild in child.transform)
+                        {
+                            //Destroy and replace smallerchild
+                            if (smallerChild.transform.position.x == newDoor.posX && smallerChild.transform.position.y == newDoor.posY)
+                            {
+                                //Create Door GameObject 
+                                cloneDoor = Instantiate(door, new Vector3(smallerChild.transform.position.x, smallerChild.transform.position.y, 0f), Quaternion.identity) as GameObject;
+                                newDoor.doorGameObject = cloneDoor;
+
+                                //Hide Wall where Door is going
+                                smallerChild.gameObject.SetActive(false);
+                            }
+                        }
+                    }
+
+                    //Take out Wall on the Connected Room
+                    foreach (Transform child in connectingRoom.roomGameObject.transform)
+                    {
+                        foreach (Transform smallerChild in child.transform)
+                        {
+                            //Destroy and replace smallerchild
+                            if (smallerChild.transform.position.x == newDoor.posX && smallerChild.transform.position.y == newDoor.posY)
+                            {
+                                //Hide Wall where Door is going
+                                smallerChild.gameObject.SetActive(false);
+                            }
+                        }
+                    }
+
+                    //Should Add the Door to the Component Layout?
+                    //recentRoomCom.layout[newDoor.posX, newDoor.posY] = 2;
+                }
+            }
+        }
     }
 
 
@@ -56,31 +191,77 @@ public class Generate : MonoBehaviour
 
 
     }
+    
+    //NEED TO ADD FUNCTIONALITY FOR DIFFERENT ROOMS (MAKE THIS MODULAR)    
 
-    public GameObject GenRoom()
+    //Add Parameter for the RoomShape (make like an if statement for which room to clone)
+    public GameObject GenRoom(int roomShape)
     {
+        GameObject generatedRoom = new GameObject();
+
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
-        Vector3 wordPos;
+        Vector3 worldPos;
 
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
         RaycastHit hit;
-
 
         if (Physics.Raycast(ray, out hit, 1000f))
         {
-            wordPos = hit.point;
+            worldPos = hit.point;
         }
         else
         {
-            wordPos = Camera.main.ScreenToWorldPoint(mousePos);
+            worldPos = Camera.main.ScreenToWorldPoint(mousePos);
         }
 
-        cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x - 10, wordPos.y - 10, 0f), Quaternion.identity) as GameObject;
+        switch (roomShape)
+        {
+            case 1:
+                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_1x1;
+                break;
+            case 2:
+                cloneRoom_1x2 = Instantiate(room_1x2, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_1x2;
+                break;
+            case 3:
 
-        Debug.Log("I WAS HERE");
 
-        return cloneStartRoom;
+                break;
+            case 4:
+
+
+                break;
+            case 5:
+
+
+                break;            
+            case 6:
+
+
+                break;
+            case 7:
+
+
+                break;
+            case 8:
+
+
+                break;
+            case 9:
+
+
+                break;
+            case 10:
+                cloneStartRoom = Instantiate(startRoom, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneStartRoom;
+                break;
+
+        }
+
+        
+
+        return generatedRoom;
     }
 
     
@@ -113,33 +294,7 @@ public class Generate : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && boo)
-        {
-            //PopulateStartRoom();
-
-            Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0f);
-            Vector3 wordPos;
-
-
-            Ray ray = Camera.main.ScreenPointToRay(mousePos);
-
-            RaycastHit hit;
-
-
-            if (Physics.Raycast(ray, out hit, 1000f))
-            {
-                wordPos = hit.point;
-            }
-            else
-            {
-                wordPos = Camera.main.ScreenToWorldPoint(mousePos);
-            }
-
-            cloneStartRoom = Instantiate(startRoom, new Vector3(wordPos.x,wordPos.y,0f), Quaternion.identity) as GameObject;
-
-            boo = false;
-           
-        }
+        
     }
 	
     

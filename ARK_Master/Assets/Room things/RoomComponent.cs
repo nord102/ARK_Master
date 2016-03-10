@@ -7,7 +7,7 @@ public class RoomComponent
     public int roomID { get; set; }
 
     public int [,] layout {get;set;}
-    private int dimension = 5;
+    private int dimension = 7;
 
     public int posX { get; set; }
     public int posY { get; set; }

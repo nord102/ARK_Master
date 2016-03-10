@@ -25,48 +25,21 @@ public class Dragging : MonoBehaviour
     
 
     public void StartDragRace()
-    {
-     
-        gameObjectToDrag = Generate.instance.GenRoom();
-    
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        //if (Physics.Raycast(ray, out hit))
-        //{
-            //gameObjectToDrag = hit.collider.gameObject;
-            GOCenter = gameObjectToDrag.transform.position;
-            touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            offset = touchPosition - GOCenter;
-            draggingMode = true;
-
-            
-        //}
+    {     
+        gameObjectToDrag = Generate.instance.GenRoom(10);
+        GOCenter = gameObjectToDrag.transform.position;
+        touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        offset = touchPosition - GOCenter;
+        draggingMode = true;
     }
 
 
 	// Update is called once per frame
 	void Update ()
-    {
-        ////to check what will be getting dragged
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        //    if(Physics.Raycast(ray,out hit))
-        //    {
-        //        gameObjectToDrag = hit.collider.gameObject;
-        //        GOCenter = gameObjectToDrag.transform.position;
-        //        touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //        offset = touchPosition - GOCenter;
-        //        draggingMode = true;
-        //    }
-
-        //}
-
+    {    
         //while dragging
         if(Input.GetMouseButton(0) || true)
         {
-           // Debug.Log(draggingMode);
             if(draggingMode)
             {
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -94,7 +67,7 @@ public class Dragging : MonoBehaviour
                 { pos.y += Mathf.Abs(gridStepsY); }
                 else if (pos.y > 0)
                 { pos.y -= Mathf.Abs(gridStepsY); }
-                Debug.Log("GRID:" + gridStepsY + " POS" + pos.y);
+                
                 //Z POSITION
                 pos.z = GOCenter.z;
                 
@@ -133,15 +106,26 @@ public class Dragging : MonoBehaviour
             }
         }
 
-        //after release
-        //if (Input.GetMouseButtonUp(0) || false)
-        //{
-        //    draggingMode = false;
-        //}
-
         if (Input.GetMouseButton(0) && draggingMode)
         {
             draggingMode = false;
+
+            Room newRoom = new Room(Generate.instance.roomList.Count, 10,0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+
+            Generate.instance.roomList.Add(newRoom);
+
+            foreach (RoomComponent roomCom in newRoom.componentList)
+            {
+                Generate.instance.roomComponentList.Add(roomCom);
+            }
+
+           
+            Generate.instance.checkForDoors();
+
+            newRoom.roomEvent = EventSystem.GenerateRoomEvent(0);
+
+            
+
         }
 
 	}
