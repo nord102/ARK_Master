@@ -6,13 +6,13 @@ public class Generate : MonoBehaviour
 {
     public static Generate instance = null;
 
+    #region Door
     public GameObject door;
     private GameObject cloneDoor;
+    #endregion
 
-
-    public GameObject startRoom;
-    private GameObject cloneStartRoom;
-
+    #region Room GameObjects
+    public GameObject startRoom; 
     public GameObject room_1x1;
     public GameObject room_1x2;
     public GameObject room_2x1;
@@ -24,6 +24,7 @@ public class Generate : MonoBehaviour
     public GameObject room_LShape_HVFlip;
     public GameObject room_2x2;
 
+    private GameObject cloneStartRoom;
     private GameObject cloneRoom_1x1;
     private GameObject cloneRoom_1x2;
     private GameObject cloneRoom_2x1;
@@ -34,10 +35,12 @@ public class Generate : MonoBehaviour
     private GameObject cloneRoom_LShape_VFlip;
     private GameObject cloneRoom_LShape_HVFlip;
     private GameObject cloneRoom_2x2;
+    #endregion
 
+    #region Lists
     public List<Room> roomList = new List<Room>();
     public List<RoomComponent> roomComponentList = new List<RoomComponent>();
-
+    #endregion
 
     //--
     public GameObject object1;
@@ -80,7 +83,7 @@ public class Generate : MonoBehaviour
     }
 
     public void checkForDoors()
-    {
+    {  
         bool doorMade = false;
 
         //get the room that was just placed 
@@ -136,6 +139,8 @@ public class Generate : MonoBehaviour
 
                 if (doorMade)
                 {
+                    Debug.Log("I am making a door");
+
                     doorMade = false;
 
                     //Add to Recent room door list
@@ -217,7 +222,7 @@ public class Generate : MonoBehaviour
         switch (roomShape)
         {
             case 1:
-                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x, worldPos.y, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_1x1;
                 break;
             case 2:
@@ -225,41 +230,38 @@ public class Generate : MonoBehaviour
                 generatedRoom = cloneRoom_1x2;
                 break;
             case 3:
-
-
+                cloneRoom_2x1 = Instantiate(room_2x1, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_2x1;
                 break;
             case 4:
-
-
+                cloneRoom_1x3 = Instantiate(room_1x3, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_1x3;
                 break;
             case 5:
-
-
+                cloneRoom_3x1 = Instantiate(room_3x1, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_3x1;
                 break;            
             case 6:
-
-
+                cloneRoom_LShape_Normal = Instantiate(room_LShape_Normal, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_LShape_Normal;
                 break;
             case 7:
-
-
+                cloneRoom_LShape_HFlip = Instantiate(room_LShape_HFlip, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_LShape_HFlip;
                 break;
             case 8:
-
-
+                cloneRoom_LShape_VFlip = Instantiate(room_LShape_VFlip, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_LShape_VFlip;
                 break;
             case 9:
-
-
+                cloneRoom_LShape_HVFlip = Instantiate(room_LShape_HVFlip, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                generatedRoom = cloneRoom_LShape_HVFlip;
                 break;
             case 10:
                 cloneStartRoom = Instantiate(startRoom, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneStartRoom;
                 break;
-
-        }
-
-        
+        }        
 
         return generatedRoom;
     }
