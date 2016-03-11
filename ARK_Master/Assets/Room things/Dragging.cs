@@ -17,6 +17,8 @@ public class Dragging : MonoBehaviour
     private Vector3 offset;
     private Vector3 newGOCenter;
 
+    private int globalRoomShape;
+
     RaycastHit hit;
 
     public bool draggingMode = false;
@@ -24,9 +26,11 @@ public class Dragging : MonoBehaviour
     // Use this for initialization
     
 
-    public void StartDragRace()
-    {     
-        gameObjectToDrag = Generate.instance.GenRoom(10);
+    public void StartDrag(int roomShape)
+    {
+        globalRoomShape = roomShape;
+
+        gameObjectToDrag = Generate.instance.GenRoom(roomShape);
         GOCenter = gameObjectToDrag.transform.position;
         touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         offset = touchPosition - GOCenter;
@@ -110,7 +114,7 @@ public class Dragging : MonoBehaviour
         {
             draggingMode = false;
 
-            Room newRoom = new Room(Generate.instance.roomList.Count, 10,0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+            Room newRoom = new Room(Generate.instance.roomList.Count, globalRoomShape, 0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
 
             Generate.instance.roomList.Add(newRoom);
 
