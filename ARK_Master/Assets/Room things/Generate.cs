@@ -89,6 +89,8 @@ public class Generate : MonoBehaviour
         //get the room that was just placed 
         Room recentRoom = roomList[roomList.Count - 1];
 
+
+
         Door newDoor = new Door();
 
         //Check all of the recent Room Components for neighbours       
@@ -139,7 +141,6 @@ public class Generate : MonoBehaviour
 
                 if (doorMade)
                 {
-                    Debug.Log("I am making a door");
 
                     doorMade = false;
 
@@ -182,6 +183,8 @@ public class Generate : MonoBehaviour
                             }
                         }
                     }
+
+                    newDoor.doorGameObject.SendMessage("RoomIDAssign", recentRoom.roomID);
 
                     //Should Add the Door to the Component Layout?
                     //recentRoomCom.layout[newDoor.posX, newDoor.posY] = 2;

@@ -363,7 +363,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Title
+  m_Text: Fire
 --- !u!114 &11457608
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -504,7 +504,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Event Description
+  m_Text: The room, The room, The room is on fire!
 --- !u!114 &11487952
 MonoBehaviour:
   m_ObjectHideFlags: 1

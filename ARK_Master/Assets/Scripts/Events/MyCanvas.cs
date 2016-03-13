@@ -71,7 +71,7 @@ public class MyCanvas : MonoBehaviour
 			txtChoices.Add(newOption);
         }*/
 
-		//gameObject.SetActive (true);
+		gameObject.SetActive (true);
     }
     
   //  public void ChoiceMade(int choice)

@@ -128,6 +128,7 @@ public class Dragging : MonoBehaviour
 
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0);
 
+           
             
 
         }
