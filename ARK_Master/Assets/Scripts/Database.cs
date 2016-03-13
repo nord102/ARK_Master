@@ -16,7 +16,7 @@ public class Database
     public Database(string applicationDataPath)
     {
         conn = "URI=file:" + applicationDataPath + "/Databases/DB.db"; //Path to database.
-        lootColumnsNoId = " RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, LootTableValue ";
+        lootColumnsNoId = " RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, LootTableValue, EventType ";
         lootColumns = " Id," + lootColumnsNoId;
 
         /* Usage example
