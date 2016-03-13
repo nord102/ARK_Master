@@ -283,6 +283,7 @@ public class StateMachine : MonoBehaviour {
 
     public void FireEvent(Events myEvent)
     {
+        
 
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
 
