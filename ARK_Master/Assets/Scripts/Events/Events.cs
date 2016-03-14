@@ -3,68 +3,83 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class Events : MonoBehaviour {
+public class Events
+{
 
 	public string eventName;
 	public Image eventImage;
 	public string eventText;
 	public int eventDifficulty;
 	public List<Rewards> SuccessRewards = new List<Rewards> ();
-	public List<int> Enemies = new List<int> ();
-	//public List<EventChoice> eventChoices;
+	public List<int> Enemies = new List<int> ();//Should probably be enums
+    //public List<EventChoice> eventChoices;
 
-	public Events(int eventType)
-	{
-		//List<Rewards> FailureRewards = new List<Rewards>();
-		//eventChoices = new List<EventChoice>();
+    public Events(int eventType)
+    {
+        //List<Rewards> FailureRewards = new List<Rewards>();
+        //eventChoices = new List<EventChoice>();
 
-		//Determine event difficulty - based on rooms explored, strength of main character...?
-		eventDifficulty = StateMachine.instance.DetermineEventDifficulty ();
+        //Determine event difficulty - based on rooms explored, strength of main character...?
+        eventDifficulty = StateMachine.instance.DetermineEventDifficulty();
 
-		//Use difficulty to determine rewards
-		//10 loot tables
-		//difficulty = loot table * 2 - 1: example: difficulty 4 = loot table 7
-		//bronze reward = loot table with 25% chance to be loot table - 1
-		//silver reward = loot table with 5% chance to be loot table + 1
-		//gold reward = loot table + 1
+        //Use difficulty to determine rewards
+        //10 loot tables
+        //difficulty = loot table * 2 - 1: example: difficulty 4 = loot table 7
+        //bronze reward = loot table with 25% chance to be loot table - 1
+        //silver reward = loot table with 5% chance to be loot table + 1
+        //gold reward = loot table + 1
 
-		//need a loot table database, randomly pull required data out of database
+        //need a loot table database, randomly pull required data out of database
 
-		int lootTableBronze = (eventDifficulty * 2) - 1;
-		int lootTableSilver = (eventDifficulty * 2) - 1;
-		int lootTableGold = (eventDifficulty * 2);
-		
-		//Determine loot tables
-		if (lootTableBronze != 1 && Random.value <= .25) {
-			lootTableBronze -= 1;
-		}
-		if (Random.value >= .95) {
-			lootTableSilver += 1;
-		}
+        int lootTableBronze = (eventDifficulty * 2) - 1;
+        int lootTableSilver = (eventDifficulty * 2) - 1;
+        int lootTableGold = (eventDifficulty * 2);
 
-		switch (eventType) {
-		case 0:
-			eventName = "Fire";
-			eventText = "The room, The room, The room is on fire!";
-			eventImage = (Image)Resources.Load ("Images/flames");
-			break;
-		}
+        //Determine loot tables
+        if (lootTableBronze != 1 && Random.value <= .25)
+        {
+            lootTableBronze -= 1;
+        }
+        if (Random.value >= .95)
+        {
+            lootTableSilver += 1;
+        }
 
-       
+        List<RoomEnemy> enemies = new List<RoomEnemy>();
 
-		//Determine the 3 rewards
-		//SuccessRewards.Add (new Rewards (lootTableBronze, eventType));
-		//SuccessRewards.Add (new Rewards (lootTableSilver, eventType));
-		//SuccessRewards.Add (new Rewards (lootTableGold, eventType));
+        switch (eventType)
+        {
+            case 0:
+                eventName = "Fire";
+                eventText = "The room, The room, The room is on fire!";
+                eventImage = (Image)Resources.Load("Images/flames");
+                
+                enemies.Add(new RoomEnemy(0, 2, 1));
+                enemies.Add(new RoomEnemy(1, 2, 1));
+                enemies.Add(new RoomEnemy(2, 1, 0));
+
+                break;
+        }
+
+        //Determine the 3 rewards
+        //SuccessRewards.Add (new Rewards (lootTableBronze, eventType));
+        //SuccessRewards.Add (new Rewards (lootTableSilver, eventType));
+        //SuccessRewards.Add (new Rewards (lootTableGold, eventType));
         SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableBronze));
         SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableSilver));
         SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableGold));
 
         //Determine the bad guys based on room type, difficulty?
-        Enemies.Add (1);
-		Enemies.Add (1);
-		Enemies.Add (2);
-
+        int enemyCount = 0;
+        foreach (RoomEnemy e in enemies)
+        {
+            enemyCount = e.DetermineCount();
+            for(int i = 0; i < enemyCount; ++i)
+            {
+                Enemies.Add(e.EnemyNo * eventDifficulty);//?
+            }
+        }
+    }
 //		switch (eventType) {
 //		case 0:
 //			eventName = "Fire";
@@ -121,5 +136,35 @@ public class Events : MonoBehaviour {
 //		case 4: 
 //			break;
 //		}
-	}
+//	}
+}
+
+public class RoomEnemy
+{
+    public int EnemyNo { get; set; }
+    public int Count { get; set; }
+    public int Variant { get; set; }
+
+    /// <summary>
+    /// Used to set the amount of one enemy included in an event with random variants + or -
+    /// </summary>
+    /// <param name="EnemyNo"></param>
+    /// <param name="Count"></param>
+    /// <param name="Variant"></param>
+    public RoomEnemy(int EnemyNo, int Count, int Variant)
+    {
+        this.EnemyNo = EnemyNo;
+        this.Count = Count;
+        this.Variant = Variant;
+    }
+
+    public int DetermineCount()
+    {
+        int floor = Count - Variant;
+        int ceiling = Count + Variant;
+
+        int finalCount = Random.Range(floor, ceiling);
+
+        return finalCount;
+    }
 }

@@ -2035,7 +2035,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 287913223}
   m_HandleRect: {fileID: 287913222}
   m_Direction: 0
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -4079,6 +4079,7 @@ MonoBehaviour:
   playerShieldBar: {fileID: 0}
   shipResources: {fileID: 0}
   DialogueBox: {fileID: 132497283}
+  appPath: 
 --- !u!4 &1965047332
 Transform:
   m_ObjectHideFlags: 0
@@ -4121,7 +4122,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: -6.7}
+  m_AnchoredPosition: {x: 0.000061035156, y: -6.7}
   m_SizeDelta: {x: 0, y: 293.3}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2032013961
