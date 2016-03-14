@@ -41,6 +41,7 @@ public class StateMachine : MonoBehaviour {
 
     public GameObject DialogueBox;
     public Database db;
+	public string appPath;
 
     // Use this for initialization
     void Start () {
@@ -194,6 +195,7 @@ public class StateMachine : MonoBehaviour {
     }
 
 	void Setup() {
+		appPath = Application.dataPath;
         db = new Database(Application.dataPath);
         PreviousPlayers = new List<PlayerInfo>();
 
@@ -283,7 +285,6 @@ public class StateMachine : MonoBehaviour {
 
     public void FireEvent(Events myEvent)
     {
-
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
 
         canvasScript.StartEvent(myEvent);
@@ -292,6 +293,7 @@ public class StateMachine : MonoBehaviour {
     //After user has clicked to confirm the event
     public void StartEvent()
     {
-        DialogueBox.SetActive(false);
+        MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
+        canvasScript.Close();
     }
 }

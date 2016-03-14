@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Room
 {
@@ -14,8 +15,14 @@ public class Room
 
     public List<RoomComponent> componentList { get; set; }
     public int dimension = 7;
+    public int maxDimension = 19;
 
     public GameObject roomGameObject { get; set; }
+
+    // -1 = Walls, Dead Zones
+    //  0 = Empty Space
+
+    public int[,] roomLayout;
 
 
 
@@ -24,6 +31,7 @@ public class Room
 
     public bool draggingState { get; set; }
     
+
 
     public List<RoomObject> objectList { get; set; }   
     public List<Door> roomDoorList { get; set; }
@@ -65,9 +73,7 @@ public class Room
 
         componentList = new List<RoomComponent>();
         AssignComponents();
-
         
-
         objectList = new List<RoomObject>();
 
         roomDoorList = new List<Door>();
@@ -82,18 +88,27 @@ public class Room
         if (roomShape == 1) //1
         {
             numComponents = 1;
+            roomLayout = new int[dimension, dimension];
         }
         else if (roomShape == 2 || roomShape == 3) //2
         {
             numComponents = 2;
+            roomLayout = new int[(2 * dimension) - 1, (2 * dimension) - 1];
         }
-        else if (roomShape == 4 || roomShape == 5 || roomShape == 6 || roomShape == 7 || roomShape == 8 || roomShape == 9) //3
+        else if (roomShape == 4 || roomShape == 5) //3
         {
             numComponents = 3;
+            roomLayout = new int[(3 * dimension) - 2, (3 * dimension) - 2];
+        }
+        else if (roomShape == 6 || roomShape == 7 || roomShape == 8 || roomShape == 9) //3
+        {
+            numComponents = 3;
+            roomLayout = new int[(2 * dimension) - 1, (2 * dimension) - 1];
         }
         else if (roomShape == 10) //4
         {
             numComponents = 4;
+            roomLayout = new int[(2 * dimension) - 1, (2 * dimension) - 1];
         }
         
         for (int i = 0; i < numComponents; i++)
@@ -118,29 +133,29 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
                         }
                     }
                 }               
 
                 break;
-#endregion 
+            #endregion 
             #region 1x2
             //Type: 1x2 
             //# of Component(s): 2
@@ -157,28 +172,28 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + (dimension - 1)] = -1;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
+                            roomLayout[i, j] = 1;
+                            roomLayout[i, j + (dimension - 1)] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
+                            roomLayout[i, j] = 1;
+                            roomLayout[i, j + (dimension - 1)] = 0;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;                            
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + (dimension - 1)] = -1;                            
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + (dimension - 1)] = 0;
                         }
                     }
                 }               
@@ -201,28 +216,28 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
                         }
                     }
                 }
@@ -247,33 +262,33 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i, j + (2 * (dimension - 1))] = -1;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i, j + (2 * (dimension - 1))] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i, j + (2 * (dimension - 1))] = 0;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i, j + (2 * (dimension - 1))] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i, j + (2 * (dimension - 1))] = 0;
                         }
                     }
                 }
@@ -299,33 +314,33 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + (2 * (dimension - 1)), j] = 0;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + (2 * (dimension - 1)), j] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
+                            roomLayout[i + (2 * (dimension - 1)), j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
+                            roomLayout[i + (2 * (dimension - 1)), j] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + (2 * (dimension - 1)), j] = 0;
                         }
                     }
                 }
@@ -350,33 +365,33 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
                         }
                     }
                 }
@@ -402,33 +417,33 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                     }
                 }
@@ -454,33 +469,33 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                     }
                 }
@@ -492,13 +507,13 @@ public class Room
             //# of Component(s): 3
             case 9:
                 componentList[0].posX = posX;
-                componentList[0].posY = posY;
+                componentList[0].posY = posY + dimension - 1;
 
                 componentList[1].posX = posX + dimension - 1;
-                componentList[1].posY = posY;
+                componentList[1].posY = posY + dimension - 1;
 
                 componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY - dimension - 1;
+                componentList[2].posY = posY;
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -506,33 +521,33 @@ public class Room
                     {
                         if (i == 0) //Make left walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
                         }
                     }
                 }
@@ -560,40 +575,40 @@ public class Room
                     for (int j = 0; j < dimension; j++)
                     {
                         if (i == 0) //Make left walls (ROWS)
-                        {                            
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 0;
-                            componentList[3].layout[i, j] = 0;
+                        {
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
-                            componentList[3].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
 
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 1;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 1;
-                            componentList[3].layout[i, j] = 0;
+                            roomLayout[i, j] = -1;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = -1;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                         else if (i == (dimension - 1)) //Make top walls (COLS)
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 1;
-                            componentList[2].layout[i, j] = 0;
-                            componentList[3].layout[i, j] = 1;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = -1;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
                         else //Inside is blank
                         {
-                            componentList[0].layout[i, j] = 0;
-                            componentList[1].layout[i, j] = 0;
-                            componentList[2].layout[i, j] = 0;
-                            componentList[3].layout[i, j] = 0;
+                            roomLayout[i, j] = 0;
+                            roomLayout[i, j + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, j] = 0;
+                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
                     }
                 }
