@@ -10,6 +10,7 @@ public class Door : MonoBehaviour
 
     public int doorID { get; private set; }
 
+    //Technically don't need since script is attached to gameObject 
     public GameObject doorGameObject { get; set; }
 
     public int doorGameObjectRoomID { get; set; }
@@ -39,18 +40,22 @@ public class Door : MonoBehaviour
         doorstate = newDoorState;
     }
 
+    public void Initialize(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, bool newDoorState)
+    {
+        doorID = newDoorID;
+        roomID_1 = newRoomID_1;
+        roomID_2 = newRoomID_2;
+        posX = newPosX;
+        posY = newPosY;
+        doorstate = newDoorState;
+
+    }
+
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "Player")
         {
-            StateMachine.instance.FireEvent(Generate.instance.roomList[doorGameObjectRoomID].roomEvent);
+            StateMachine.instance.FireEvent(Generate.instance.GetRoomList()[gameObject.GetComponent<Door>().roomID_1].roomEvent);
         }
     }
-
-    public void RoomIDAssign(int doorRoomID)
-    {
-        this.doorGameObjectRoomID = doorRoomID;
-
-    }
-
 }

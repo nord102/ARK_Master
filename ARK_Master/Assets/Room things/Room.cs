@@ -5,43 +5,27 @@ using System;
 
 public class Room
 {
+    /// <To-Do>
+    /// Boundary Room Checking
+    /// Highlight Room Based on Boundaries
+    /// Fix Images?
+    /// </To-Do>>
+
+    //Room ID
     public int roomID { get; private set; }
 
-    public int roomShape { get; set; } 
-
-    public int roomType { get; set; } //Medic Bay, Storage Bay
-
-    public Events roomEvent { get; set; }
-
-    public List<RoomComponent> componentList { get; set; }
-    public int dimension = 7;
-    public int maxDimension = 19;
-
-    public GameObject roomGameObject { get; set; }
-
-    // -1 = Walls, Dead Zones
-    //  0 = Empty Space
-
-    public int[,] roomLayout;
-
-
-
-
-    public string roomState { get; set; }
-
-    public bool draggingState { get; set; }
-    
-
-
-    public List<RoomObject> objectList { get; set; }   
-    public List<Door> roomDoorList { get; set; }
-
+    //X,Y coordinates
     public int posX { get; set; }
     public int posY { get; set; }
-   
-    /// <summary>
-    /// Room Types/#Components
-    /// 
+      
+    /// <Room Layout Array Definitions>
+    /// -2 = Doors
+    /// -1 = Walls, Dead Zones
+    ///  0 = Empty Space
+    /// </Room Layout Array Definitions>
+    public int[,] roomLayout;
+       
+    /// <Room Shapes/#Components>
     /// 1 - 1x1 - 1
     /// 2 - 1x2 - 2
     /// 3 - 2x1 - 2
@@ -52,13 +36,44 @@ public class Room
     /// 8 - L-shape (Vertical Flip) - 3
     /// 9 - L-shape (Horizontal - Vertical Flip) - 3
     /// 10 - 2x2
-    /// </summary>
+    /// </Room Types/#Components>
+    public int roomShape { get; set; }
 
+    //Room GameObject
+    public GameObject roomGameObject { get; set; }
+
+    //Dragging State (used for placing rooms)
+    public bool draggingState { get; set; }
+
+    /// <Room Types>
+    /// Medic Bay
+    /// Storage Bay
+    /// Engine Room?
+    /// </summary>
+    public int roomType { get; set; }
+
+    //Room Event
+    public Events roomEvent { get; set; }
+
+    //Room Dimension-Related variables
+    public int dimension = 7;
+    public int maxDimension = 19;
+
+    //Room State?
+    //NEED TO DEFINE THIS
+    public string roomState { get; set; }
+
+    public List<RoomComponent> componentList { get; set; }
+    public List<RoomObject> objectList { get; set; }   
+    public List<Door> roomDoorList { get; set; }
+
+    //Base Constructor
     public Room()
     {
 
     }
 
+    //Constructor
     public Room(int newRoomID, int newRoomShape, int newRoomType, GameObject newRoomGameObject, string newRoomState, int newPosX, int newPosY)
     {
         roomID = newRoomID;
@@ -75,7 +90,6 @@ public class Room
         AssignComponents();
         
         objectList = new List<RoomObject>();
-
         roomDoorList = new List<Door>();
     }
 
@@ -111,6 +125,7 @@ public class Room
             roomLayout = new int[(2 * dimension) - 1, (2 * dimension) - 1];
         }
         
+        //Assign Room Components and add to the component list
         for (int i = 0; i < numComponents; i++)
         {
             RoomComponent component = new RoomComponent(i);

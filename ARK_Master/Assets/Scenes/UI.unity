@@ -2035,7 +2035,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 287913223}
   m_HandleRect: {fileID: 287913222}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2602,7 +2602,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22483942, guid: 3d4f4d6341efd164aad892412e5002e0, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 22483942, guid: 3d4f4d6341efd164aad892412e5002e0, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -3060,7 +3060,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
 --- !u!1 &1524510855
 GameObject:
   m_ObjectHideFlags: 0
@@ -3685,17 +3685,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 128482, guid: cc714434bd1128844bf58676a1d8fcaf, type: 2}
-  startRoom: {fileID: 117440, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
+  startRoom: {fileID: 118366, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
   room_1x1: {fileID: 194214, guid: 5bd5e74cea94418439d3cf72d1ac5d65, type: 2}
-  room_1x2: {fileID: 101522, guid: fdab3b9e9de15e641b798caef2b407f5, type: 2}
-  room_2x1: {fileID: 0}
+  room_1x2: {fileID: 170464, guid: fdab3b9e9de15e641b798caef2b407f5, type: 2}
+  room_2x1: {fileID: 133112, guid: 733647c2697ff10459983a4047f6f7ac, type: 2}
   room_1x3: {fileID: 114260, guid: 1350a9e03a96423498a1d1e3b2c43a4e, type: 2}
-  room_3x1: {fileID: 0}
-  room_LShape_Normal: {fileID: 101020, guid: 247613ef69004b347a805af1f36cd47f, type: 2}
-  room_LShape_HFlip: {fileID: 0}
-  room_LShape_VFlip: {fileID: 0}
-  room_LShape_HVFlip: {fileID: 0}
-  room_2x2: {fileID: 117440, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
+  room_3x1: {fileID: 114882, guid: 942ee5f05a8236149918f4442f4163dd, type: 2}
+  room_LShape_Normal: {fileID: 174466, guid: 247613ef69004b347a805af1f36cd47f, type: 2}
+  room_LShape_HFlip: {fileID: 164158, guid: a858edd2b0d7f9749bd0f03ada6d87c9, type: 2}
+  room_LShape_VFlip: {fileID: 175724, guid: 731aa990732e9934fab8cfc974cea3b3, type: 2}
+  room_LShape_HVFlip: {fileID: 150692, guid: 61dc9789134e789499d8c4f50a71380a, type: 2}
+  room_2x2: {fileID: 118366, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
   object1: {fileID: 0}
   object2: {fileID: 0}
   object3: {fileID: 0}
@@ -4122,7 +4122,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: -6.7}
+  m_AnchoredPosition: {x: -0.000030517578, y: -6.7}
   m_SizeDelta: {x: 0, y: 293.3}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2032013961

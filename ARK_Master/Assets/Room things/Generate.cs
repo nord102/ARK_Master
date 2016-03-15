@@ -38,8 +38,8 @@ public class Generate : MonoBehaviour
     #endregion
 
     #region Lists
-    public List<Room> roomList = new List<Room>();
-    public List<RoomComponent> roomComponentList = new List<RoomComponent>();
+    private List<Room> roomList = new List<Room>();
+    private List<RoomComponent> roomComponentList = new List<RoomComponent>();
     #endregion
 
     //--
@@ -67,6 +67,20 @@ public class Generate : MonoBehaviour
             Destroy(gameObject);
     }
 
+    
+    #region ListAccessors    
+    //Get the RoomList
+    public List<Room> GetRoomList()
+    {
+        return roomList;
+    }
+
+    public List<RoomComponent> GetRoomComponentList()
+    {
+        return roomComponentList;
+    }
+
+    #endregion
 
     void PlaceStartRoom()
     {
@@ -85,12 +99,10 @@ public class Generate : MonoBehaviour
     public void checkForDoors()
     {  
         bool doorMade = false;
-
-        //get the room that was just placed 
+        
+        //Room that was most recently placed
         Room recentRoom = roomList[roomList.Count - 1];
-
-
-
+        
         Door newDoor = new Door();
 
         //Check all of the recent Room Components for neighbours       
@@ -100,48 +112,91 @@ public class Generate : MonoBehaviour
             {
                 //X+ Y (RIGHT)
                 if (((recentRoomCom.posX + (recentRoom.dimension - 1) == globalRoomCom.posX) && (recentRoomCom.posY == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
-                {                    
-                    //Make Door (X+,Y+1/2)
-                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
-                        (recentRoomCom.posX + recentRoom.dimension-1), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
+                { 
+                    /// <summary>
+                    /// Make Door - Coordinates at (X+,Y+1/2)
+                    /// </summary>
 
-                    newDoor = tempDoor;
-                    doorMade = true; 
+                    //Make Door GameObject
+                    cloneDoor = Instantiate(door, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
+
+                    //Get the Door Script Component of the Door GameObject
+                    newDoor = cloneDoor.GetComponent<Door>();
+
+                    //Initialize newDoor with variables
+                    newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                        (recentRoomCom.posX + recentRoom.dimension - 1), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
+
+                    //Set Door GameObject Position
+                    cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);     
+                    doorMade = true;                     
                 }
                 //X- Y (LEFT)
                 else if (((recentRoomCom.posX - (recentRoom.dimension - 1) == globalRoomCom.posX) && (recentRoomCom.posY == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 {
-                    //Make Door (X,Y+1/2)
-                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                    /// <summary>
+                    /// Make Door - Coordinates at (X,Y+1/2)
+                    /// </summary>
+                    
+                    //Make Door GameObject
+                    cloneDoor = Instantiate(door, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
+
+                    //Get the Door Script Component of the Door GameObject
+                    newDoor = cloneDoor.GetComponent<Door>();
+
+                    //Initialize newDoor with variables
+                    newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
                         (recentRoomCom.posX), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
 
-                    newDoor = tempDoor;
-                    doorMade = true;                     
+                    //Set Door GameObject Position
+                    cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
+                    doorMade = true;                    
                 }
                 //X Y+ (UP)
                 else if (((recentRoomCom.posX == globalRoomCom.posX) && (recentRoomCom.posY + (recentRoom.dimension - 1) == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 {
-                    //Make Door (X+1/2,Y+)
-                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                    /// <summary>
+                    /// Make Door - Coordinates at (X+1/2,Y+)
+                    /// </summary>
+
+                    //Make Door GameObject
+                    cloneDoor = Instantiate(door, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
+
+                    //Get the Door Script Component of the Door GameObject
+                    newDoor = cloneDoor.GetComponent<Door>();
+
+                    //Initialize newDoor with variables
+                    newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
                         (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), (recentRoomCom.posY + (recentRoom.dimension - 1)), true);
 
-                    newDoor = tempDoor;
-                    doorMade = true;
+                    //Set Door GameObject Position
+                    cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
+                    doorMade = true;        
                 }
                 //X Y- (DOWN)
                 else if (((recentRoomCom.posX == globalRoomCom.posX) && (recentRoomCom.posY - (recentRoom.dimension - 1) == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 {
-                    //Make Door (X+1/2,Y)
-                    Door tempDoor = new Door(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
+                    /// <summary>
+                    /// Make Door - Coordinates at (X+1/2,Y)
+                    /// </summary>
+
+                    //Make Door GameObject
+                    cloneDoor = Instantiate(door, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
+
+                    //Get the Door Script Component of the Door GameObject
+                    newDoor = cloneDoor.GetComponent<Door>();
+
+                    //Initialize newDoor with variables
+                    newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
                         (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), recentRoomCom.posY, true);
 
-                    newDoor = tempDoor;
-                    doorMade = true;
+                    //Set Door GameObject Position
+                    cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
+                    doorMade = true;  
                 }
 
                 if (doorMade)
                 {
-
                     doorMade = false;
 
                     //Add to Recent room door list
@@ -160,10 +215,6 @@ public class Generate : MonoBehaviour
                             //Destroy and replace smallerchild
                             if (smallerChild.transform.position.x == newDoor.posX && smallerChild.transform.position.y == newDoor.posY)
                             {
-                                //Create Door GameObject 
-                                cloneDoor = Instantiate(door, new Vector3(smallerChild.transform.position.x, smallerChild.transform.position.y, 0f), Quaternion.identity) as GameObject;
-                                newDoor.doorGameObject = cloneDoor;
-
                                 //Hide Wall where Door is going
                                 smallerChild.gameObject.SetActive(false);
                             }
@@ -184,10 +235,9 @@ public class Generate : MonoBehaviour
                         }
                     }
 
-                    newDoor.doorGameObject.SendMessage("RoomIDAssign", recentRoom.roomID);
-
-                    //Should Add the Door to the Component Layout?
-                    //recentRoomCom.layout[newDoor.posX, newDoor.posY] = 2;
+                    //Add the Door to the Room Layout
+                    //NEED TO FIX
+                    //recentRoom.roomLayout[newDoor.posX, newDoor.posY] = -2;
                 }
             }
         }
@@ -301,7 +351,4 @@ public class Generate : MonoBehaviour
     {
         
     }
-	
-    
-
 }
