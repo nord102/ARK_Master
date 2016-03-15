@@ -114,23 +114,18 @@ public class Dragging : MonoBehaviour
         {
             draggingMode = false;
 
-            Room newRoom = new Room(Generate.instance.roomList.Count, globalRoomShape, 0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+            Room newRoom = new Room(Generate.instance.GetRoomList().Count, globalRoomShape, 0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
 
-            Generate.instance.roomList.Add(newRoom);
+            Generate.instance.GetRoomList().Add(newRoom);
 
             foreach (RoomComponent roomCom in newRoom.componentList)
             {
-                Generate.instance.roomComponentList.Add(roomCom);
+                Generate.instance.GetRoomComponentList().Add(roomCom);
             }
-
            
             Generate.instance.checkForDoors();
 
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0);
-
-           
-            
-
         }
 
 	}
