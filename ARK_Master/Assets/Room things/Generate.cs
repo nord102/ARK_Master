@@ -250,9 +250,8 @@ public class Generate : MonoBehaviour
 
     }
     
-    //NEED TO ADD FUNCTIONALITY FOR DIFFERENT ROOMS (MAKE THIS MODULAR)    
 
-    //Add Parameter for the RoomShape (make like an if statement for which room to clone)
+    //Possibly fix each room's starting World Position
     public GameObject GenRoom(int roomShape)
     {
         GameObject generatedRoom = new GameObject();
