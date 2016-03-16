@@ -126,20 +126,6 @@ public class Dragging : MonoBehaviour
             Generate.instance.checkForDoors();
 
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(newRoom.roomType);
-            newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
-
-            int[,] alteredTileArray = newRoom.roomLayout;
-            Debug.Log(alteredTileArray.Length);
-            string t = "";
-            for (int i = 0; i < 7; ++i)
-            {
-                for (int j = 0; j < 7; ++j)
-                {
-                    t += alteredTileArray[i, j] + " ";
-                }
-                t += "\n";
-            }
-            Debug.Log(t);
         }
 
 	}
