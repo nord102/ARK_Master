@@ -88,7 +88,7 @@ public class MyCanvas : MonoBehaviour
     private void StartEvent()
     {
         EmptyRewards();
-        //MyImage.GetComponent<Image>().sprite = MyEvent.eventImage.sprite;
+        MyImage.GetComponent<Image>().sprite = MyEvent.eventImage;
         txtTitle.text = MyEvent.eventName;
         txtDescription.text = MyEvent.eventText;
 
