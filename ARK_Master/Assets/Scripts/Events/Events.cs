@@ -7,7 +7,7 @@ public class Events
 {
 
 	public string eventName;
-	public Image eventImage;
+	public Sprite eventImage;
 	public string eventText;
 	public int eventDifficulty;
 	public List<Rewards> SuccessRewards = new List<Rewards> ();
@@ -49,15 +49,20 @@ public class Events
 
         switch (eventType)
         {
-            case 0:
-                eventName = "Fire";
+            case 0: //Fire Event
+                eventName = "Fire!";
                 eventText = "The room, The room, The room is on fire!";
-                eventImage = (Image)Resources.Load("Images/flames");
+                eventImage = Resources.Load<Sprite>("flames");
                 
                 enemies.Add(new RoomEnemy(0, 2, 1));
                 enemies.Add(new RoomEnemy(1, 2, 1));
                 enemies.Add(new RoomEnemy(2, 1, 0));
 
+                break;
+            case 1: //Breach Event
+                eventName = "Hull Breach!";
+                eventText = "The hull of the ship has been breached! Weld the breaches before the room collapses!";
+                eventImage = Resources.Load<Sprite>("breach");
                 break;
         }
 
