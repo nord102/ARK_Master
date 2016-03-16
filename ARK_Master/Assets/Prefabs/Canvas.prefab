@@ -222,16 +222,8 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
   m_IsActive: 1
 --- !u!1 &184784
-=======
->>>>>>> refs/remotes/origin/master
-  m_IsActive: 0
---- !u!1 &179876
->>>>>>> JBranch
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -266,7 +258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &199356
 GameObject:
   m_ObjectHideFlags: 0
