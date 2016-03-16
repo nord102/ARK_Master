@@ -70,3 +70,26 @@ C:\Users\nord102\Documents\GitHub\ARK_Master\ARK_Master\ARK_Master\Temp\bin\Debu
 C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\Temp\bin\Debug\Mono.Data.Sqlite.dll
 C:\Users\Aaron\Desktop\Ark Sinister\ARK_Master\ARK_Master\Temp\bin\Debug\System.Data.dll
 >>>>>>> refs/remotes/origin/master
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Assembly-CSharp.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Assembly-CSharp.pdb
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Mono.Data.Sqlite.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\System.Data.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEditor.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.Networking.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.UI.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Mono.Cecil.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Unity.SerializationLogic.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Unity.DataContract.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Unity.UNetWeaver.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Unity.CecilTools.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Mono.Cecil.Pdb.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\Mono.Cecil.Mdb.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.xml
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEditor.xml
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.UI.xml
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\Temp\bin\Debug\UnityEngine.Networking.xml
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\obj\Debug\Assembly-CSharp.dll
+C:\Users\Aaron\Desktop\ARK_Master\ARK_Master\obj\Debug\Assembly-CSharp.pdb

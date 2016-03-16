@@ -6,8 +6,8 @@ public static class EventSystem{
 
 	public static Events GenerateRoomEvent(int roomType)
 	{
-		//All rooms have default events that could happen (Fire, Breach, Enemy)
-		List<int> availableEvents = new List<int> (){0,1,2};
+		//All rooms have default events that could happen (0:Fire, 1:Breach, 2:Enemy)
+		List<int> availableEvents = new List<int> (){0,1}; //+ 2
 
 		//Add event type 3 (Encounter previous character) if there are dead previous characters, and other conditions are met?
 		if (StateMachine.instance.PreviousPlayers.Count != 0) { // and anything else? time passed? events solved?
@@ -16,17 +16,19 @@ public static class EventSystem{
 
 		//Add extra event types based on room type
 		switch (roomType) {
-		case 0: //Med Bay
-			availableEvents.Add(4);
+		case 0: //Standard Room type, don't add anything
 			break;
-		case 1: //Engineering
-			availableEvents.Add(5);
+        case 1: //Med Bay
+            availableEvents.Add(4); 
 			break;
+        case 2: //Engineering
+            availableEvents.Add(5);
+            break;
 		}
 
 		//Pick a random index number, that's the type of event
-		//return new Events (availableEvents[Random.Range (0, availableEvents.Count - 1)]);
-        return new Events(0);
+		return new Events (availableEvents[Random.Range (0, availableEvents.Count)]);
+        //return new Events(0);
 
 		//For Testing only - Generate only the fire event
 		//return new Events (0);

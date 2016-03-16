@@ -17,10 +17,13 @@ public class StateMachine : MonoBehaviour {
 	private bool MainMenuOpen = false;
 	private bool MiniMapOpen = false;
     private bool BuildingMenuOpen = false;
+    public bool PlayerControl = false;
 
     public GameObject Module1;
     public GameObject Module2;
     public GameObject Module3;
+
+    public Camera mainCamera;
 
     public GameObject BuildingMenu;
 
@@ -195,6 +198,7 @@ public class StateMachine : MonoBehaviour {
     }
 
 	void Setup() {
+        BuildingMenu.SetActive(false);
 		appPath = Application.dataPath;
         db = new Database(Application.dataPath);
         PreviousPlayers = new List<PlayerInfo>();
@@ -208,6 +212,8 @@ public class StateMachine : MonoBehaviour {
         UIModules2.Add(new object[] { Module1, false });
         UIModules2.Add(new object[] { Module2, false });
         UIModules2.Add(new object[] { Module3, false });
+
+        PlayerControl = true;
 
 		//Get Player to input their name
 		//pInfo.PlayerName = GetPlayerName();
@@ -226,7 +232,7 @@ public class StateMachine : MonoBehaviour {
 			if (InventoryOpen)
 			{
 				//ShowInventory();
-                sInfo.SetResources(10);
+                //sInfo.SetResources(10);
 			}
 			else
 			{
@@ -239,10 +245,19 @@ public class StateMachine : MonoBehaviour {
 			if (CharacterSheetOpen)
 			{
 				//ShowCharacterSheet();
+                BuildingMenuOpen = true;
+                PlayerControl = false;
+                BuildingMenu.SetActive(true);
+                mainCamera.orthographicSize = 18;
+                
 			}
 			else
 			{
 				//HideCharacterSheet();
+                BuildingMenuOpen = false;
+                PlayerControl = true;
+                BuildingMenu.SetActive(false);
+                mainCamera.orthographicSize = 5;
 			}
 		}
 		else if (Input.GetKeyDown(KeyCode.M)) {
@@ -285,6 +300,7 @@ public class StateMachine : MonoBehaviour {
 
     public void FireEvent(Events myEvent)
     {
+        PlayerControl = false;
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
 
         canvasScript.StartEvent(myEvent);
@@ -295,5 +311,6 @@ public class StateMachine : MonoBehaviour {
     {
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
         canvasScript.Close();
+        PlayerControl = true;
     }
 }
