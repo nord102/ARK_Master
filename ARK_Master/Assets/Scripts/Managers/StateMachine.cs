@@ -312,5 +312,33 @@ public class StateMachine : MonoBehaviour {
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
         canvasScript.Close();
         PlayerControl = true;
+
+
+        int playerPosX = (int)Player.instance.gameObject.transform.position.x;
+        int playerPosY = (int)Player.instance.gameObject.transform.position.y;
+        int doorPosX;
+        int doorPosY;
+
+        //other side of door
+        foreach(GameObject evenDoorGameObject in Generate.instance.GetDoorGameObjectList())
+        {
+            Door door = evenDoorGameObject.GetComponent<Door>();
+
+            if (door == Generate.instance.currentDoor)
+            {
+                doorPosX = door.posX;
+                doorPosY = door.posY;
+                break;
+            }
+        }
+
+        //Right
+        //if(playerPosX > doorPosX && playerPosY ==  
+
+
+
+        
+
+
     }
 }
