@@ -34,12 +34,12 @@ public static class EventSystem{
 		//return new Events (0);
 	}
 
-	public static bool DisplayEventScreen(Events thisEvent)
+	public static void DisplayEventTimer(Events thisEvent)
 	{
-		//Display the event screen - Get user OK or Cancel
-		bool returnValue = true;
+		//Display the event Timer panel and populate with event rewards
+        //StateMachine.instance.EventDetails.SetActive(true);
 
-		return returnValue;
+
 	}
 
 	//This belongs in the RoomEntering Code
@@ -51,4 +51,5 @@ public static class EventSystem{
 		//Determine object and location of rewards
 		//SpawnRewards(event.SuccessRewards);
 	}
+
 }
