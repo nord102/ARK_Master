@@ -45,10 +45,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-//        if (!StateMachine.instance.PlayerControl)
-//        {
-//            return;
-//        }
+        if (!StateMachine.instance.PlayerControl)
+        {
+            return;
+        }
 
         float horizontal = 0;
         float vertical = 0;
