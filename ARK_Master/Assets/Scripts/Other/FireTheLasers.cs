@@ -23,7 +23,7 @@ public class FireTheLasers : MonoBehaviour
     void Awake()
     {
 		rb = GetComponent<Rigidbody2D>();
-        Debug.Log(this.transform.position);
+       // Debug.Log(this.transform.position);
         start = this.transform.position;
 
     }
@@ -33,7 +33,7 @@ public class FireTheLasers : MonoBehaviour
     ///
     void OnTriggerEnter(Collider col)
     {
-        Destroy(this);
+        Destroy(this.gameObject);
 
         switch (col.name)
         {
