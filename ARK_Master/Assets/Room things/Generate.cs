@@ -38,7 +38,11 @@ public class Generate : MonoBehaviour
     #endregion
 
     #region Lists
+    private List<GameObject> roomGameObjectList = new List<GameObject>();
+    //Need to get rid of the roomList    
     private List<Room> roomList = new List<Room>();
+
+
     private List<RoomComponent> roomComponentList = new List<RoomComponent>();
     #endregion
 
@@ -68,11 +72,10 @@ public class Generate : MonoBehaviour
     }
 
     
-    #region ListAccessors    
-    //Get the RoomList
-    public List<Room> GetRoomList()
+    #region List Accessors    
+    public List<GameObject> GetRoomGameObjectList()
     {
-        return roomList;
+        return roomGameObjectList;
     }
 
     public List<RoomComponent> GetRoomComponentList()
@@ -86,14 +89,30 @@ public class Generate : MonoBehaviour
     {
         cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
 
-        Room newRoom = new Room(roomList.Count, 10,0, cloneStartRoom, "Explored", 0, 0);
-        newRoom.draggingState = false;
-        roomList.Add(newRoom);
+        roomGameObjectList.Add(cloneStartRoom);
 
+        Room newRoom = cloneStartRoom.GetComponent<Room>();
+
+        newRoom.Initialize(roomGameObjectList.Count, 10, 0, "Explored", 0, 0);
+        
+        newRoom.draggingState = false;
+        
+        
+        
         foreach (RoomComponent roomCom in newRoom.componentList)
         {
             roomComponentList.Add(roomCom);
         }
+
+        
+        //Room newRoom = new Room(roomList.Count, 10,0, cloneStartRoom, "Explored", 0, 0);
+        //newRoom.draggingState = false;
+        //roomList.Add(newRoom);
+
+        //foreach (RoomComponent roomCom in newRoom.componentList)
+        //{
+        //    roomComponentList.Add(roomCom);
+        //}
     }
 
     public void checkForDoors()
@@ -101,16 +120,20 @@ public class Generate : MonoBehaviour
         bool doorMade = false;
         
         //Room that was most recently placed
-        Room recentRoom = roomList[roomList.Count - 1];
-        
+        //Room recentRoom = roomList[roomList.Count - 1];
+        GameObject recentRoomGameObject = roomGameObjectList[roomGameObjectList.Count - 1];
+        Room recentRoom = recentRoomGameObject.GetComponent<Room>();
+
         Door newDoor = new Door();
+
+        
 
         //Check all of the recent Room Components for neighbours       
         foreach (RoomComponent recentRoomCom in recentRoom.componentList)
-        {            
+        {
             foreach (RoomComponent globalRoomCom in roomComponentList)
             {
-                //X+ Y (RIGHT)
+                #region (X+, Y) (RIGHT)
                 if (((recentRoomCom.posX + (recentRoom.dimension - 1) == globalRoomCom.posX) && (recentRoomCom.posY == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 { 
                     /// <summary>
@@ -129,9 +152,10 @@ public class Generate : MonoBehaviour
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);     
-                    doorMade = true;                     
+                    doorMade = true;
                 }
-                //X- Y (LEFT)
+                #endregion
+                #region (X-, Y) (LEFT)
                 else if (((recentRoomCom.posX - (recentRoom.dimension - 1) == globalRoomCom.posX) && (recentRoomCom.posY == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 {
                     /// <summary>
@@ -152,7 +176,8 @@ public class Generate : MonoBehaviour
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
                     doorMade = true;                    
                 }
-                //X Y+ (UP)
+                #endregion 
+                #region (X, Y+) (UP)
                 else if (((recentRoomCom.posX == globalRoomCom.posX) && (recentRoomCom.posY + (recentRoom.dimension - 1) == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 {
                     /// <summary>
@@ -171,9 +196,10 @@ public class Generate : MonoBehaviour
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
-                    doorMade = true;        
+                    doorMade = true;
                 }
-                //X Y- (DOWN)
+                #endregion
+                #region (X, Y-) (DOWN)
                 else if (((recentRoomCom.posX == globalRoomCom.posX) && (recentRoomCom.posY - (recentRoom.dimension - 1) == globalRoomCom.posY)) && (recentRoomCom.roomID != globalRoomCom.roomID))
                 {
                     /// <summary>
@@ -192,8 +218,11 @@ public class Generate : MonoBehaviour
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
-                    doorMade = true;  
+                    doorMade = true;
                 }
+                #endregion
+
+                
 
                 if (doorMade)
                 {
@@ -203,12 +232,15 @@ public class Generate : MonoBehaviour
                     recentRoom.roomDoorList.Add(newDoor);
 
                     //Add to Connected room door list
-                    Room connectingRoom = roomList[globalRoomCom.roomID];
-                    connectingRoom.roomDoorList.Add(newDoor);
+                    //Room connectingRoom = roomList[globalRoomCom.roomID];
+                    //connectingRoom.roomDoorList.Add(newDoor);
+                    GameObject connectingRoomGameObject = roomGameObjectList[globalRoomCom.roomID];
+                    Room connectingRoom = connectingRoomGameObject.GetComponent<Room>();
+                    roomGameObjectList.Add(connectingRoomGameObject);
                     
                     //Create Door
                     //Take out the Wall on the Dragged Room
-                    foreach (Transform child in recentRoom.roomGameObject.transform)
+                    foreach (Transform child in recentRoomGameObject.transform)
                     {
                         foreach (Transform smallerChild in child.transform)
                         {
@@ -222,7 +254,7 @@ public class Generate : MonoBehaviour
                     }
 
                     //Take out Wall on the Connected Room
-                    foreach (Transform child in connectingRoom.roomGameObject.transform)
+                    foreach (Transform child in connectingRoomGameObject.transform)
                     {
                         foreach (Transform smallerChild in child.transform)
                         {
@@ -243,7 +275,7 @@ public class Generate : MonoBehaviour
         }
     }
 
-
+    //EMPTY
     void PopulateRoom(int roomID)
     {
 

@@ -59,7 +59,8 @@ public class Door : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            StateMachine.instance.FireEvent(Generate.instance.GetRoomList()[gameObject.GetComponent<Door>().roomID_1].roomEvent);
+            Events newRoomEvent = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_1].GetComponent<Room>().roomEvent;
+            StateMachine.instance.FireEvent(newRoomEvent);   
         }
     }
 }
