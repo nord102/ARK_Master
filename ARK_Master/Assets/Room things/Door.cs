@@ -70,7 +70,7 @@ public class Door : MonoBehaviour
             //Set Door Collision Flag
             Generate.instance.currentDoor = gameObject.GetComponent<Door>();
 
-            Events newRoomEvent = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_1].GetComponent<Room>().roomEvent;
+            Events newRoomEvent = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_1 - 1].GetComponent<Room>().roomEvent;
             StateMachine.instance.FireEvent(newRoomEvent);   
         }
     }
