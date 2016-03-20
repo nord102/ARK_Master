@@ -46,6 +46,8 @@ public class StateMachine : MonoBehaviour {
     public Database db;
 	public string appPath;
 
+    public Door eventDoor;
+
     // Use this for initialization
     void Start () {
 		if (instance == null)
@@ -312,5 +314,8 @@ public class StateMachine : MonoBehaviour {
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
         canvasScript.Close();
         PlayerControl = true;
+
+        //other side of door
+        //Player.instance.gameObject.transform.position = 
     }
 }
