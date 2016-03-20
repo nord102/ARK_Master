@@ -671,7 +671,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1693632304}
-        m_MethodName: StartDrag
+        m_MethodName: StartDragging
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1055,7 +1055,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1693632304}
-        m_MethodName: StartDrag
+        m_MethodName: StartDragging
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1226,7 +1226,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1693632304}
-        m_MethodName: StartDrag
+        m_MethodName: StartDragging
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1389,7 +1389,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
@@ -1822,7 +1822,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1693632304}
-        m_MethodName: StartDrag
+        m_MethodName: StartDragging
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4082,6 +4082,7 @@ MonoBehaviour:
   shipResources: {fileID: 1636828493}
   DialogueBox: {fileID: 132497283}
   appPath: 
+  eventDoor: {fileID: 0}
 --- !u!4 &1965047332
 Transform:
   m_ObjectHideFlags: 0

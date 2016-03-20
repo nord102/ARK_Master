@@ -9,6 +9,8 @@ public class Generate : MonoBehaviour
     #region Door
     public GameObject door;
     private GameObject cloneDoor;
+
+    public Door currentDoor;
     #endregion
 
     #region Room GameObjects
@@ -38,15 +40,13 @@ public class Generate : MonoBehaviour
     #endregion
 
     #region Lists
-    private List<GameObject> roomGameObjectList = new List<GameObject>();
-    //Need to get rid of the roomList    
-    private List<Room> roomList = new List<Room>();
-
-
+    private List<GameObject> roomGameObjectList = new List<GameObject>();   
     private List<RoomComponent> roomComponentList = new List<RoomComponent>();
+    private List<GameObject> doorGameObjectList = new List<GameObject>();
     #endregion
 
     //--
+    #region Object things
     public GameObject object1;
     public GameObject object2;
     public GameObject object3;
@@ -54,8 +54,7 @@ public class Generate : MonoBehaviour
     private GameObject cloneObject1;
     private GameObject cloneObject2;
     private GameObject cloneObject3;
-
-  
+    #endregion
     //--
 
     //Create Image for the first room
@@ -72,7 +71,7 @@ public class Generate : MonoBehaviour
     }
 
     
-    #region List Accessors    
+    #region List Accessors
     public List<GameObject> GetRoomGameObjectList()
     {
         return roomGameObjectList;
@@ -81,6 +80,11 @@ public class Generate : MonoBehaviour
     public List<RoomComponent> GetRoomComponentList()
     {
         return roomComponentList;
+    }
+
+    public List<GameObject> GetDoorGameObjectList()
+    {
+        return doorGameObjectList;
     }
 
     #endregion
@@ -148,7 +152,7 @@ public class Generate : MonoBehaviour
 
                     //Initialize newDoor with variables
                     newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
-                        (recentRoomCom.posX + recentRoom.dimension - 1), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
+                        (recentRoomCom.posX + recentRoom.dimension - 1), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2),1);
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);     
@@ -170,7 +174,7 @@ public class Generate : MonoBehaviour
 
                     //Initialize newDoor with variables
                     newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
-                        (recentRoomCom.posX), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), true);
+                        (recentRoomCom.posX), (recentRoomCom.posY + (recentRoom.dimension - 1) / 2), 1);
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
@@ -192,7 +196,7 @@ public class Generate : MonoBehaviour
 
                     //Initialize newDoor with variables
                     newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
-                        (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), (recentRoomCom.posY + (recentRoom.dimension - 1)), true);
+                        (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), (recentRoomCom.posY + (recentRoom.dimension - 1)), 1);
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
@@ -214,7 +218,7 @@ public class Generate : MonoBehaviour
 
                     //Initialize newDoor with variables
                     newDoor.Initialize(recentRoom.roomDoorList.Count, recentRoom.roomID, globalRoomCom.roomID,
-                        (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), recentRoomCom.posY, true);
+                        (recentRoomCom.posX + (recentRoom.dimension - 1) / 2), recentRoomCom.posY, 1);
 
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 0f);
@@ -228,12 +232,13 @@ public class Generate : MonoBehaviour
                 {
                     doorMade = false;
 
+                    //Add door to global Dor GameObjectList
+                    doorGameObjectList.Add(cloneDoor);
+
                     //Add to Recent room door list
                     recentRoom.roomDoorList.Add(newDoor);
 
                     //Add to Connected room door list
-                    //Room connectingRoom = roomList[globalRoomCom.roomID];
-                    //connectingRoom.roomDoorList.Add(newDoor);
                     GameObject connectingRoomGameObject = roomGameObjectList[globalRoomCom.roomID];
                     Room connectingRoom = connectingRoomGameObject.GetComponent<Room>();
                     roomGameObjectList.Add(connectingRoomGameObject);
@@ -361,8 +366,8 @@ public class Generate : MonoBehaviour
             //tempX = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
             //tempY = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
 
-            RoomObject newRoomObject = new RoomObject(roomList[0].objectList.Count, "Banana", true, tempX, tempY);
-            roomList[0].objectList.Add(newRoomObject);
+            //RoomObject newRoomObject = new RoomObject(roomList[0].objectList.Count, "Banana", true, tempX, tempY);
+            //roomList[0].objectList.Add(newRoomObject);
 
             cloneObject1 = Instantiate(object1, new Vector3(tempX, tempY,0f), Quaternion.identity) as GameObject;
         }
