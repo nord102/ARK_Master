@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Room
+public class Room : MonoBehaviour
 {
     /// <To-Do>
     /// Boundary Room Checking
@@ -39,9 +39,6 @@ public class Room
     /// </Room Types/#Components>
     public int roomShape { get; set; }
 
-    //Room GameObject
-    public GameObject roomGameObject { get; set; }
-
     //Dragging State (used for placing rooms)
     public bool draggingState { get; set; }
 
@@ -74,7 +71,7 @@ public class Room
     }
 
     //Constructor
-    public Room(int newRoomID, int newRoomShape, int newRoomType, GameObject newRoomGameObject, string newRoomState, int newPosX, int newPosY)
+    public Room(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
     {
         roomID = newRoomID;
         roomState = newRoomState;
@@ -84,8 +81,6 @@ public class Room
         posX = newPosX;
         posY = newPosY;
 
-        roomGameObject = newRoomGameObject;
-
         componentList = new List<RoomComponent>();
         AssignComponents();
         
@@ -93,6 +88,171 @@ public class Room
         roomDoorList = new List<Door>();
     }
 
+    public void Initialize(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
+    {
+        roomID = newRoomID;
+        roomState = newRoomState;
+        roomShape = newRoomShape;
+        roomType = newRoomType;
+
+        posX = newPosX;
+        posY = newPosY;        
+
+        componentList = new List<RoomComponent>();
+        AssignComponents();
+
+        objectList = new List<RoomObject>();
+        roomDoorList = new List<Door>();
+
+    }
+
+    public void SetRoomComponentCoordinates()
+    {
+        switch (roomShape)
+        {
+            #region 1x1
+            //Type: 1x1 
+            //# of Component(s): 1              
+            case 1:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;    
+   
+                break;
+            #endregion
+            #region 1x2
+            //Type: 1x2 
+            //# of Component(s): 2
+            case 2:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX;
+                componentList[1].posY = posY + dimension - 1;
+
+                break;
+            #endregion
+            #region 2x1
+            //Type: 2x1 
+            //# of Component(s): 2
+            case 3:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX + dimension - 1;
+                componentList[1].posY = posY;
+                
+                break;
+            #endregion
+            #region 1x3
+            //Type: 1x3 
+            //# of Component(s): 3
+            case 4:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX;
+                componentList[1].posY = posY + dimension - 1;
+
+                componentList[2].posX = posX;
+                componentList[2].posY = posY + (2 * (dimension - 1));
+                
+                break;
+            #endregion
+            #region 3x1
+            //Type: 3x1 
+            //# of Component(s): 3
+            case 5:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX + dimension - 1;
+                componentList[1].posY = posY;
+
+                componentList[2].posX = posX + (2 * (dimension - 1));
+                componentList[2].posY = posY;
+                
+                break;
+            #endregion
+            #region L-Shape (Normal)
+            //Type: L-shape (Normal) 
+            //# of Component(s): 3
+            case 6:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX;
+                componentList[1].posY = posY + dimension - 1;
+
+                componentList[2].posX = posX + dimension - 1;
+                componentList[2].posY = posY;               
+
+                break;
+            #endregion
+            #region L-shape (Horizontal Flip)
+            //Type: L-shape (Horizontal Flip) 
+            //# of Component(s): 3
+            case 7:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX;
+                componentList[1].posY = posY + dimension - 1;
+
+                componentList[2].posX = posX + dimension - 1;
+                componentList[2].posY = posY + dimension - 1;                
+
+                break;
+            #endregion
+            #region L-Shape (Vertical Flip)
+            //Type: L-shape (Vertical Flip) 
+            //# of Component(s): 3
+            case 8:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX + dimension - 1;
+                componentList[1].posY = posY;
+
+                componentList[2].posX = posX + dimension - 1;
+                componentList[2].posY = posY + dimension - 1;                
+
+                break;
+            #endregion
+            #region L-shape (Horizontal - Vertical Flip)
+            //Type: L-shape (Horizontal - Vertical Flip) 
+            //# of Component(s): 3
+            case 9:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY + dimension - 1;
+
+                componentList[1].posX = posX + dimension - 1;
+                componentList[1].posY = posY + dimension - 1;
+
+                componentList[2].posX = posX + dimension - 1;
+                componentList[2].posY = posY;               
+
+                break;
+            #endregion
+            #region 2x2
+            //Type: 2x2 
+            //# of Component(s): 4
+            case 10:
+                componentList[0].posX = posX;
+                componentList[0].posY = posY;
+
+                componentList[1].posX = posX;
+                componentList[1].posY = posY + dimension - 1;
+
+                componentList[2].posX = posX + dimension - 1;
+                componentList[2].posY = posY;
+
+                componentList[3].posX = posX + dimension - 1;
+                componentList[3].posY = posY + dimension - 1;
+               
+                break;
+            #endregion
+        }
+    }
 
 
     private void AssignComponents()

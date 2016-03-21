@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
     public Camera cam;
 
     //public Text positionOutput;
+	public GameObject fireExtingusiher;
+	private GameObject fireExtingusiherClone;
+
 
     private int health;
     private int mana;
@@ -84,6 +87,7 @@ public class Player : MonoBehaviour
 		} else if (Input.GetButtonDown ("Fire2")) {
 			//alienClone = Instantiate(alien, this.gameObject.transform.position, Quaternion.identity) as GameObject;
 			//alienClone.SetActive (true);
+			UseExtinguisher();
 		}
 
         //this.positionOutput.text = this.transform.position.ToString();
@@ -91,6 +95,11 @@ public class Player : MonoBehaviour
 
         
     }
+
+	private void UseExtinguisher()
+	{
+		fireExtingusiherClone = Instantiate(fireExtingusiher, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+	}
 
     public void Damage(int amount)
     {

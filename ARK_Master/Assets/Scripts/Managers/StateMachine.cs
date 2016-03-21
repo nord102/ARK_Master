@@ -19,9 +19,11 @@ public class StateMachine : MonoBehaviour {
     private bool BuildingMenuOpen = false;
     public bool PlayerControl = false;
 
+    #region Modules
     public GameObject Module1;
     public GameObject Module2;
     public GameObject Module3;
+    #endregion
 
     public Camera mainCamera;
 
@@ -45,6 +47,11 @@ public class StateMachine : MonoBehaviour {
     public GameObject DialogueBox;
     public Database db;
 	public string appPath;
+
+    //Short - 30
+    //Medium - 60
+    //Long - 90
+    public int numMaxRooms = 30;
 
     // Use this for initialization
     void Start () {
@@ -291,11 +298,22 @@ public class StateMachine : MonoBehaviour {
 		AllAvailableSkills.Add (new Skills (1,FireImage, "Laser", 20, 2));
 	}
 
-	//Determine event difficulty - based on rooms explored, strength of main character...?
-	public int DetermineEventDifficulty()
+	//Determine event difficulty
+    //Based on Number of Rooms placed, Number of Components in the Event Room, and Room Type
+	public int DetermineEventDifficulty(int roomType, int numComponents)
 	{
-		//For Testing Only - Return 1
-		return 1;
+        int eventDifficulty = Generate.instance.GetRoomGameObjectList().Count * numComponents + (roomType * 10);
+
+        int quotient = (int)Mathf.Floor(eventDifficulty / (numMaxRooms / 5));
+
+        int remainder = eventDifficulty % (numMaxRooms / 5);
+
+        if (remainder > 0)
+        {
+            quotient += 1;
+        }
+
+        return quotient;
 	}
 
     public void FireEvent(Events myEvent)
@@ -312,5 +330,35 @@ public class StateMachine : MonoBehaviour {
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
         canvasScript.Close();
         PlayerControl = true;
+
+
+        float playerPosX = Player.instance.gameObject.transform.position.x;
+        float playerPosY = Player.instance.gameObject.transform.position.y;
+        float doorPosX = Generate.instance.currentDoor.posX;
+        float doorPosY = Generate.instance.currentDoor.posY;
+        
+        //Player Going Left (Is Right of Door)
+        if ((playerPosX > doorPosX) && (playerPosY > (doorPosY - 0.9) && playerPosY < (doorPosY + 0.9)))
+        {
+            Player.instance.gameObject.transform.position = new Vector3(doorPosX - 1.25f, doorPosY, 0f); ;
+        }
+
+        //Player Going Right (Is Left of Door)
+        else if ((playerPosX < doorPosX) && (playerPosY > (doorPosY - 0.9) && playerPosY < (doorPosY + 0.9)))
+        {
+            Player.instance.gameObject.transform.position = new Vector3(doorPosX + 1.25f, doorPosY, 0f); ;
+        }
+
+        //Player Going Down (Is Above Door)
+        else if((playerPosX > doorPosX - 0.9 && playerPosX < doorPosX + 0.9) && (playerPosY > doorPosY))
+        {
+            Player.instance.gameObject.transform.position = new Vector3(doorPosX, doorPosY - 1.25f, 0f); ; 
+        }
+
+        //Player Going Up (Is Below Door)
+        else if ((playerPosX > doorPosX - 0.9 && playerPosX < doorPosX + 0.9) && (playerPosY < doorPosY))
+        {
+            Player.instance.gameObject.transform.position = new Vector3(doorPosX, doorPosY + 1.25f, 0f); ;
+        }
     }
 }

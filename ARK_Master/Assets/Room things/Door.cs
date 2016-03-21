@@ -22,7 +22,15 @@ public class Door : MonoBehaviour
     //Door State
     // Open - Determines if the Door GameObject should be inactive and the area should be open
     // Closed - Determines if the Door GameObject is active and waiting for interaction
-    public bool doorstate { get; set; }
+
+    
+
+    /// <Door States>
+    ///2 - Being interacted with
+    ///1 - Active
+    ///0 - Inactive
+    /// </Door State>
+    public int doorstate { get; set; }
 
     #region Contructors
     //Default Constructor
@@ -32,7 +40,7 @@ public class Door : MonoBehaviour
     }
 
     //Constructor
-    public Door(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, bool newDoorState)
+    public Door(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, int newDoorState)
     {
         doorID = newDoorID;
         roomID_1 = newRoomID_1; 
@@ -44,7 +52,7 @@ public class Door : MonoBehaviour
     #endregion
 
     //Initializer
-    public void Initialize(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, bool newDoorState)
+    public void Initialize(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, int newDoorState)
     {
         doorID = newDoorID;
         roomID_1 = newRoomID_1;
@@ -59,7 +67,11 @@ public class Door : MonoBehaviour
     {
         if (col.gameObject.tag == "Player")
         {
-            StateMachine.instance.FireEvent(Generate.instance.GetRoomList()[gameObject.GetComponent<Door>().roomID_1].roomEvent);
+            //Set Door Collision Flag
+            Generate.instance.currentDoor = gameObject.GetComponent<Door>();
+
+            Events newRoomEvent = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_1 - 1].GetComponent<Room>().roomEvent;
+            StateMachine.instance.FireEvent(newRoomEvent);   
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public static class EventSystem{
 
-	public static Events GenerateRoomEvent(int roomType)
+	public static Events GenerateRoomEvent(int roomType, int numComponents)
 	{
 		//All rooms have default events that could happen (0:Fire, 1:Breach, 2:Enemy)
 		List<int> availableEvents = new List<int> (){0,1}; //+ 2
@@ -27,19 +27,19 @@ public static class EventSystem{
 		}
 
 		//Pick a random index number, that's the type of event
-		return new Events (availableEvents[Random.Range (0, availableEvents.Count)]);
+		return new Events (availableEvents[Random.Range (0, availableEvents.Count)],roomType,numComponents);
         //return new Events(0);
 
 		//For Testing only - Generate only the fire event
 		//return new Events (0);
 	}
 
-	public static bool DisplayEventScreen(Events thisEvent)
+	public static void DisplayEventTimer(Events thisEvent)
 	{
-		//Display the event screen - Get user OK or Cancel
-		bool returnValue = true;
+		//Display the event Timer panel and populate with event rewards
+        //StateMachine.instance.EventDetails.SetActive(true);
 
-		return returnValue;
+
 	}
 
 	//This belongs in the RoomEntering Code
@@ -51,4 +51,5 @@ public static class EventSystem{
 		//Determine object and location of rewards
 		//SpawnRewards(event.SuccessRewards);
 	}
+
 }
