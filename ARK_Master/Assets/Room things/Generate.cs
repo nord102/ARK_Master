@@ -239,9 +239,11 @@ public class Generate : MonoBehaviour
                     recentRoom.roomDoorList.Add(newDoor);
 
                     //Add to Connected room door list
-                    GameObject connectingRoomGameObject = roomGameObjectList[globalRoomCom.roomID];
+                    GameObject connectingRoomGameObject = roomGameObjectList[globalRoomCom.roomID - 1];
                     Room connectingRoom = connectingRoomGameObject.GetComponent<Room>();
-                    roomGameObjectList.Add(connectingRoomGameObject);
+
+
+                    //roomGameObjectList.Add(connectingRoomGameObject);
                     
                     //Create Door
                     //Take out the Wall on the Dragged Room

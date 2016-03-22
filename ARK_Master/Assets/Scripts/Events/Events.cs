@@ -14,13 +14,13 @@ public class Events
 	public List<int> Enemies = new List<int> ();//Should probably be enums
     //public List<EventChoice> eventChoices;
 
-    public Events(int eventType)
+    public Events(int eventType, int roomType, int numComponents)
     {
         //List<Rewards> FailureRewards = new List<Rewards>();
         //eventChoices = new List<EventChoice>();
 
         //Determine event difficulty - based on rooms explored, strength of main character...?
-        eventDifficulty = StateMachine.instance.DetermineEventDifficulty();
+        eventDifficulty = StateMachine.instance.DetermineEventDifficulty(roomType,numComponents);
 
         //Use difficulty to determine rewards
         //10 loot tables
@@ -47,6 +47,9 @@ public class Events
 
         List<RoomEnemy> enemies = new List<RoomEnemy>();
 
+        //Determine # of Enemies
+        int numEnemies = numComponents * eventDifficulty;
+
         switch (eventType)
         {
             case 0: //Fire Event
@@ -54,9 +57,9 @@ public class Events
                 eventText = "The room, The room, The room is on fire!";
                 eventImage = Resources.Load<Sprite>("flames");
                 
-                enemies.Add(new RoomEnemy(0, 2, 1));
-                enemies.Add(new RoomEnemy(1, 2, 1));
-                enemies.Add(new RoomEnemy(2, 1, 0));
+                enemies.Add(new RoomEnemy(0, numEnemies, 1));
+                //enemies.Add(new RoomEnemy(1, 2, 1));
+                //enemies.Add(new RoomEnemy(2, 1, 0));
 
                 break;
             case 1: //Breach Event
@@ -166,6 +169,11 @@ public class RoomEnemy
     public int DetermineCount()
     {
         int floor = Count - Variant;
+        if (floor < 1)
+        {
+            floor = 1;
+        }
+
         int ceiling = Count + Variant;
 
         int finalCount = Random.Range(floor, ceiling);
