@@ -18,13 +18,7 @@ public class Door : MonoBehaviour
     //X,Y Coordinates
     public int posX { get; set; }
     public int posY { get; set; }
-
-    //Door State
-    // Open - Determines if the Door GameObject should be inactive and the area should be open
-    // Closed - Determines if the Door GameObject is active and waiting for interaction
-
-    
-
+ 
     /// <Door States>
     ///2 - Being interacted with
     ///1 - Active
@@ -32,7 +26,7 @@ public class Door : MonoBehaviour
     /// </Door State>
     public int doorstate { get; set; }
 
-    #region Contructors
+    #region Contructors / Initializer
     //Default Constructor
     public Door()
     {
@@ -42,14 +36,9 @@ public class Door : MonoBehaviour
     //Constructor
     public Door(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, int newDoorState)
     {
-        doorID = newDoorID;
-        roomID_1 = newRoomID_1; 
-        roomID_2 = newRoomID_2;
-        posX = newPosX;
-        posY = newPosY;
-        doorstate = newDoorState;
+        Initialize(newDoorID, newRoomID_1, newRoomID_2, newPosX, newPosY, newDoorState);
     }
-    #endregion
+    
 
     //Initializer
     public void Initialize(int newDoorID, int newRoomID_1, int newRoomID_2, int newPosX, int newPosY, int newDoorState)
@@ -61,8 +50,8 @@ public class Door : MonoBehaviour
         posY = newPosY;
         doorstate = newDoorState;
     }
+    #endregion
 
-    
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.tag == "Player")
