@@ -10,7 +10,7 @@ public static class Pathfinding {
 
         //Set up a list of all the doors in the room
         List<Connections> connectionList = new List<Connections>();
-        foreach (Door d in room.roomDoorList)
+        foreach (Door d in room.GetDoorList())
         {
             Connections c = new Connections(d);
             connectionList.Add(c);
@@ -32,7 +32,7 @@ public static class Pathfinding {
                 while (!found && failSafe2 < 50)
                 {
                     failSafe2 += 1;
-                    if (triedDoors.Contains(nextRoomID) && triedDoors.Count != room.roomDoorList.Count)
+                    if (triedDoors.Contains(nextRoomID) && triedDoors.Count != room.GetDoorList().Count)
                     {
                         nextRoomID = nextRoomID + 1;
                         if (nextRoomID > connectionList.Count - 1)
@@ -43,7 +43,7 @@ public static class Pathfinding {
                     }
                     else
                     {
-                        if (connectionList[nextRoomID].connectedDoors.Count < 2  || triedDoors.Count == room.roomDoorList.Count)
+                        if (connectionList[nextRoomID].connectedDoors.Count < 2 || triedDoors.Count == room.GetDoorList().Count)
                         {
                             //Either this is ok, or we ran out of doors, or we have this connection already, either way add the connection
                             found = true;
@@ -84,8 +84,8 @@ public static class Pathfinding {
             foreach (int doorID in c.connectedDoors)
             {
                 //Positive X means going left, negative is right     Positive Y means going down, negative is up
-                int xDistance = c.door.posX - room.roomDoorList[doorID].posX;
-                int yDistance = c.door.posY - room.roomDoorList[doorID].posY;
+                int xDistance = c.door.posX - room.GetDoorList()[doorID].posX;
+                int yDistance = c.door.posY - room.GetDoorList()[doorID].posY;
                 if (xDistance == 0 && yDistance == 0)
                 {
                     break;
@@ -110,7 +110,7 @@ public static class Pathfinding {
                 int currentPositionY = c.door.posY;
                 int failSafe = 0;
                 Debug.Log("CurrentPosition: " + currentPositionX + ", " + currentPositionY);
-                Debug.Log("FinalPosition: " + room.roomDoorList[doorID].posX + ", " + room.roomDoorList[doorID].posY);
+                Debug.Log("FinalPosition: " + room.GetDoorList()[doorID].posX + ", " + room.GetDoorList()[doorID].posY);
                 while (!connected && failSafe < 50)
                 {
                     failSafe += 1;
@@ -118,7 +118,7 @@ public static class Pathfinding {
                     if (Random.Range(0, 2) == 0)
                     {
                         //Try to move along the x axis
-                        if (alteredTileArray[currentPositionX, currentPositionY] == -1 || currentPositionX == room.roomDoorList[doorID].posX)
+                        if (alteredTileArray[currentPositionX, currentPositionY] == -1 || currentPositionX == room.GetDoorList()[doorID].posX)
                         {
                             //Cant move on the x axis, so we must use the y one
                             currentPositionY += 1 * yMultiplier;
@@ -138,7 +138,7 @@ public static class Pathfinding {
                         //Try to move along the y axis
                         //Debug.Log("X:" + currentPositionX + " Y:" + currentPositionY);
                         //Debug.Log("DoorPosY:" + room.roomDoorList[doorID].posY);
-                        if (alteredTileArray[currentPositionX, currentPositionY] == -1 || currentPositionY == room.roomDoorList[doorID].posY)
+                        if (alteredTileArray[currentPositionX, currentPositionY] == -1 || currentPositionY == room.GetDoorList()[doorID].posY)
                         {
                             //Cant move on the y axis, so we must use the x one
                             currentPositionX += 1 * xMultiplier;
@@ -154,7 +154,7 @@ public static class Pathfinding {
                         }
                     }
                     //Have we finished the connection? flag the while loop to end
-                    if (currentPositionX == room.roomDoorList[doorID].posX && currentPositionY == room.roomDoorList[doorID].posY)
+                    if (currentPositionX == room.GetDoorList()[doorID].posX && currentPositionY == room.GetDoorList()[doorID].posY)
                     {
                         connected = true;
                     }
