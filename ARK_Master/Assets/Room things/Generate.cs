@@ -283,13 +283,6 @@ public class Generate : MonoBehaviour
             }
         }
     }
-
-    //EMPTY
-    void PopulateRoom(int roomID)
-    {
-
-
-    }
     
 
     //Possibly fix each room's starting World Position
@@ -360,32 +353,71 @@ public class Generate : MonoBehaviour
     }
 
     
-    void PopulateStartRoom()
+    public void PopulateRoom(Room room)
     {
         int tempX = 0; 
         int tempY = 0;
 
-        for (int i = 0; i < 3; i++)
+        int minItems = UnityEngine.Random.Range(1, (room.roomLayout.Length - 1) / 2);
+        int maxItems = UnityEngine.Random.Range(1, (room.roomLayout.Length - 1));
+        if (maxItems < minItems) { maxItems = minItems; }
+        int actualItems = UnityEngine.Random.Range(minItems, maxItems);
+
+        //string t = "";
+        //for (int i = 0; i < 7; ++i)
+        //{
+        //    for (int j = 0; j < 7; ++j)
+        //    {
+        //        t += room.roomLayout[i, j] + " ";
+        //    }
+        //    t += "\n";
+        //}
+        //Debug.Log(t);
+
+        for (int i = 0; i < actualItems; i++)
         {
-            //tempX = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
-            //tempY = UnityEngine.Random.Range(1, roomList[0].dimension - 2);
+            tempX = UnityEngine.Random.Range(1, (int)Mathf.Sqrt(room.roomLayout.Length));
+            tempY = UnityEngine.Random.Range(1, (int)Mathf.Sqrt(room.roomLayout.Length));
 
-            //RoomObject newRoomObject = new RoomObject(roomList[0].objectList.Count, "Banana", true, tempX, tempY);
-            //roomList[0].objectList.Add(newRoomObject);
+            if (room.roomLayout[tempX,tempY] == 0)
+            {
+                //Debug.Log(tempX + ", " + tempY);
+                RoomObject newRoomObject = new RoomObject(room.GetObjectList().Count, "Banana", true, tempX, tempY);
+                room.GetObjectList().Add(newRoomObject);
 
-            cloneObject1 = Instantiate(object1, new Vector3(tempX, tempY,0f), Quaternion.identity) as GameObject;
+                cloneObject1 = Instantiate(object1, new Vector3(room.posX + tempX, room.posY + tempY, 0f), Quaternion.identity) as GameObject;
+                Renderer rend = cloneObject1.GetComponent<Renderer>();
+                rend.material = GetRandomRoomObject(room.roomType);
+                room.roomLayout[tempX, tempY] = -1;
+            }
         }
 
-
-        //pick random points on roomLayout
-        //create new object there
-        //
-
-
-
-
-
     }
+
+    Material GetRandomRoomObject(int roomType)
+    {
+        Material m = null;
+        //0-4, the number of materials we currently have
+        switch(Random.Range(0, 5)){
+            case 0:
+                m = Resources.Load<Material>("Cabinet");
+                break;
+            case 1:
+                m = Resources.Load<Material>("Chair");
+                break;
+            case 2:
+                m = Resources.Load<Material>("Computer");
+                break;
+            case 3:
+                m = Resources.Load<Material>("Crate");
+                break;
+            case 4:
+                m = Resources.Load<Material>("Table");
+                break;
+        }
+        return m;
+    }
+
 
     void Update()
     {

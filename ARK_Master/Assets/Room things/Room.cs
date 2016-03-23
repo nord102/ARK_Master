@@ -290,7 +290,15 @@ public class Room : MonoBehaviour
             numComponents = 4;
             roomLayout = new int[(2 * dimension) - 1, (2 * dimension) - 1];
         }
-        
+
+        for (int i = 0; i < Mathf.Sqrt(roomLayout.Length); ++i)
+        {
+            for (int j = 0; j < Mathf.Sqrt(roomLayout.Length); ++j)
+            {
+                roomLayout[i, j] = -1;
+            }
+        }
+
         //Assign Room Components and add to the component list
         for (int i = 0; i < numComponents; i++)
         {
@@ -323,9 +331,9 @@ public class Room : MonoBehaviour
                         {
                             roomLayout[i, j] = -1;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
-                            roomLayout[i, j] = 0;
+                            roomLayout[i, j] = -1;
                         }
                         else //Inside is blank
                         {
@@ -353,15 +361,15 @@ public class Room : MonoBehaviour
                         }
                         else if (i == (dimension - 1)) //Make right walls (ROWS)
                         {
-                            roomLayout[i, j] = 1;
+                            roomLayout[i, j] = -1;
                             roomLayout[i, j + (dimension - 1)] = -1;
                         }
                         else if (j == 0) //Make bottom walls (COLS)
                         {
-                            roomLayout[i, j] = 1;
+                            roomLayout[i, j] = -1;
                             roomLayout[i, j + (dimension - 1)] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + (dimension - 1)] = -1;                            
@@ -401,7 +409,7 @@ public class Room : MonoBehaviour
                             roomLayout[i, j] = -1;
                             roomLayout[i + dimension - 1, j] = -1;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = -1;
                             roomLayout[i + dimension - 1, j] = -1;
@@ -443,7 +451,7 @@ public class Room : MonoBehaviour
                             roomLayout[i, j + dimension - 1] = 0;
                             roomLayout[i, j + (2 * (dimension - 1))] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = 0;
@@ -488,7 +496,7 @@ public class Room : MonoBehaviour
                             roomLayout[i + dimension - 1, j] = -1;
                             roomLayout[i + (2 * (dimension - 1)), j] = -1;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = -1;
                             roomLayout[i + dimension - 1, j] = -1;
@@ -532,7 +540,7 @@ public class Room : MonoBehaviour
                             roomLayout[i, j + dimension - 1] = 0;
                             roomLayout[i + dimension - 1, j] = -1;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = -1;
@@ -577,7 +585,7 @@ public class Room : MonoBehaviour
                             roomLayout[i, j + dimension - 1] = 0;
                             roomLayout[i + dimension - 1, j + dimension - 1] = -1;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = -1;
@@ -622,7 +630,7 @@ public class Room : MonoBehaviour
                             roomLayout[i + dimension - 1, j] = -1;
                             roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = -1;
                             roomLayout[i + dimension - 1, j] = 0;
@@ -667,7 +675,7 @@ public class Room : MonoBehaviour
                             roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                             roomLayout[i + dimension - 1, j] = -1;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j + dimension - 1] = -1;
                             roomLayout[i + dimension - 1, j + dimension - 1] = -1;
@@ -716,7 +724,7 @@ public class Room : MonoBehaviour
                             roomLayout[i + dimension - 1, j] = -1;
                             roomLayout[i + dimension - 1, j + dimension - 1] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make top walls (COLS)
+                        else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = -1;
