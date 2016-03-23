@@ -34,12 +34,17 @@ public static class EventSystem{
 		//return new Events (0);
 	}
 
-	public static void DisplayEventTimer(Events thisEvent)
+    /// <summary>
+    /// Pass in the EventInfo part of the canvas
+    /// </summary>
+    /// <param name="thisEvent"></param>
+    /// <param name="eventInfo"></param>
+	public static void DisplayEventTimer(Events thisEvent, GameObject eventInfo)
 	{
-		//Display the event Timer panel and populate with event rewards
+        //Display the event Timer panel and populate with event rewards
         //StateMachine.instance.EventDetails.SetActive(true);
-
-
+        EventInfo eventInfoScript = eventInfo.GetComponent<EventInfo>();
+        eventInfoScript.StartEventInfo(thisEvent);
 	}
 
 	//This belongs in the RoomEntering Code
