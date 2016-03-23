@@ -25,6 +25,10 @@ public class Dragging : MonoBehaviour
 
     public bool draggingMode = false;
 
+    //Boundary Detection
+    private bool overlap = false;
+    private bool highlighted = false;
+
     Room newRoom = new Room();
 
     public void StartDragging(int roomShape)
@@ -58,7 +62,7 @@ public class Dragging : MonoBehaviour
             //
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newGOCenter = touchPosition - offset;
-            
+
             ///GRID BASED MOVEMENT
 
             Vector3 pos = gameObjectToDrag.transform.position;
@@ -105,9 +109,31 @@ public class Dragging : MonoBehaviour
             //---
 
             //IF THE ROOM IS OVERLAPPING ANOTHER ROOM
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
 
+            foreach (RoomComponent roomCom in newRoom.GetComponentList())
+            {
+                foreach (RoomComponent globalCom in Generate.instance.GetRoomComponentList())
+                {
+                    if ((roomCom.posX == globalCom.posX) && (roomCom.posY == globalCom.posY))
+                    {
+                        overlap = true;
+                        break;
+                    }
+                    else
+                    {
+                        overlap = false;
+                    }
+
+                }
+
+                if (overlap)
+                {
+                    break;
+                }
+            }
+
+            if (overlap)
+            {
                 //HIGHLIGHT RED FOR ERROR 
                 foreach (Transform child in gameObjectToDrag.transform)
                 {
@@ -116,10 +142,13 @@ public class Dragging : MonoBehaviour
                         Renderer rend = smallerChild.GetComponent<Renderer>();
                         rend.material.SetColor("_Color", Color.red);
                     }
-
                 }
+
+                highlighted = true;
+
+                overlap = false;
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha5))
+            else
             {
                 //NO HIGHLIGHT FOR NO ERROR
                 foreach (Transform child in gameObjectToDrag.transform)
@@ -129,16 +158,20 @@ public class Dragging : MonoBehaviour
                         Renderer rend = smallerChild.GetComponent<Renderer>();
                         rend.material.SetColor("_Color", Color.white);
                     }
-
                 }
+
+                highlighted = false;
             }
+
 
         }
 
 
-        if (Input.GetMouseButton(0) && draggingMode)
+        if (Input.GetMouseButton(0) && draggingMode && (!highlighted))
         {
             draggingMode = false;
+
+            gameObjectToDrag.transform.position = new Vector3(gameObjectToDrag.transform.position.x,gameObjectToDrag.transform.position.y,1f);
 
             //Update Room to final (X, Y) of Gameobject
             newRoom.posX = (int)gameObjectToDrag.transform.position.x;
@@ -146,19 +179,16 @@ public class Dragging : MonoBehaviour
 
             //Update Room Components
 
-            //Room newRoom = new Room(Generate.instance.GetRoomList().Count, globalRoomShape, 0, gameObjectToDrag, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
 
-            //Generate.instance.GetRoomList().Add(newRoom);
-
-            foreach (RoomComponent roomCom in newRoom.componentList)
+            foreach (RoomComponent roomCom in newRoom.GetComponentList())
             {
                 Generate.instance.GetRoomComponentList().Add(roomCom);
             }
 
             Generate.instance.checkForDoors();
 
-            newRoom.roomEvent = EventSystem.GenerateRoomEvent(0, newRoom.componentList.Count);
-           // newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
+            newRoom.roomEvent = EventSystem.GenerateRoomEvent(0, newRoom.GetComponentList().Count);
+            // newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
         }
 
     }

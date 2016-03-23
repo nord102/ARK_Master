@@ -5,12 +5,13 @@ using System;
 
 public class Room : MonoBehaviour
 {
-    /// <To-Do>
-    /// Boundary Room Checking
-    /// Highlight Room Based on Boundaries
-    /// Fix Images?
-    /// </To-Do>>
+    #region Variables
+    //Room Dimension-Related variables
+    public int dimension = 7;
+    public int maxDimension = 19;
+    #endregion
 
+    #region Class Attributes
     //Room ID
     public int roomID { get; private set; }
 
@@ -52,42 +53,46 @@ public class Room : MonoBehaviour
     //Room Event
     public Events roomEvent { get; set; }
 
-    //Room Dimension-Related variables
-    public int dimension = 7;
-    public int maxDimension = 19;
-
     //Room State?
     //NEED TO DEFINE THIS
     public string roomState { get; set; }
 
-    public List<RoomComponent> componentList { get; set; }
-    public List<RoomObject> objectList { get; set; }   
-    public List<Door> roomDoorList { get; set; }
+    private List<RoomComponent> componentList { get; set; }
+    private List<RoomObject> objectList { get; set; }   
+    private List<Door> doorList { get; set; }
+    #endregion
 
-    //Base Constructor
+    #region List Accessors
+    public List<RoomComponent> GetComponentList()
+    {
+        return componentList;
+    }
+
+    public List<RoomObject> GetObjectList()
+    {
+        return objectList;
+    }
+
+    public List<Door> GetDoorList()
+    {
+        return doorList;
+    }
+    #endregion
+
+    #region Contructors / Initializer
+    //Default Constructor
     public Room()
     {
 
     }
-
+    
     //Constructor
     public Room(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
     {
-        roomID = newRoomID;
-        roomState = newRoomState;
-        roomShape = newRoomShape;
-        roomType = newRoomType;
-
-        posX = newPosX;
-        posY = newPosY;
-
-        componentList = new List<RoomComponent>();
-        AssignComponents();
-        
-        objectList = new List<RoomObject>();
-        roomDoorList = new List<Door>();
+        Initialize(newRoomID, newRoomShape, newRoomType, newRoomState, newPosX, newPosY);
     }
 
+    //Initializer
     public void Initialize(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
     {
         roomID = newRoomID;
@@ -102,10 +107,12 @@ public class Room : MonoBehaviour
         AssignComponents();
 
         objectList = new List<RoomObject>();
-        roomDoorList = new List<Door>();
+        doorList = new List<Door>();
 
     }
+    #endregion
 
+    #region Functions
     public void SetRoomComponentCoordinates()
     {
         switch (roomShape)
@@ -254,7 +261,6 @@ public class Room : MonoBehaviour
         }
     }
 
-
     private void AssignComponents()
     {
         int numComponents = 0;
@@ -299,8 +305,7 @@ public class Room : MonoBehaviour
             //Type: 1x1 
             //# of Component(s): 1              
             case 1:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -335,11 +340,7 @@ public class Room : MonoBehaviour
             //Type: 1x2 
             //# of Component(s): 2
             case 2:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;             
-
-                componentList[1].posX = posX;
-                componentList[1].posY = posY + dimension - 1;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -379,11 +380,7 @@ public class Room : MonoBehaviour
             //Type: 2x1 
             //# of Component(s): 2
             case 3:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX + dimension - 1;
-                componentList[1].posY = posY;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -422,14 +419,7 @@ public class Room : MonoBehaviour
             //Type: 1x3 
             //# of Component(s): 3
             case 4:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX;
-                componentList[1].posY = posY + dimension - 1;
-
-                componentList[2].posX = posX ;
-                componentList[2].posY = posY + (2 * (dimension - 1));
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -474,14 +464,7 @@ public class Room : MonoBehaviour
             //Type: 3x1 
             //# of Component(s): 3
             case 5:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX + dimension - 1;
-                componentList[1].posY = posY;
-
-                componentList[2].posX = posX + (2 * (dimension - 1));
-                componentList[2].posY = posY;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -525,14 +508,7 @@ public class Room : MonoBehaviour
             //Type: L-shape (Normal) 
             //# of Component(s): 3
             case 6:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX;
-                componentList[1].posY = posY + dimension - 1;
-
-                componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -577,14 +553,7 @@ public class Room : MonoBehaviour
             //Type: L-shape (Horizontal Flip) 
             //# of Component(s): 3
             case 7:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX;
-                componentList[1].posY = posY + dimension - 1;
-
-                componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY + dimension - 1;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -629,14 +598,7 @@ public class Room : MonoBehaviour
             //Type: L-shape (Vertical Flip) 
             //# of Component(s): 3
             case 8:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX + dimension - 1;
-                componentList[1].posY = posY;
-
-                componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY + dimension - 1;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -681,14 +643,7 @@ public class Room : MonoBehaviour
             //Type: L-shape (Horizontal - Vertical Flip) 
             //# of Component(s): 3
             case 9:
-                componentList[0].posX = posX;
-                componentList[0].posY = posY + dimension - 1;
-
-                componentList[1].posX = posX + dimension - 1;
-                componentList[1].posY = posY + dimension - 1;
-
-                componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY;
+                SetRoomComponentCoordinates();
 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -732,18 +687,8 @@ public class Room : MonoBehaviour
             #region 2x2
             //Type: 2x2 
             //# of Component(s): 4
-            case 10:                
-                componentList[0].posX = posX;
-                componentList[0].posY = posY;
-
-                componentList[1].posX = posX;
-                componentList[1].posY = posY + dimension - 1;
-
-                componentList[2].posX = posX + dimension- 1;
-                componentList[2].posY = posY;
-
-                componentList[3].posX = posX + dimension - 1;
-                componentList[3].posY = posY + dimension - 1;
+            case 10:
+                SetRoomComponentCoordinates();
                                 
                 for (int i = 0; i < dimension; i++)
                 {
@@ -791,4 +736,5 @@ public class Room : MonoBehaviour
             #endregion
         }
     }
+    #endregion
 }
