@@ -48,6 +48,8 @@ public class StateMachine : MonoBehaviour {
     public Database db;
 	public string appPath;
 
+    public GameObject EventInfo;
+
     //Short - 30
     //Medium - 60
     //Long - 90
