@@ -7,14 +7,12 @@ using System.Collections;
 ///
 public class FireTheLasers : MonoBehaviour
 {
-    const float INITIAL_SPEED = 5f;
-    public float speed = 10f;
+    public float speed = 30f;
     
 	private Rigidbody2D rb;
     public float angle = 0f;
 
     Vector3 start;
-
     Vector3 direction;
 
     //public Text output;
@@ -26,21 +24,26 @@ public class FireTheLasers : MonoBehaviour
        // Debug.Log(this.transform.position);
         start = this.transform.position;
 
+		Physics2D.IgnoreLayerCollision (9, 10);
+
     }
 
     ///
     /// \brief <b>Brief Description:</b> Destory the object if it hits the roof.
     ///
-    void OnTriggerEnter(Collider col)
+	void OnCollisionEnter2D(Collision2D coll)
     {
-        Destroy(this.gameObject);
+		if (coll.gameObject.tag != "Player")
+		{
+       	 	Destroy(this.gameObject);
+		}
 
-        switch (col.name)
-        {
-            case "Border":
-                Destroy(this);
-                break;
-        }
+//        switch (col.name)
+//        {
+//            case "Border":
+//                Destroy(this);
+//                break;
+//        }
 
     }
 
