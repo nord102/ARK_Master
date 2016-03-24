@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Fire : MonoBehaviour {
 
-	public float divideTime = 1;
+	public float divideTime = 10;
 	private int hitPoints;
 	private float timer;
 
@@ -12,6 +12,8 @@ public class Fire : MonoBehaviour {
 	const int WEST = 2;
 	const int EAST = 3;
 
+
+	const int DIVIDE_TIME = 2;
 
 	public GameObject fire;
 	private GameObject cloneFire;
