@@ -15,17 +15,18 @@ public class Room : MonoBehaviour
     //Room ID
     public int roomID { get; private set; }
 
-    //X,Y coordinates
+    //Global X,Y coordinates
     public int posX { get; set; }
     public int posY { get; set; }
-      
+
     /// <Room Layout Array Definitions>
     /// -2 = Doors
     /// -1 = Walls, Dead Zones
     ///  0 = Empty Space
+    ///  1 = Object
     /// </Room Layout Array Definitions>
     public int[,] roomLayout;
-       
+
     /// <Room Shapes/#Components>
     /// 1 - 1x1 - 1
     /// 2 - 1x2 - 2
@@ -36,7 +37,7 @@ public class Room : MonoBehaviour
     /// 7 - L-shape (Horizontal Flip) - 3
     /// 8 - L-shape (Vertical Flip) - 3
     /// 9 - L-shape (Horizontal - Vertical Flip) - 3
-    /// 10 - 2x2
+    /// 10 - 2x2 - 4
     /// </Room Types/#Components>
     public int roomShape { get; set; }
 
@@ -58,7 +59,7 @@ public class Room : MonoBehaviour
     public string roomState { get; set; }
 
     private List<RoomComponent> componentList { get; set; }
-    private List<RoomObject> objectList { get; set; }   
+    private List<RoomObject> objectList { get; set; }
     private List<Door> doorList { get; set; }
     #endregion
 
@@ -85,7 +86,7 @@ public class Room : MonoBehaviour
     {
 
     }
-    
+
     //Constructor
     public Room(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
     {
@@ -101,7 +102,7 @@ public class Room : MonoBehaviour
         roomType = newRoomType;
 
         posX = newPosX;
-        posY = newPosY;        
+        posY = newPosY;
 
         componentList = new List<RoomComponent>();
         AssignComponents();
@@ -113,6 +114,198 @@ public class Room : MonoBehaviour
     #endregion
 
     #region Functions
+
+    public void DoorToList(int roomCom, string direction)
+    {
+        Door newDoor = new Door();
+
+        if (direction == "right")
+        {
+            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+                        (GetComponentList()[roomCom].posX + dimension - 1), (GetComponentList()[roomCom].posY + (dimension - 1) / 2), 0);
+        }
+        else if (direction == "left")
+        {
+            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+                       (GetComponentList()[roomCom].posX), (GetComponentList()[roomCom].posY + (dimension - 1) / 2), 0);
+        }
+        else if (direction == "up")
+        {
+            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+                       (GetComponentList()[roomCom].posX + (dimension - 1) / 2), (GetComponentList()[roomCom].posY + (dimension - 1)), 0);
+        }
+        else if (direction == "down")
+        {
+            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+                        (GetComponentList()[roomCom].posX + (dimension - 1) / 2), GetComponentList()[roomCom].posY, 0);
+        }
+
+        doorList.Add(newDoor);
+        roomLayout[newDoor.posX - posX, newDoor.posY - posY] = -2;
+
+        Debug.Log("DoorPOS: " + (newDoor.posX - posX) + " " + (newDoor.posY - posY));
+
+    }
+
+    public void InitializeDoorList()
+    {
+        switch (roomShape)
+        {
+            #region 1x1
+            //Type: 1x1 
+            //# of Component(s): 1              
+            case 1:
+                DoorToList(0, "right");
+                DoorToList(0, "left");
+                DoorToList(0, "up");
+                DoorToList(0, "down");
+                break;
+            #endregion
+            #region 1x2
+            //Type: 1x2 
+            //# of Component(s): 2
+            case 2:
+                DoorToList(0, "right");
+                DoorToList(0, "left");
+                DoorToList(0, "down");
+
+                DoorToList(1, "right");
+                DoorToList(1, "left");
+                DoorToList(1, "up");
+                break;
+            #endregion
+            #region 2x1
+            //Type: 2x1 
+            //# of Component(s): 2
+            case 3:
+                DoorToList(0, "left");
+                DoorToList(0, "up");
+                DoorToList(0, "down");
+
+                DoorToList(1, "right");
+                DoorToList(1, "up");
+                DoorToList(1, "down");
+                break;
+            #endregion
+            #region 1x3
+            //Type: 1x3 
+            //# of Component(s): 3
+            case 4:
+                DoorToList(0, "right");
+                DoorToList(0, "left");
+                DoorToList(0, "down");
+
+                DoorToList(1, "right");
+                DoorToList(1, "left");
+
+                DoorToList(2, "right");
+                DoorToList(2, "left");
+                DoorToList(2, "up");
+                break;
+            #endregion
+            #region 3x1
+            //Type: 3x1 
+            //# of Component(s): 3
+            case 5:
+                DoorToList(0, "left");
+                DoorToList(0, "up");
+                DoorToList(0, "down");
+
+                DoorToList(1, "up");
+                DoorToList(1, "down");
+
+                DoorToList(2, "right");
+                DoorToList(2, "up");
+                DoorToList(2, "down");
+                break;
+            #endregion
+            #region L-Shape (Normal)
+            //Type: L-shape (Normal) 
+            //# of Component(s): 3
+            case 6:
+                DoorToList(0, "left");
+                DoorToList(0, "down");
+
+                DoorToList(1, "right");
+                DoorToList(1, "left");
+                DoorToList(1, "up");
+
+                DoorToList(2, "right");
+                DoorToList(2, "up");
+                DoorToList(2, "down");
+                break;
+            #endregion
+            #region L-shape (Horizontal Flip)
+            //Type: L-shape (Horizontal Flip) 
+            //# of Component(s): 3
+            case 7:
+                DoorToList(0, "right");
+                DoorToList(0, "left");
+                DoorToList(0, "down");
+
+                DoorToList(1, "left");
+                DoorToList(1, "up");
+
+                DoorToList(2, "right");
+                DoorToList(2, "up");
+                DoorToList(2, "down");
+
+                break;
+            #endregion
+            #region L-Shape (Vertical Flip)
+            //Type: L-shape (Vertical Flip) 
+            //# of Component(s): 3
+            case 8:
+                DoorToList(0, "left");
+                DoorToList(0, "up");
+                DoorToList(0, "down");
+
+                DoorToList(1, "right");
+                DoorToList(1, "down");
+
+                DoorToList(2, "right");
+                DoorToList(2, "left");
+                DoorToList(2, "up");
+
+                break;
+            #endregion
+            #region L-shape (Horizontal - Vertical Flip)
+            //Type: L-shape (Horizontal - Vertical Flip) 
+            //# of Component(s): 3
+            case 9:
+                DoorToList(0, "left");
+                DoorToList(0, "up");
+                DoorToList(0, "down");
+
+                DoorToList(1, "right");
+                DoorToList(1, "up");
+
+                DoorToList(2, "right");
+                DoorToList(2, "left");
+                DoorToList(2, "down");
+
+                break;
+            #endregion
+            #region 2x2
+            //Type: 2x2 
+            //# of Component(s): 4
+            case 10:
+                DoorToList(0, "left");
+                DoorToList(0, "down");
+
+                DoorToList(1, "left");
+                DoorToList(1, "up");
+
+                DoorToList(2, "right");
+                DoorToList(2, "down");
+
+                DoorToList(3, "right");
+                DoorToList(3, "up");
+                break;
+            #endregion
+        }
+    }
+
     public void SetRoomComponentCoordinates()
     {
         switch (roomShape)
@@ -122,8 +315,8 @@ public class Room : MonoBehaviour
             //# of Component(s): 1              
             case 1:
                 componentList[0].posX = posX;
-                componentList[0].posY = posY;    
-   
+                componentList[0].posY = posY;
+
                 break;
             #endregion
             #region 1x2
@@ -147,7 +340,7 @@ public class Room : MonoBehaviour
 
                 componentList[1].posX = posX + dimension - 1;
                 componentList[1].posY = posY;
-                
+
                 break;
             #endregion
             #region 1x3
@@ -162,7 +355,7 @@ public class Room : MonoBehaviour
 
                 componentList[2].posX = posX;
                 componentList[2].posY = posY + (2 * (dimension - 1));
-                
+
                 break;
             #endregion
             #region 3x1
@@ -177,7 +370,7 @@ public class Room : MonoBehaviour
 
                 componentList[2].posX = posX + (2 * (dimension - 1));
                 componentList[2].posY = posY;
-                
+
                 break;
             #endregion
             #region L-Shape (Normal)
@@ -191,7 +384,7 @@ public class Room : MonoBehaviour
                 componentList[1].posY = posY + dimension - 1;
 
                 componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY;               
+                componentList[2].posY = posY;
 
                 break;
             #endregion
@@ -206,7 +399,7 @@ public class Room : MonoBehaviour
                 componentList[1].posY = posY + dimension - 1;
 
                 componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY + dimension - 1;                
+                componentList[2].posY = posY + dimension - 1;
 
                 break;
             #endregion
@@ -221,7 +414,7 @@ public class Room : MonoBehaviour
                 componentList[1].posY = posY;
 
                 componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY + dimension - 1;                
+                componentList[2].posY = posY + dimension - 1;
 
                 break;
             #endregion
@@ -236,7 +429,7 @@ public class Room : MonoBehaviour
                 componentList[1].posY = posY + dimension - 1;
 
                 componentList[2].posX = posX + dimension - 1;
-                componentList[2].posY = posY;               
+                componentList[2].posY = posY;
 
                 break;
             #endregion
@@ -255,7 +448,7 @@ public class Room : MonoBehaviour
 
                 componentList[3].posX = posX + dimension - 1;
                 componentList[3].posY = posY + dimension - 1;
-               
+
                 break;
             #endregion
         }
@@ -265,6 +458,7 @@ public class Room : MonoBehaviour
     {
         int numComponents = 0;
 
+        #region Initialize roomLayout
         if (roomShape == 1) //1
         {
             numComponents = 1;
@@ -290,6 +484,7 @@ public class Room : MonoBehaviour
             numComponents = 4;
             roomLayout = new int[(2 * dimension) - 1, (2 * dimension) - 1];
         }
+        #endregion
 
         for (int i = 0; i < Mathf.Sqrt(roomLayout.Length); ++i)
         {
@@ -340,10 +535,10 @@ public class Room : MonoBehaviour
                             roomLayout[i, j] = 0;
                         }
                     }
-                }               
+                }
 
                 break;
-            #endregion 
+            #endregion
             #region 1x2
             //Type: 1x2 
             //# of Component(s): 2
@@ -372,7 +567,7 @@ public class Room : MonoBehaviour
                         else if (j == (dimension - 1)) //Make top walls (COLS)
                         {
                             roomLayout[i, j] = 0;
-                            roomLayout[i, j + (dimension - 1)] = -1;                            
+                            roomLayout[i, j + (dimension - 1)] = -1;
                         }
                         else //Inside is blank
                         {
@@ -380,7 +575,7 @@ public class Room : MonoBehaviour
                             roomLayout[i, j + (dimension - 1)] = 0;
                         }
                     }
-                }               
+                }
 
                 break;
             #endregion
@@ -697,7 +892,7 @@ public class Room : MonoBehaviour
             //# of Component(s): 4
             case 10:
                 SetRoomComponentCoordinates();
-                                
+
                 for (int i = 0; i < dimension; i++)
                 {
                     for (int j = 0; j < dimension; j++)

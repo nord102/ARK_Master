@@ -37,20 +37,17 @@ public class Dragging : MonoBehaviour
         globalRoomShape = roomShape;
 
         //Create GameObject based on room shape
-        gameObjectToDrag = Generate.instance.GenRoom(roomShape);
+        gameObjectToDrag = Generate.instance.GenerateRoom(roomShape);
         GOCenter = gameObjectToDrag.transform.position;
         touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         offset = touchPosition - GOCenter;
 
-        //----
-
+        //Add the GameObject to the Global List
         Generate.instance.GetRoomGameObjectList().Add(gameObjectToDrag);
 
         //Get the Room Script Component of the Room GameObject
         newRoom = gameObjectToDrag.GetComponent<Room>();
         newRoom.Initialize(Generate.instance.GetRoomGameObjectList().Count, globalRoomShape, 0, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
-
-        //----
 
         draggingMode = true;
     }
@@ -77,7 +74,6 @@ public class Dragging : MonoBehaviour
             else if (pos.x > 0)
             { pos.x -= Mathf.Abs(gridStepsX); }
             #endregion
-
             #region Y POSITION
             gridStepsY = Mathf.RoundToInt(newGOCenter.y / yStep);
             pos.y = ((float)gridStepsY) * yStep;
@@ -87,7 +83,6 @@ public class Dragging : MonoBehaviour
             else if (pos.y > 0)
             { pos.y -= Mathf.Abs(gridStepsY); }
             #endregion
-
             #region Z POSITION
             pos.z = GOCenter.z;
             #endregion
@@ -98,18 +93,14 @@ public class Dragging : MonoBehaviour
             gameObjectToDrag.transform.position = pos;
 
             //----
-
             //Set position of Room
             newRoom.posX = (int)gameObjectToDrag.transform.position.x;
             newRoom.posY = (int)gameObjectToDrag.transform.position.y;
-
             newRoom.SetRoomComponentCoordinates();
             //----
 
-            //---
-
-            //IF THE ROOM IS OVERLAPPING ANOTHER ROOM
-
+            #region Highlighting Room
+            //If the Room being dragged is overlapping another Room
             foreach (RoomComponent roomCom in newRoom.GetComponentList())
             {
                 foreach (RoomComponent globalCom in Generate.instance.GetRoomComponentList())
@@ -123,7 +114,6 @@ public class Dragging : MonoBehaviour
                     {
                         overlap = false;
                     }
-
                 }
 
                 if (overlap)
@@ -134,7 +124,7 @@ public class Dragging : MonoBehaviour
 
             if (overlap)
             {
-                //HIGHLIGHT RED FOR ERROR 
+                //Highlight the Room RED for overlap
                 foreach (Transform child in gameObjectToDrag.transform)
                 {
                     foreach (Transform smallerChild in child.transform)
@@ -145,12 +135,11 @@ public class Dragging : MonoBehaviour
                 }
 
                 highlighted = true;
-
                 overlap = false;
             }
             else
             {
-                //NO HIGHLIGHT FOR NO ERROR
+                //Highlight the Room WHITE for no overlap
                 foreach (Transform child in gameObjectToDrag.transform)
                 {
                     foreach (Transform smallerChild in child.transform)
@@ -162,36 +151,32 @@ public class Dragging : MonoBehaviour
 
                 highlighted = false;
             }
-
-
+            #endregion
         }
-
-
+        
         if (Input.GetMouseButton(0) && draggingMode && (!highlighted))
         {
             draggingMode = false;
 
+            //Sets the GameObject position
             gameObjectToDrag.transform.position = new Vector3(gameObjectToDrag.transform.position.x,gameObjectToDrag.transform.position.y,1f);
 
-            //Update Room to final (X, Y) of Gameobject
+            //Sets the Room that was just placed (X, Y) of Gameobject
             newRoom.posX = (int)gameObjectToDrag.transform.position.x;
             newRoom.posY = (int)gameObjectToDrag.transform.position.y;
 
-            //Update Room Components
-
-
+            //Add Room Components to Global Room Components
             foreach (RoomComponent roomCom in newRoom.GetComponentList())
             {
                 Generate.instance.GetRoomComponentList().Add(roomCom);
             }
 
+            //Check for doors
             Generate.instance.checkForDoors();
 
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0, newRoom.GetComponentList().Count);
-            newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
-            Generate.instance.PopulateRoom(newRoom);
-            
+            //newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
+            //Generate.instance.PopulateRoom(newRoom);            
         }
-
     }
 }
