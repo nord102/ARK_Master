@@ -171,7 +171,7 @@ public static class Pathfinding {
         {
             for (int j = 0; j < 7; ++j)
             {
-                t += alteredTileArray[i, j] + " ";
+                t += alteredTileArray[j, i] + " ";
             }
             t += "\n";
         }
