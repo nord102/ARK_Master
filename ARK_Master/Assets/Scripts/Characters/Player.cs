@@ -45,11 +45,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		if (StateMachine.instance != null) {
-			if (!StateMachine.instance.PlayerControl) {
-				return;
-			}
-		}
+        if (!StateMachine.instance.PlayerControl)
+        {
+            return;
+        }
 
         float horizontal = 0;
         float vertical = 0;
@@ -99,19 +98,7 @@ public class Player : MonoBehaviour
 
 	private void UseExtinguisher()
 	{
-		//Destroy(laserClone);
-		Vector3 temp = Input.mousePosition;
-		temp.z = -10;
-
-		Vector3 c = cam.ScreenToWorldPoint(temp);
-
-		//c.x *= -1;
-		//c.y *= -1;
-		c.z = 0;
 		fireExtingusiherClone = Instantiate(fireExtingusiher, this.gameObject.transform.position, Quaternion.identity) as GameObject;
-		fireExtingusiherClone.SendMessage("Trajectory", c);
-
-		//fireExtingusiherClone = null;
 	}
 
     public void Damage(int amount)
@@ -134,8 +121,8 @@ public class Player : MonoBehaviour
     ///
     internal void FireTheLaser()
     {
-        //if (laserQty > 0)
-        //{
+        if (laserQty > 0)
+        {
             //Destroy(laserClone);
             Vector3 temp = Input.mousePosition;
             temp.z = -10;
@@ -155,7 +142,7 @@ public class Player : MonoBehaviour
             //laserClone.SendMessage("Trajectory", cam);
 
 
-       // }
+        }
     }
 
 
