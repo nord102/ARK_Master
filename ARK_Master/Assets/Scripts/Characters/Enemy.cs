@@ -40,9 +40,9 @@ public class Enemy : MonoBehaviour {
 
 
 
-	void OnCollisionEnter2D(Collision2D coll)
+    void OnTriggerEnter2D(Collider2D other)
     {
-		if (coll.gameObject.name.Contains("Player"))
+        if (other.gameObject.name.Contains("Player"))
         {
 
             animator.SetTrigger ("attack");
@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-		else if (coll.gameObject.name.Contains("Laser"))
+        else if (other.gameObject.name.Contains("Laser"))
         {
             Damage(2);
         }
