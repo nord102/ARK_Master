@@ -276,11 +276,11 @@ public class Generate : MonoBehaviour
         }
         //--
         string t = "";
-        for (int i = 0; i < 7; ++i)
+        for (int i = 0; i < (int)Mathf.Sqrt(recentRoom.roomLayout.Length); ++i)
         {
-            for (int j = 0; j < 7; ++j)
+            for (int j = 0; j < (int)Mathf.Sqrt(recentRoom.roomLayout.Length); ++j)
             {
-                t += recentRoom.roomLayout[i, j] + " ";
+                t += recentRoom.roomLayout[j, i] + " ";
             }
             t += "\n";
         }
