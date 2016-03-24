@@ -65,15 +65,12 @@ public class Generate : MonoBehaviour
         PlaceStartRoom();
 
         if (instance == null)
-        {
             instance = this;
-        }
         else if (instance != this)
-        {
             Destroy(gameObject);
-        }
     }
 
+    
     #region List Accessors
     public List<GameObject> GetRoomGameObjectList()
     {
@@ -94,20 +91,32 @@ public class Generate : MonoBehaviour
 
     void PlaceStartRoom()
     {
-        //Create Room GameObject
         cloneStartRoom = Instantiate(startRoom, new Vector3(0f, 0f, 1f), Quaternion.identity) as GameObject;
+
         roomGameObjectList.Add(cloneStartRoom);
 
-        //Initialize Room
         Room newRoom = cloneStartRoom.GetComponent<Room>();
-        newRoom.Initialize(roomGameObjectList.Count, 10, 0, "Explored", 0, 0);        
+
+        newRoom.Initialize(roomGameObjectList.Count, 10, 0, "Explored", 0, 0);
+        
         newRoom.draggingState = false;
 
-        //Initialize Room Components
+
+
         foreach (RoomComponent roomCom in newRoom.GetComponentList())
         {
             roomComponentList.Add(roomCom);
         }
+
+        
+        //Room newRoom = new Room(roomList.Count, 10,0, cloneStartRoom, "Explored", 0, 0);
+        //newRoom.draggingState = false;
+        //roomList.Add(newRoom);
+
+        //foreach (RoomComponent roomCom in newRoom.componentList)
+        //{
+        //    roomComponentList.Add(roomCom);
+        //}
     }
 
     public void checkForDoors()
@@ -115,14 +124,13 @@ public class Generate : MonoBehaviour
         bool doorMade = false;
         
         //Room that was most recently placed
+        //Room recentRoom = roomList[roomList.Count - 1];
         GameObject recentRoomGameObject = roomGameObjectList[roomGameObjectList.Count - 1];
         Room recentRoom = recentRoomGameObject.GetComponent<Room>();
 
-        //--
-        recentRoom.InitializeDoorList();
-        //--
-
         Door newDoor = new Door();
+
+        
 
         //Check all of the recent Room Components for neighbours       
         foreach (RoomComponent recentRoomCom in recentRoom.GetComponentList())
@@ -218,6 +226,8 @@ public class Generate : MonoBehaviour
                 }
                 #endregion
 
+                
+
                 if (doorMade)
                 {
                     doorMade = false;
@@ -225,13 +235,6 @@ public class Generate : MonoBehaviour
                     //Add door to global Dor GameObjectList
                     doorGameObjectList.Add(cloneDoor);
 
-                    //--
-                    Debug.Log("DoorPOSCHANGED: " + (newDoor.posX - recentRoom.posX) + " " + (newDoor.posY - recentRoom.posY));
-                    int index = recentRoom.GetDoorList().FindIndex(d => d.posX == newDoor.posX && d.posY == newDoor.posY);
-                    newDoor.SetDoorID(index);
-                    recentRoom.GetDoorList()[index] = newDoor;
-                    //--
-                    
                     //Add to Recent room door list
                     recentRoom.GetDoorList().Add(newDoor);
 
@@ -239,7 +242,9 @@ public class Generate : MonoBehaviour
                     GameObject connectingRoomGameObject = roomGameObjectList[globalRoomCom.roomID - 1];
                     Room connectingRoom = connectingRoomGameObject.GetComponent<Room>();
 
-                    #region Take Out Walls at Door Location
+
+                    //roomGameObjectList.Add(connectingRoomGameObject);
+                    
                     //Create Door
                     //Take out the Wall on the Dragged Room
                     foreach (Transform child in recentRoomGameObject.transform)
@@ -270,26 +275,18 @@ public class Generate : MonoBehaviour
                             }
                         }
                     }
-                    #endregion
+
+                    //Add the Door to the Room Layout
+                    //NEED TO FIX
+                    //recentRoom.roomLayout[newDoor.posX, newDoor.posY] = -2;
                 }
             }
         }
-        //--
-        string t = "";
-        for (int i = 0; i < 7; ++i)
-        {
-            for (int j = 0; j < 7; ++j)
-            {
-                t += recentRoom.roomLayout[i, j] + " ";
-            }
-            t += "\n";
-        }
-        Debug.Log(t);
-        //--
     }
     
+
     //Possibly fix each room's starting World Position
-    public GameObject GenerateRoom(int roomShape)
+    public GameObject GenRoom(int roomShape)
     {
         GameObject generatedRoom = new GameObject();
 
@@ -355,6 +352,7 @@ public class Generate : MonoBehaviour
         return generatedRoom;
     }
 
+    
     public void PopulateRoom(Room room)
     {
         int tempX = 0; 
@@ -399,7 +397,6 @@ public class Generate : MonoBehaviour
     Material GetRandomRoomObject(int roomType)
     {
         Material m = null;
-
         //0-4, the number of materials we currently have
         switch(Random.Range(0, 5)){
             case 0:
@@ -419,5 +416,11 @@ public class Generate : MonoBehaviour
                 break;
         }
         return m;
+    }
+
+
+    void Update()
+    {
+        
     }
 }
