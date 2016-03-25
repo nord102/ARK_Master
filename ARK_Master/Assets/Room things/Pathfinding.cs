@@ -83,15 +83,22 @@ public static class Pathfinding {
             //Change this to roomX, roomY when merged
             foreach (int doorID in c.connectedDoors)
             {
+                //Randomly move towards connected door position, avoiding -1 tiles
+                bool connected = false;
+                int currentPositionX = c.door.posX - room.posX;
+                int currentPositionY = c.door.posY - room.posY;
+
+                MoveOneSpaceIntoTheRoom(ref currentPositionX, ref currentPositionY, ref alteredTileArray);
+
                 //Positive X means going left, negative is right     Positive Y means going down, negative is up
-                int xDistance = c.door.posX - room.GetDoorList()[doorID].posX;
-                int yDistance = c.door.posY - room.GetDoorList()[doorID].posY;
+                int xDistance = currentPositionX - (room.GetDoorList()[doorID].posX - room.posX);
+                int yDistance = currentPositionY - (room.GetDoorList()[doorID].posY - room.posY);
                 if (xDistance == 0 && yDistance == 0)
                 {
                     break;
                 }
-                int xMultiplier = 1;
-                int yMultiplier = 1;
+                int xMultiplier = 0;
+                int yMultiplier = 0;
 
                 Debug.Log("DISTANCE: " + xDistance + ", " + yDistance);
 
@@ -99,111 +106,66 @@ public static class Pathfinding {
                 {
                     xMultiplier = -1;
                 }
+                else { xMultiplier = 1; }
+
                 if (yDistance > 0)
                 {
                     yMultiplier = -1;
                 }
+                else { yMultiplier = 1; }
 
-                //Randomly move towards connected door position, avoiding -1 tiles
-                bool connected = false;
-                int currentPositionX = c.door.posX - room.posX;
-                int currentPositionY = c.door.posY - room.posY;
                 int failSafe = 0;
                 Debug.Log("CurrentPosition: " + currentPositionX + ", " + currentPositionY);
                 Debug.Log("FinalPosition: " + (room.GetDoorList()[doorID].posX - room.posX) + ", " + (room.GetDoorList()[doorID].posY - room.posY));
                 while (!connected && failSafe < 50)
                 {
                     failSafe += 1;
-                    //Debug.Log("Examined Tile: " + currentPositionX + ", " + currentPositionY);
+                    Debug.Log("xMultiplier: " + xMultiplier + ", yMultiplier: " + yMultiplier);
+
+                    //We can save a lot of time by checking whether the next tile is a 1 - that means its already a path, and we have just connected to it, this door will be fine
+                    if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == 1 || alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == 1)
+                    {
+                        connected = true;
+                        continue;
+                    }
+
                     if (Random.Range(0, 2) == 0)
                     {
-                        //Try to move along the x axis
-                        if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -1 || (c.door.posX - room.posX == currentPositionX + (1 * xMultiplier) && c.door.posY - room.posY == currentPositionY) || (currentPositionX == room.GetDoorList()[doorID].posX - room.posX) && (c.door.posX - room.posX != (currentPositionX + (1 * xMultiplier)) && c.door.posY - room.posY != currentPositionY))
+                        //Try to move along the x axis - Things that fail this condition: (Next tile was a wall) or (Next tile is the door I just stepped away from) or (Next tile is a door, but not the correct one)
+                        if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -1 || (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -2 && (currentPositionX + (1 * xMultiplier) != room.GetDoorList()[doorID].posX - room.posX || currentPositionY != room.GetDoorList()[doorID].posY - room.posY )))// || (c.door.posX - room.posX == currentPositionX + (1 * xMultiplier) && c.door.posY - room.posY == currentPositionY))//|| (currentPositionX == room.GetDoorList()[doorID].posX - room.posX) && (c.door.posX - room.posX != (currentPositionX + (1 * xMultiplier)) && c.door.posY - room.posY != currentPositionY))
                         {
-                            if (currentPositionY == room.GetDoorList()[doorID].posY - room.posY)
-                            {
-                                //We couldn't move on x, but we are already on the correct y - we have to move 1 into the room, and then correct it later.
-                                //Move inwards - How do we determine inwards? if x/y = 0, inwards is 1, else inwards is -1
-                                if (currentPositionY > 0)
-                                {
-                                    currentPositionY += 1 * -1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    yMultiplier = 1;
-                                }
-                                else
-                                {
-                                    currentPositionY += 1 * 1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    yMultiplier = -1;
-                                }
-                                Debug.Log("Stepped away from wall: yMultiplier = " + yMultiplier);
-                            }
-                            else
-                            {
-                                //Cant move on the x axis, so we must use the y one
-                                currentPositionY += 1 * yMultiplier;
-                                alteredTileArray[currentPositionX, currentPositionY] = 1;
-                            }
+                            //Cant move on the x axis, so we must use the y one
+                            currentPositionY += 1 * yMultiplier;
+                            alteredTileArray[currentPositionX, currentPositionY] = 1;
                             Debug.Log("Moving Y Because X Blocked: "+ currentPositionX + ", " + currentPositionY);
                         }
                         else
                         {
                             if (currentPositionX == room.GetDoorList()[doorID].posX - room.posX)
                             {
-                                if (currentPositionX > 0)
-                                {
-                                    currentPositionX += 1 * -1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    xMultiplier = 1;
-                                }
-                                else
-                                {
-                                    currentPositionX += 1 * 1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    xMultiplier = -1;
-                                }
-                                Debug.Log("Stepped away from wall: xMultiplier = " + xMultiplier);
+                                //We could move x, but we are already on the correct x - so move y
+                                currentPositionY += 1 * yMultiplier;
+                                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Moving Y Because Already on Correct X: " + currentPositionX + ", " + currentPositionY);
                             }
                             else
                             {
                                 //We could move on the x axis, so we do
                                 currentPositionX += 1 * xMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Moving X: " + currentPositionX + ", " + currentPositionY);
                             }
-                            Debug.Log("Moving X: " + currentPositionX + ", " + currentPositionY);
+                            
                         }
                     }
                     else
                     {
                         //Try to move along the y axis
-                        //Debug.Log("X:" + currentPositionX + " Y:" + currentPositionY);
-                        //Debug.Log("DoorPosY:" + room.roomDoorList[doorID].posY);
-                        if (alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == -1 || (c.door.posY - room.posY == currentPositionY + (1 * yMultiplier) && c.door.posX - room.posX == currentPositionX) || (currentPositionY == room.GetDoorList()[doorID].posY - room.posY) && (c.door.posY - room.posY != (currentPositionY + (1 * yMultiplier)) && c.door.posX - room.posX != currentPositionX))
+                        if (alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == -1 || (alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == -2 && (currentPositionX != room.GetDoorList()[doorID].posX - room.posX || currentPositionY + (1 * yMultiplier) != room.GetDoorList()[doorID].posY - room.posY)))// (c.door.posY - room.posY == currentPositionY + (1 * yMultiplier) && c.door.posX - room.posX == currentPositionX) )// || (currentPositionY == room.GetDoorList()[doorID].posY - room.posY) && (c.door.posY - room.posY != (currentPositionY + (1 * yMultiplier)) && c.door.posX - room.posX != currentPositionX))
                         {
-                            if (currentPositionX == room.GetDoorList()[doorID].posX - room.posX)
-                            {
-                                //We couldn't move on y, but we are already on the correct x - we have to move 1 into the room, and then correct it later.
-                                //Move inwards - How do we determine inwards? if x/y = 0, inwards is 1, else inwards is -1
-                                if (currentPositionX > 0)
-                                {
-                                    currentPositionX += 1 * -1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    xMultiplier = 1;
-                                }
-                                else
-                                {
-                                    currentPositionX += 1 * 1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    xMultiplier = -1;
-                                }
-                                Debug.Log("Stepped away from wall: xMultiplier = " + xMultiplier);
-                            }
-                            else
-                            {
-                                //Cant move on the y axis, so we must use the x one
-                                currentPositionX += 1 * xMultiplier;
-                                alteredTileArray[currentPositionX, currentPositionY] = 1;
-                            }
+                            //Cant move on the y axis, so we must use the x one
+                            currentPositionX += 1 * xMultiplier;
+                            alteredTileArray[currentPositionX, currentPositionY] = 1;
 
                             Debug.Log("Moving X Because Y Blocked: " + currentPositionX + ", " + currentPositionY);
                         }
@@ -211,34 +173,26 @@ public static class Pathfinding {
                         {
                             if (currentPositionY == room.GetDoorList()[doorID].posY - room.posY)
                             {
-                                //We couldn't move on x, but we are already on the correct y - we have to move 1 into the room, and then correct it later.
-                                //Move inwards - How do we determine inwards? if x/y = 0, inwards is 1, else inwards is -1
-                                if (currentPositionY > 0)
-                                {
-                                    currentPositionY += 1 * -1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    yMultiplier = 1;
-                                }
-                                else
-                                {
-                                    currentPositionY += 1 * 1;
-                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    yMultiplier = -1;
-                                }
-                                Debug.Log("Stepped away from wall: yMultiplier = " + yMultiplier);
+                                //We could move y, but we are already on the correct y - so move x
+                                currentPositionX += 1 * xMultiplier;
+                                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Moving X Because Already on Correct Y: " + currentPositionX + ", " + currentPositionY);
                             }
                             else
                             {
                                 //We could move on the y axis, so we do
                                 currentPositionY += 1 * yMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Moving Y: " + currentPositionX + ", " + currentPositionY);
                             }
-                            Debug.Log("Moving Y: " + currentPositionX + ", " + currentPositionY);
+                            
                         }
                     }
                     //Have we finished the connection? flag the while loop to end
                     if (currentPositionX == room.GetDoorList()[doorID].posX - room.posX && currentPositionY == room.GetDoorList()[doorID].posY - room.posY)
                     {
+                        //We just turned this door to a 1, we should put it back
+                        alteredTileArray[currentPositionX, currentPositionY] = -2;
                         connected = true;
                     }
                 }
@@ -261,6 +215,49 @@ public static class Pathfinding {
         Debug.Log(t);
 
         return alteredTileArray;
+    }
+
+    private static void MoveOneSpaceIntoTheRoom(ref int currentPositionX, ref int currentPositionY, ref int[,] alteredTileArray)
+    {
+        //We should be able to determine which direction is a step into the room by looking at 2 adjacent spots - below and left
+        try //Check below
+        {
+            if (alteredTileArray[currentPositionX, currentPositionY - 1] > -1) //0 means it's open, 1 means it's a path and that's alright too
+            {
+                //We can stop here, down is the step inward
+                currentPositionY = currentPositionY - 1;
+                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                return;
+            }
+        }
+        catch
+        {
+            //Failing to go down means we are at the bottom, a step into the room has to be up
+            currentPositionY = currentPositionY + 1;
+            alteredTileArray[currentPositionX, currentPositionY] = 1;
+            return;
+        }
+
+        try //Check left
+        {
+            if (alteredTileArray[currentPositionX - 1, currentPositionY] > -1) //0 means it's open, 1 means it's a path and that's alright too
+            {
+                //We can stop here, left is the step inward
+                currentPositionX = currentPositionX - 1;
+                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                return;
+            }
+        }
+        catch
+        {
+            //Failing to go left means we are at the left edge, a step into the room has to be right
+            currentPositionX = currentPositionX + 1;
+            alteredTileArray[currentPositionX, currentPositionY] = 1;
+            return;
+        }
+
+        //Almost 100% confident one of those previous returns has to fire - WE SHOULD NOT BE ABLE TO GET HERE IF YOU DID YOU'VE KILLED US ALL
+        return;
     }
 }
 
