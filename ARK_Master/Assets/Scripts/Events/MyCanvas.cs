@@ -28,8 +28,6 @@ public class MyCanvas : MonoBehaviour
 
     //private List<GameObject> txtChoices = new List<GameObject>();
 
-    //for button click event
-    //http://answers.unity3d.com/questions/791573/46-ui-how-to-apply-onclick-handler-for-button-gene.html
     public MyCanvas()
     {
         RewardList = new List<GameObject>();
@@ -68,6 +66,8 @@ public class MyCanvas : MonoBehaviour
     public void SetDifficulty()
     {
         int difficulty = MyEvent.eventDifficulty;
+
+        //Debug.Log("ED: " + MyEvent.eventDifficulty);
 
         int i = 5 - MyEvent.eventDifficulty;
         foreach(Transform child in StarPlaceholder.transform)

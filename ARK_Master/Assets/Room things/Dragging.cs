@@ -28,6 +28,7 @@ public class Dragging : MonoBehaviour
     //Boundary Detection
     private bool overlap = false;
     private bool highlighted = false;
+    private bool placeable = false;
 
     Room newRoom = new Room();
 
@@ -52,6 +53,111 @@ public class Dragging : MonoBehaviour
         draggingMode = true;
     }
 
+    public void HighlightToggle()
+    {
+        #region Highlighting Room
+        //If the Room being dragged is overlapping another Room
+        foreach (RoomComponent roomCom in newRoom.GetComponentList())
+        {
+            foreach (RoomComponent globalCom in Generate.instance.GetRoomComponentList())
+            {
+                if ((roomCom.posX == globalCom.posX) && (roomCom.posY == globalCom.posY))
+                {
+                    overlap = true;
+                    break;
+                }
+                else
+                {
+                    overlap = false;
+                }
+            }
+
+            if (overlap)
+            {
+                break;
+            }
+        }
+
+        if (overlap)
+        {
+            //Highlight the Room RED for overlap
+            foreach (Transform child in gameObjectToDrag.transform)
+            {
+                foreach (Transform smallerChild in child.transform)
+                {
+                    Renderer rend = smallerChild.GetComponent<Renderer>();
+                    rend.material.SetColor("_Color", Color.red);
+                }
+            }
+
+            highlighted = true;
+            overlap = false;
+        }
+        else
+        {
+            //Highlight the Room WHITE for no overlap
+            foreach (Transform child in gameObjectToDrag.transform)
+            {
+                foreach (Transform smallerChild in child.transform)
+                {
+                    Renderer rend = smallerChild.GetComponent<Renderer>();
+                    rend.material.SetColor("_Color", Color.white);
+                }
+            }
+
+            highlighted = false;
+        }
+        #endregion
+    }
+
+    public void CheckIfPlaceable()
+    {
+        foreach (RoomComponent newRoomCom in newRoom.GetComponentList())
+        {
+            foreach (RoomComponent globalRoomCom in Generate.instance.GetRoomComponentList())
+            {
+                //Check if there is at least one global RoomComponent beside a newRoom Room RoomComponent
+                #region (X+, Y) (RIGHT)
+                if (((newRoomCom.posX + (newRoom.dimension - 1) == globalRoomCom.posX) && (newRoomCom.posY == globalRoomCom.posY)) && (newRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    placeable = true;
+                    break;
+                }
+                #endregion
+                #region (X-, Y) (LEFT)
+                else if (((newRoomCom.posX - (newRoom.dimension - 1) == globalRoomCom.posX) && (newRoomCom.posY == globalRoomCom.posY)) && (newRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    placeable = true;
+                    break;
+                }
+                #endregion
+                #region (X, Y+) (UP)
+                else if (((newRoomCom.posX == globalRoomCom.posX) && (newRoomCom.posY + (newRoom.dimension - 1) == globalRoomCom.posY)) && (newRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    placeable = true;
+                    break;
+                }
+                #endregion
+                #region (X, Y-) (DOWN)
+                else if (((newRoomCom.posX == globalRoomCom.posX) && (newRoomCom.posY - (newRoom.dimension - 1) == globalRoomCom.posY)) && (newRoomCom.roomID != globalRoomCom.roomID))
+                {
+                    placeable = true;
+                    break;
+                }
+                #endregion
+                else
+                {
+                    placeable = false;
+                }
+
+            }
+            if (placeable)
+            {
+                break;
+            }
+        }
+    }
+
     void Update()
     {
         if (draggingMode)
@@ -59,6 +165,7 @@ public class Dragging : MonoBehaviour
             //
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newGOCenter = touchPosition - offset;
+            
 
             ///GRID BASED MOVEMENT
 
@@ -99,64 +206,17 @@ public class Dragging : MonoBehaviour
             newRoom.SetRoomComponentCoordinates();
             //----
 
-            #region Highlighting Room
-            //If the Room being dragged is overlapping another Room
-            foreach (RoomComponent roomCom in newRoom.GetComponentList())
-            {
-                foreach (RoomComponent globalCom in Generate.instance.GetRoomComponentList())
-                {
-                    if ((roomCom.posX == globalCom.posX) && (roomCom.posY == globalCom.posY))
-                    {
-                        overlap = true;
-                        break;
-                    }
-                    else
-                    {
-                        overlap = false;
-                    }
-                }
+            HighlightToggle();
 
-                if (overlap)
-                {
-                    break;
-                }
-            }
-
-            if (overlap)
-            {
-                //Highlight the Room RED for overlap
-                foreach (Transform child in gameObjectToDrag.transform)
-                {
-                    foreach (Transform smallerChild in child.transform)
-                    {
-                        Renderer rend = smallerChild.GetComponent<Renderer>();
-                        rend.material.SetColor("_Color", Color.red);
-                    }
-                }
-
-                highlighted = true;
-                overlap = false;
-            }
-            else
-            {
-                //Highlight the Room WHITE for no overlap
-                foreach (Transform child in gameObjectToDrag.transform)
-                {
-                    foreach (Transform smallerChild in child.transform)
-                    {
-                        Renderer rend = smallerChild.GetComponent<Renderer>();
-                        rend.material.SetColor("_Color", Color.white);
-                    }
-                }
-
-                highlighted = false;
-            }
-            #endregion
+            CheckIfPlaceable();
+            
         }
 
-        if (Input.GetMouseButton(0) && draggingMode && (!highlighted))
+        //Mouse Click + Room is being dragged + that Room isn't highlighted + it's in a placeable zone
+        if (Input.GetMouseButton(0) && draggingMode && (!highlighted) && (placeable))
         {
             draggingMode = false;
+            placeable = false;
 
             //Sets the GameObject position
             gameObjectToDrag.transform.position = new Vector3(gameObjectToDrag.transform.position.x, gameObjectToDrag.transform.position.y, 1f);
@@ -172,11 +232,11 @@ public class Dragging : MonoBehaviour
             }
 
             //Check for doors
-            Generate.instance.checkForDoors();
+            Generate.instance.CheckForDoors();
 
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0, newRoom.GetComponentList().Count);
             newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
-            Generate.instance.PopulateRoom(newRoom);            
+            Generate.instance.PopulateRoom(newRoom);
         }
     }
 }
