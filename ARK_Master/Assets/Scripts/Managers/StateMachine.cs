@@ -56,12 +56,16 @@ public class StateMachine : MonoBehaviour {
     public int numMaxRooms = 30;
 
     // Use this for initialization
-    void Start () {
-		if (instance == null)
-			instance = this;
-		else if (instance != this)
-			Destroy (gameObject);
-
+    void Start () 
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
 		Setup ();
 	}
 
@@ -79,7 +83,7 @@ public class StateMachine : MonoBehaviour {
 			char[] delimiterChars = {'|'};
 			string[] players = s.Split(delimiterChars);
 
-			Debug.Log (players.Length);
+			//Debug.Log (players.Length);
 			
 			foreach (string player in players)
 			{
