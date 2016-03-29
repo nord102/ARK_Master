@@ -110,7 +110,7 @@ public class Generate : MonoBehaviour
         }
     }
 
-    public void checkForDoors()
+    public void CheckForDoors()
     {
         bool doorMade = false;
 
@@ -274,18 +274,6 @@ public class Generate : MonoBehaviour
                 }
             }
         }
-        //--
-        string t = "";
-        for (int i = 0; i < (int)Mathf.Sqrt(recentRoom.roomLayout.Length); ++i)
-        {
-            for (int j = 0; j < (int)Mathf.Sqrt(recentRoom.roomLayout.Length); ++j)
-            {
-                t += recentRoom.roomLayout[j, i] + " ";
-            }
-            t += "\n";
-        }
-        Debug.Log(t);
-        //--
     }
 
     //Possibly fix each room's starting World Position
@@ -311,7 +299,7 @@ public class Generate : MonoBehaviour
         switch (roomShape)
         {
             case 1:
-                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x, worldPos.y, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x - 3, worldPos.y - 3, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_1x1;
                 break;
             case 2:

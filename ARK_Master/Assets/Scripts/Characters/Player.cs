@@ -13,8 +13,8 @@ public class Player : MonoBehaviour
     public Camera cam;
 
     //public Text positionOutput;
-	public GameObject fireExtingusiher;
-	private GameObject fireExtingusiherClone;
+    public GameObject fireExtingusiher;
+    private GameObject fireExtingusiherClone;
 
 
     private int health;
@@ -23,8 +23,8 @@ public class Player : MonoBehaviour
     public Animator animator;
     private float lastDirection = 0;
 
-	//public GameObject alien;
-	//public GameObject alienClone;
+    //public GameObject alien;
+    //public GameObject alienClone;
 
     void Awake()
     {
@@ -45,9 +45,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!StateMachine.instance.PlayerControl)
+        if(StateMachine.instance != null)
         {
-            return;
+            if (!StateMachine.instance.PlayerControl)
+            {
+                return;
+            }
         }
 
         float horizontal = 0;
@@ -96,10 +99,25 @@ public class Player : MonoBehaviour
         
     }
 
-	private void UseExtinguisher()
-	{
-		fireExtingusiherClone = Instantiate(fireExtingusiher, this.gameObject.transform.position, Quaternion.identity) as GameObject;
-	}
+    private void UseExtinguisher()
+    {
+        //Destroy(laserClone);
+        Vector3 temp = Input.mousePosition;
+        temp.z = -10;
+
+        Vector3 c = cam.ScreenToWorldPoint(temp);
+
+        //c.x *= -1;
+        //c.y *= -1;
+        c.z = 0;
+        
+        fireExtingusiherClone = Instantiate(fireExtingusiher, 
+            this.gameObject.transform.position, Quaternion.identity) as GameObject;
+
+        fireExtingusiherClone.SendMessage("Trajectory", c);
+
+        //fireExtingusiherClone = null;
+    }
 
     public void Damage(int amount)
     {
@@ -107,8 +125,8 @@ public class Player : MonoBehaviour
 
         if (health == 0)
         {
-             //gameObject.SetActive(false);
-			//cam.gameObject.SetActive (true);
+            //gameObject.SetActive(false);
+            //cam.gameObject.SetActive (true);
         }
     }
 
@@ -121,8 +139,8 @@ public class Player : MonoBehaviour
     ///
     internal void FireTheLaser()
     {
-        if (laserQty > 0)
-        {
+        //if (laserQty > 0)
+        //{
             //Destroy(laserClone);
             Vector3 temp = Input.mousePosition;
             temp.z = -10;
@@ -132,7 +150,7 @@ public class Player : MonoBehaviour
             //c.x *= -1;
             //c.y *= -1;
             c.z = 0;
-           // output.text = c.ToString();
+            // output.text = c.ToString();
 
 
             laserQty--;
@@ -142,7 +160,7 @@ public class Player : MonoBehaviour
             //laserClone.SendMessage("Trajectory", cam);
 
 
-        }
+        //}
     }
 
 
