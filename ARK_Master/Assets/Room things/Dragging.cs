@@ -31,8 +31,9 @@ public class Dragging : MonoBehaviour
     private bool placeable = false;
 
     Room newRoom = new Room();
+    
 
-    public void StartDragging(int roomShape)
+        public void StartDragging(int roomShape)
     {
         //Get the chosen room shape
         globalRoomShape = roomShape;
@@ -50,7 +51,11 @@ public class Dragging : MonoBehaviour
         newRoom = gameObjectToDrag.GetComponent<Room>();
         newRoom.Initialize(Generate.instance.GetRoomGameObjectList().Count, globalRoomShape, 0, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
 
+        //--
+        //Cursor.visible = false;
+        //--
         draggingMode = true;
+
     }
 
     public void HighlightToggle()
@@ -115,7 +120,7 @@ public class Dragging : MonoBehaviour
         foreach (RoomComponent newRoomCom in newRoom.GetComponentList())
         {
             foreach (RoomComponent globalRoomCom in Generate.instance.GetRoomComponentList())
-            {
+            {                
                 //Check if there is at least one global RoomComponent beside a newRoom Room RoomComponent
                 #region (X+, Y) (RIGHT)
                 if (((newRoomCom.posX + (newRoom.dimension - 1) == globalRoomCom.posX) && (newRoomCom.posY == globalRoomCom.posY)) && (newRoomCom.roomID != globalRoomCom.roomID))
@@ -162,19 +167,17 @@ public class Dragging : MonoBehaviour
     {
         if (draggingMode)
         {
-            //
+            ///GRID BASED MOVEMENT
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newGOCenter = touchPosition - offset;
-            
 
-            ///GRID BASED MOVEMENT
+            Debug.Log(Input.mousePosition);
 
             Vector3 pos = gameObjectToDrag.transform.position;
 
             #region X POSITION
             gridStepsX = Mathf.RoundToInt(newGOCenter.x / xStep);
             pos.x = ((float)gridStepsX) * xStep;
-
             //Adjusts x position
             if (pos.x < 0)
             { pos.x += Mathf.Abs(gridStepsX); }
@@ -199,12 +202,10 @@ public class Dragging : MonoBehaviour
             //Set position of GameObject
             gameObjectToDrag.transform.position = pos;
 
-            //----
             //Set position of Room
             newRoom.posX = (int)gameObjectToDrag.transform.position.x;
             newRoom.posY = (int)gameObjectToDrag.transform.position.y;
             newRoom.SetRoomComponentCoordinates();
-            //----
 
             HighlightToggle();
 
@@ -215,6 +216,10 @@ public class Dragging : MonoBehaviour
         //Mouse Click + Room is being dragged + that Room isn't highlighted + it's in a placeable zone
         if (Input.GetMouseButton(0) && draggingMode && (!highlighted) && (placeable))
         {
+            //--
+            Cursor.visible = true;
+            //--
+
             draggingMode = false;
             placeable = false;
 
