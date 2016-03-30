@@ -50,6 +50,8 @@ public class StateMachine : MonoBehaviour {
 
     public GameObject EventInfo;
 
+    public GameObject alien;
+
     //Short - 30
     //Medium - 60
     //Long - 90
@@ -365,6 +367,19 @@ public class StateMachine : MonoBehaviour {
         else if ((playerPosX > doorPosX - 0.9 && playerPosX < doorPosX + 0.9) && (playerPosY < doorPosY))
         {
             Player.instance.gameObject.transform.position = new Vector3(doorPosX, doorPosY + 1.25f, 0f); ;
+        }
+
+
+        Room currentRoom = Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>();
+         
+
+
+        //Grab enemy that is attached to event and spawn them?
+        //Pick a spot with a 1 on it and spawn the enemies (random 1's)
+
+        foreach (int enemy in currentRoom.roomEvent.Enemies)
+        {
+            InstantiateEnemy.spawnEnemy(enemy, currentRoom.roomEvent.Enemies.Count, currentRoom);         
         }
     }
 }
