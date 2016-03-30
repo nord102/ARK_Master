@@ -110,7 +110,7 @@ public class Generate : MonoBehaviour
         }
     }
 
-    public void checkForDoors()
+    public void CheckForDoors()
     {
         bool doorMade = false;
 
@@ -274,18 +274,6 @@ public class Generate : MonoBehaviour
                 }
             }
         }
-        //--
-        string t = "";
-        for (int i = 0; i < (int)Mathf.Sqrt(recentRoom.roomLayout.Length); ++i)
-        {
-            for (int j = 0; j < (int)Mathf.Sqrt(recentRoom.roomLayout.Length); ++j)
-            {
-                t += recentRoom.roomLayout[j, i] + " ";
-            }
-            t += "\n";
-        }
-        Debug.Log(t);
-        //--
     }
 
     //Possibly fix each room's starting World Position
@@ -308,46 +296,47 @@ public class Generate : MonoBehaviour
             worldPos = Camera.main.ScreenToWorldPoint(mousePos);
         }
 
+        //Using magic numbers to offset worldPos
         switch (roomShape)
         {
             case 1:
-                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x, worldPos.y, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_1x1 = Instantiate(room_1x1, new Vector3(worldPos.x - 3.5f, worldPos.y - 3.5f , 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_1x1;
                 break;
             case 2:
-                cloneRoom_1x2 = Instantiate(room_1x2, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_1x2 = Instantiate(room_1x2, new Vector3(worldPos.x - 3.5f, worldPos.y - 6.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_1x2;
                 break;
             case 3:
-                cloneRoom_2x1 = Instantiate(room_2x1, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_2x1 = Instantiate(room_2x1, new Vector3(worldPos.x - 6.5f, worldPos.y - 3.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_2x1;
                 break;
             case 4:
-                cloneRoom_1x3 = Instantiate(room_1x3, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_1x3 = Instantiate(room_1x3, new Vector3(worldPos.x - 3.5f, worldPos.y - 9.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_1x3;
                 break;
             case 5:
-                cloneRoom_3x1 = Instantiate(room_3x1, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_3x1 = Instantiate(room_3x1, new Vector3(worldPos.x - 9.5f, worldPos.y - 3.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_3x1;
                 break;
             case 6:
-                cloneRoom_LShape_Normal = Instantiate(room_LShape_Normal, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_LShape_Normal = Instantiate(room_LShape_Normal, new Vector3(worldPos.x - 6.5f, worldPos.y - 6.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_LShape_Normal;
                 break;
             case 7:
-                cloneRoom_LShape_HFlip = Instantiate(room_LShape_HFlip, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_LShape_HFlip = Instantiate(room_LShape_HFlip, new Vector3(worldPos.x - 6.5f, worldPos.y - 6.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_LShape_HFlip;
                 break;
             case 8:
-                cloneRoom_LShape_VFlip = Instantiate(room_LShape_VFlip, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_LShape_VFlip = Instantiate(room_LShape_VFlip, new Vector3(worldPos.x - 6.5f, worldPos.y - 6.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_LShape_VFlip;
                 break;
             case 9:
-                cloneRoom_LShape_HVFlip = Instantiate(room_LShape_HVFlip, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneRoom_LShape_HVFlip = Instantiate(room_LShape_HVFlip, new Vector3(worldPos.x - 6.5f, worldPos.y - 6.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneRoom_LShape_HVFlip;
                 break;
             case 10:
-                cloneStartRoom = Instantiate(startRoom, new Vector3(worldPos.x - 10, worldPos.y - 10, 0f), Quaternion.identity) as GameObject;
+                cloneStartRoom = Instantiate(startRoom, new Vector3(worldPos.x - 6.5f, worldPos.y - 6.5f, 0f), Quaternion.identity) as GameObject;
                 generatedRoom = cloneStartRoom;
                 break;
         }

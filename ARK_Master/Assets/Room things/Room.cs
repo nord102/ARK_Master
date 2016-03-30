@@ -114,7 +114,6 @@ public class Room : MonoBehaviour
     #endregion
 
     #region Functions
-
     public void DoorToList(int roomCom, string direction)
     {
         Door newDoor = new Door();
@@ -512,29 +511,25 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                        }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                        }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                        }
-                        else //Inside is blank
+                        //Left (i = 0)
+                        roomLayout[i, j] = -1;
+
+                        //Right (i = (dimension - 1))
+                        roomLayout[i, j] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, j] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, j] = -1;
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                         }
                     }
                 }
-
                 break;
             #endregion
             #region 1x2
@@ -547,33 +542,38 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0, j + (dimension - 1)] = -1;
+
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1), j] = -1;
+                        roomLayout[(dimension - 1), j + (dimension - 1)] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1) + (dimension - 1)] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + (dimension - 1)] = -1;
+                            //Top (j = (dimension - 1))
+                            roomLayout[i, (dimension - 1)] = 0;
+
+                            //Bottom (j = 0)
+                            roomLayout[i, 0 + (dimension - 1)] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + (dimension - 1)] = -1;
-                        }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + (dimension - 1)] = 0;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + (dimension - 1)] = -1;
-                        }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + (dimension - 1)] = 0;
                         }
                     }
                 }
+
 
                 break;
             #endregion
@@ -587,33 +587,32 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                        }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
-                        }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
-                        }
-                        else //Inside is blank
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0 + dimension - 1, j] = 0;
+
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1), j] = 0;
+                        roomLayout[(dimension - 1) + dimension - 1, j] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1)] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1)] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+                        roomLayout[i + dimension - 1, 0] = -1;
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i + dimension - 1, j] = 0;
                         }
                     }
                 }
+
+
                 break;
             #endregion
             #region 1x3
@@ -626,31 +625,35 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0, j + dimension - 1] = -1;
+                        roomLayout[0, j + (2 * (dimension - 1))] = -1;
+
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1), j] = -1;
+                        roomLayout[(dimension - 1), j + dimension - 1] = -1;
+                        roomLayout[(dimension - 1), j + (2 * (dimension - 1))] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1) + (2 * (dimension - 1))] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i, j + (2 * (dimension - 1))] = -1;
+                            //Top (j = (dimension - 1))
+                            roomLayout[i, (dimension - 1)] = 0;
+                            roomLayout[i, (dimension - 1) + dimension - 1] = 0;
+
+                            //Bottom (j = 0)
+                            roomLayout[i, 0 + dimension - 1] = 0;
+                            roomLayout[i, 0 + (2 * (dimension - 1))] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i, j + (2 * (dimension - 1))] = -1;
-                        }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i, j + (2 * (dimension - 1))] = 0;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i, j + (2 * (dimension - 1))] = -1;
-                        }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = 0;
@@ -671,31 +674,28 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                            roomLayout[i + (2 * (dimension - 1)), j] = 0;
-                        }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i + dimension - 1, j] = 0;
-                            roomLayout[i + (2 * (dimension - 1)), j] = -1;
-                        }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
-                            roomLayout[i + (2 * (dimension - 1)), j] = -1;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
-                            roomLayout[i + (2 * (dimension - 1)), j] = -1;
-                        }
-                        else //Inside is blank
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0 + dimension - 1, j] = 0;
+                        roomLayout[0 + (2 * (dimension - 1)), j] = 0;
+
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1), j] = 0;
+                        roomLayout[(dimension - 1) + dimension - 1, j] = 0;
+                        roomLayout[(dimension - 1) + (2 * (dimension - 1)), j] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1)] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1)] = -1;
+                        roomLayout[i + (2 * (dimension - 1)), (dimension - 1)] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+                        roomLayout[i + dimension - 1, 0] = -1;
+                        roomLayout[i + (2 * (dimension - 1)), 0] = -1;
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i + dimension - 1, j] = 0;
@@ -715,31 +715,42 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0, j + dimension - 1] = -1;
+                        
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1), j + dimension - 1] = -1;
+                        roomLayout[(dimension - 1) + dimension - 1, j] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1) + dimension - 1] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1)] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+                        roomLayout[i + dimension - 1, 0] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
+                            //Top (j = (dimension - 1))
+                            roomLayout[i, (dimension - 1)] = 0;
+
+                            //Bottom (j = 0)
+                            roomLayout[i, 0 + dimension - 1] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
+
+                        if (j != 0 && j != (dimension - 1))
                         {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
+                            //Left (i = 0)
+                            roomLayout[0 + dimension - 1, j] = 0;
+
+                            //Right (i = (dimension - 1))
+                            roomLayout[(dimension - 1), j] = 0;
                         }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
-                        }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = 0;
@@ -747,7 +758,6 @@ public class Room : MonoBehaviour
                         }
                     }
                 }
-
                 break;
             #endregion
             #region L-shape (Horizontal Flip)
@@ -760,31 +770,41 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0, j + dimension - 1] = -1;
+                        
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1), j] = -1;
+                        roomLayout[(dimension - 1) + dimension - 1, j + dimension - 1] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1) + dimension - 1] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1) + dimension - 1] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+                        roomLayout[i + dimension - 1, 0 + dimension - 1] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
+                            //Top (j = (dimension - 1))
+                            roomLayout[i, (dimension - 1)] = 0;
+                            //Bottom (j = 0)
+                            roomLayout[i, 0 + dimension - 1] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
+
+                        if (j != 0 && j != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                            //Left (i = 0)
+                            roomLayout[0 + dimension - 1, j + dimension - 1] = 0;
+
+                            //Right (i = (dimension - 1))
+                            roomLayout[(dimension - 1), j + dimension - 1] = 0;
                         }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
-                        }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = 0;
@@ -792,7 +812,6 @@ public class Room : MonoBehaviour
                         }
                     }
                 }
-
                 break;
             #endregion
             #region L-Shape (Vertical Flip)
@@ -805,31 +824,42 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;                        
+                        roomLayout[0 + dimension - 1, j + dimension - 1] = -1;
+
+                        //Right (i = (dimension - 1))                       
+                        roomLayout[(dimension - 1) + dimension - 1, j] = -1;
+                        roomLayout[(dimension - 1) + dimension - 1, j + dimension - 1] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1)] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1) + dimension - 1] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+                        roomLayout[i + dimension - 1, 0] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                            //Top (j = (dimension - 1))
+                            roomLayout[i + dimension - 1, (dimension - 1)] = 0;
+
+                            //Bottom (j = 0)
+                            roomLayout[i + dimension - 1, 0 + dimension - 1] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
+
+                        if (j != 0 && j != (dimension - 1))
                         {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                            //Left (i = 0)
+                            roomLayout[0 + dimension - 1, j] = 0;
+
+                            //Right (i = (dimension - 1))
+                            roomLayout[(dimension - 1), j] = 0;
                         }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
-                        }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i + dimension - 1, j] = 0;
@@ -837,7 +867,6 @@ public class Room : MonoBehaviour
                         }
                     }
                 }
-
                 break;
             #endregion
             #region L-shape (Horizontal - Vertical Flip)
@@ -850,31 +879,43 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
+
+                        //Left (i = 0)
+                        roomLayout[0, j + dimension - 1] = -1;
+                        roomLayout[0 + dimension - 1, j] = -1;
+
+                        //Right (i = dimension - 1)
+                        roomLayout[(dimension - 1) + dimension - 1, j + dimension - 1] = -1;
+                        roomLayout[(dimension - 1) + dimension - 1, j] = -1;
+
+                        //Top (j = dimension - 1)
+                        roomLayout[i, (dimension - 1) + dimension - 1] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1) + dimension - 1] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0 + dimension - 1] = -1;
+                        roomLayout[i + dimension - 1, 0] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
+                            //Top (j = dimension - 1)
+                            roomLayout[i + dimension - 1, (dimension - 1)] = 0;
+                            
+                            //Bottom (j = 0)
+                            roomLayout[i + dimension - 1, 0 + dimension - 1] = 0;
                         }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
+
+                        if (j != 0 && j != (dimension - 1))
                         {
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = -1;
+                            //Left (i = 0)
+                            roomLayout[0 + dimension - 1, j + dimension - 1] = 0;
+
+                            //Right (i = (dimension - 1))
+                            roomLayout[(dimension - 1), j + dimension - 1] = 0;
                         }
-                        else if (j == 0) //Make bottom walls (COLS)
-                        {
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
-                        }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
-                        {
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                        }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j + dimension - 1] = 0;
                             roomLayout[i + dimension - 1, j + dimension - 1] = 0;
@@ -895,36 +936,46 @@ public class Room : MonoBehaviour
                 {
                     for (int j = 0; j < dimension; j++)
                     {
-                        if (i == 0) //Make left walls (ROWS)
-                        {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
-                        }
-                        else if (i == (dimension - 1)) //Make right walls (ROWS)
-                        {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                        //Left (i = 0)
+                        roomLayout[0, j] = -1;
+                        roomLayout[0, j + dimension - 1] = -1;
 
-                        }
-                        else if (j == 0) //Make bottom walls (COLS)
+                        //Right (i = (dimension - 1))
+                        roomLayout[(dimension - 1) + dimension - 1, j] = -1;
+                        roomLayout[(dimension - 1) + dimension - 1, j + dimension - 1] = -1;
+
+                        //Top (j = (dimension - 1))
+                        roomLayout[i, (dimension - 1) + dimension - 1] = -1;
+                        roomLayout[i + dimension - 1, (dimension - 1) + dimension - 1] = -1;
+
+                        //Bottom (j = 0)
+                        roomLayout[i, 0] = -1;
+                        roomLayout[i + dimension - 1, 0] = -1;
+
+                        if (i != 0 && i != (dimension - 1))
                         {
-                            roomLayout[i, j] = -1;
-                            roomLayout[i, j + dimension - 1] = 0;
-                            roomLayout[i + dimension - 1, j] = -1;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = 0;
+                            //Top (j = (dimension - 1))
+                            roomLayout[i, (dimension - 1)] = 0;
+                            roomLayout[i + dimension - 1, (dimension - 1)] = 0;
+
+                            //Bottom (j = 0)
+                            roomLayout[i, 0 + dimension - 1] = 0;
+                            roomLayout[i + dimension - 1, 0 + dimension - 1] = 0;
                         }
-                        else if (j == (dimension - 1)) //Make top walls (COLS)
+
+                        if (j != 0 && j != (dimension - 1))
                         {
-                            roomLayout[i, j] = 0;
-                            roomLayout[i, j + dimension - 1] = -1;
-                            roomLayout[i + dimension - 1, j] = 0;
-                            roomLayout[i + dimension - 1, j + dimension - 1] = -1;
+                            //Left (i = 0)
+                            roomLayout[0 + dimension - 1, j] = 0;
+                            roomLayout[0 + dimension - 1, j + dimension - 1] = 0;
+
+                            //Right (i = (dimension - 1))
+                            roomLayout[(dimension - 1), j] = 0;
+                            roomLayout[(dimension - 1), j + dimension - 1] = 0;
                         }
-                        else //Inside is blank
+
+                        //Middle
+                        if ((i != 0 && i != (dimension - 1)) && (j != 0 && j != (dimension - 1)))
                         {
                             roomLayout[i, j] = 0;
                             roomLayout[i, j + dimension - 1] = 0;
