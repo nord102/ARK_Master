@@ -44,6 +44,7 @@ public class MyCanvas : MonoBehaviour
     {
         EmptyRewards();
         gameObject.SetActive(false);
+        StateMachine.instance.EventInfo.GetComponent<EventInfo>().StartEventInfo(MyEvent);
     }
 
     public void EmptyRewards()
