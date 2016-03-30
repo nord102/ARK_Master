@@ -4767,6 +4767,7 @@ MonoBehaviour:
   DialogueBox: {fileID: 132497283}
   appPath: 
   EventInfo: {fileID: 185302564}
+  alien: {fileID: 685741539}
   numMaxRooms: 30
 --- !u!4 &1965047332
 Transform:
@@ -4837,7 +4838,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000015258789, y: -6.7}
+  m_AnchoredPosition: {x: 0, y: -6.7}
   m_SizeDelta: {x: 0, y: 293.3}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2032013961
