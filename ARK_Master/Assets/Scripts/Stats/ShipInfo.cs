@@ -11,6 +11,13 @@ public class ShipInfo {
 	//public List<Rooms> RoomList;
 	public string CurrentRoom;
 
+    public ShipInfo()
+    {
+        Resources = 100;
+        // Set the health bar's value to the current health.
+        StateMachine.instance.shipResources.text = Resources.ToString();
+    }
+
     public void SetResources(double value)
     {
         if (Resources + value <= 0)

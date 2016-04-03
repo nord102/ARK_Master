@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Dragging : MonoBehaviour
 {
+    public static Dragging instance = null;
+
     #region Dragging Variables
     //GameObject being Dragged
     public GameObject gameObjectToDrag;
@@ -31,31 +34,82 @@ public class Dragging : MonoBehaviour
     private bool placeable = false;
 
     Room newRoom = new Room();
-    
 
-        public void StartDragging(int roomShape)
+    void Start()
     {
-        //Get the chosen room shape
-        globalRoomShape = roomShape;
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
-        //Create GameObject based on room shape
-        gameObjectToDrag = Generate.instance.GenerateRoom(roomShape);
-        GOCenter = gameObjectToDrag.transform.position;
-        touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        offset = touchPosition - GOCenter;
+    public int DetermineRoomCost(int roomShape)
+    {
+        int roomCost = 0;
 
-        //Add the GameObject to the Global List
-        Generate.instance.GetRoomGameObjectList().Add(gameObjectToDrag);
+        if (roomShape == 1) //1
+        {
+            roomCost = Generate.instance.standardRoomCosts[0];
+        }
+        else if (roomShape == 2 || roomShape == 3) //2
+        {
+            roomCost = Generate.instance.standardRoomCosts[1];
+        }
+        else if (roomShape >= 4 && roomShape <= 9) //3
+        {
+            roomCost = Generate.instance.standardRoomCosts[2];
+        }
+        else if (roomShape == 10) //4
+        {
+            roomCost = Generate.instance.standardRoomCosts[3];
+        }
 
-        //Get the Room Script Component of the Room GameObject
-        newRoom = gameObjectToDrag.GetComponent<Room>();
-        newRoom.Initialize(Generate.instance.GetRoomGameObjectList().Count, globalRoomShape, 0, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+        return roomCost;
+    }
 
-        //--
-        //Cursor.visible = false;
-        //--
-        draggingMode = true;
 
+    public void StartDragging(int roomShape)
+    {
+        if (!draggingMode)
+        {
+            int roomValue = DetermineRoomCost(roomShape);
+
+            //Check if Player can afford room
+            if (StateMachine.instance.sInfo.Resources >= roomValue)
+            {
+                //Adjusts the Resources based on the transaction
+                StateMachine.instance.sInfo.SetResources(-roomValue);
+
+                #region DraggingRoom
+                //Get the chosen room shape
+                globalRoomShape = roomShape;
+
+                //Create GameObject based on room shape
+                gameObjectToDrag = Generate.instance.GenerateRoom(roomShape);
+                GOCenter = gameObjectToDrag.transform.position;
+                touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                offset = touchPosition - GOCenter;
+
+                //Add the GameObject to the Global List
+                Generate.instance.GetRoomGameObjectList().Add(gameObjectToDrag);
+
+                //Get the Room Script Component of the Room GameObject
+                newRoom = gameObjectToDrag.GetComponent<Room>();
+                newRoom.Initialize(Generate.instance.GetRoomGameObjectList().Count, globalRoomShape, 0, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+
+                //Cursor.visible = false;
+                draggingMode = true;
+                #endregion
+            }
+            else
+            {
+                //display message that Player cannot afford the room
+            }
+        }
     }
 
     public void HighlightToggle()
@@ -83,7 +137,7 @@ public class Dragging : MonoBehaviour
             }
         }
 
-        if (overlap)
+        if (overlap || !placeable)
         {
             //Highlight the Room RED for overlap
             foreach (Transform child in gameObjectToDrag.transform)
@@ -120,7 +174,7 @@ public class Dragging : MonoBehaviour
         foreach (RoomComponent newRoomCom in newRoom.GetComponentList())
         {
             foreach (RoomComponent globalRoomCom in Generate.instance.GetRoomComponentList())
-            {                
+            {
                 //Check if there is at least one global RoomComponent beside a newRoom Room RoomComponent
                 #region (X+, Y) (RIGHT)
                 if (((newRoomCom.posX + (newRoom.dimension - 1) == globalRoomCom.posX) && (newRoomCom.posY == globalRoomCom.posY)) && (newRoomCom.roomID != globalRoomCom.roomID))
@@ -171,8 +225,6 @@ public class Dragging : MonoBehaviour
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             newGOCenter = touchPosition - offset;
 
-            Debug.Log(Input.mousePosition);
-
             Vector3 pos = gameObjectToDrag.transform.position;
 
             #region X POSITION
@@ -210,16 +262,13 @@ public class Dragging : MonoBehaviour
             HighlightToggle();
 
             CheckIfPlaceable();
-            
+
         }
 
         //Mouse Click + Room is being dragged + that Room isn't highlighted + it's in a placeable zone
         if (Input.GetMouseButton(0) && draggingMode && (!highlighted) && (placeable))
         {
-            //--
             Cursor.visible = true;
-            //--
-
             draggingMode = false;
             placeable = false;
 

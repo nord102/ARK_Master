@@ -268,11 +268,17 @@ public class StateMachine : MonoBehaviour {
 			}
 			else
 			{
-				//HideCharacterSheet();
-                BuildingMenuOpen = false;
-                PlayerControl = true;
-                BuildingMenu.SetActive(false);
-                mainCamera.orthographicSize = 5;
+                //Unable to stop building until the room being
+                //dragged is placed
+                if (!Dragging.instance.draggingMode)
+                {
+                    //HideCharacterSheet();
+                    BuildingMenuOpen = false;
+                    PlayerControl = true;
+                    BuildingMenu.SetActive(false);
+                    mainCamera.orthographicSize = 5;
+
+                }
 			}
 		}
 		else if (Input.GetKeyDown(KeyCode.M)) {
@@ -381,5 +387,12 @@ public class StateMachine : MonoBehaviour {
         {
             InstantiateEnemy.spawnEnemy(enemy, currentRoom.roomEvent.Enemies.Count, currentRoom);         
         }
+    }
+
+
+    public void ToggleRoom()
+    {
+
+
     }
 }
