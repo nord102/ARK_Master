@@ -10,18 +10,17 @@ public class EventInfo : MonoBehaviour
     public GameObject Rewards;
 
     private Events MyEvent;
-    private bool Count = false;
-    private int Seconds = 0;
+    private float Timer = 0.0f;
+    private float StartTime = 0.0f;
 
     public void StartEventInfo(Events myEvent)
     {
         gameObject.SetActive(true);
         MyEvent = myEvent;
 
-        Count = true;
-        StartCoroutine(IncTime());
-
         SetRewards();
+        StartTime = Time.deltaTime;
+        Timer = 0.0f;
     }
 
     public void SetRewards()
@@ -43,6 +42,8 @@ public class EventInfo : MonoBehaviour
 
             timer.GetComponent<Text>().text = r.RewardTimer.ToString() + "s";
             //set image
+            //rewardImage.
+
             ++i;
         }
     }
@@ -50,23 +51,12 @@ public class EventInfo : MonoBehaviour
     public void EndEventInfo()
     {
         gameObject.SetActive(false);
-        Count = false;
         //Resolve event
+        //MyEvent.
     }
 
-    public IEnumerator IncTime()
+    public void SetTime(int Seconds)
     {
-        while (Count)
-        {
-            IncreaseTime();
-            yield return new WaitForSeconds(3);
-        }
-    }
-
-    public void IncreaseTime()
-    {
-        ++Seconds;
-
         int secs = Seconds % 60;
         int mins = Seconds / 60;
         string time = string.Format("{0:00}:{1:00}", mins, secs);
@@ -83,6 +73,9 @@ public class EventInfo : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	
-	}
+        //http://answers.unity3d.com/questions/64498/time-counter-up.html
+        Timer += Time.deltaTime;
+
+        SetTime((int)Timer - (int)StartTime);
+    }
 }

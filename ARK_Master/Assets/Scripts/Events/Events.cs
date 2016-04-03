@@ -13,6 +13,7 @@ public class Events
 	public List<Rewards> SuccessRewards = new List<Rewards> ();
 	public List<int> Enemies = new List<int> ();//Should probably be enums
     //public List<EventChoice> eventChoices;
+    public List<RoomEnemy> enemies = new List<RoomEnemy>();
 
     public Events(int eventType, int roomType, int numComponents)
     {
@@ -45,7 +46,7 @@ public class Events
             lootTableSilver += 1;
         }
 
-        List<RoomEnemy> enemies = new List<RoomEnemy>();
+        
 
         //Determine # of Enemies
         int numEnemies = numComponents * eventDifficulty;
