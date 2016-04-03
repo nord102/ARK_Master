@@ -85,6 +85,8 @@ public static class Pathfinding {
             {
                 //Randomly move towards connected door position, avoiding -1 tiles
                 bool connected = false;
+                bool forceX = false;
+                bool forceY = false;
                 int currentPositionX = c.door.posX - room.posX;
                 int currentPositionY = c.door.posY - room.posY;
 
@@ -129,28 +131,50 @@ public static class Pathfinding {
                         continue;
                     }
 
-                    if (Random.Range(0, 2) == 0)
+                    if (Random.Range(0, 2) == 0 || forceX && !forceY) //Pulled X
                     {
                         //Try to move along the x axis - Things that fail this condition: (Next tile was a wall) or (Next tile is the door I just stepped away from) or (Next tile is a door, but not the correct one)
-                        if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -1 || (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -2 && (currentPositionX + (1 * xMultiplier) != room.GetDoorList()[doorID].posX - room.posX || currentPositionY != room.GetDoorList()[doorID].posY - room.posY )))// || (c.door.posX - room.posX == currentPositionX + (1 * xMultiplier) && c.door.posY - room.posY == currentPositionY))//|| (currentPositionX == room.GetDoorList()[doorID].posX - room.posX) && (c.door.posX - room.posX != (currentPositionX + (1 * xMultiplier)) && c.door.posY - room.posY != currentPositionY))
+                        if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -1 || (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -2  && (currentPositionX + (1 * xMultiplier) != room.GetDoorList()[doorID].posX - room.posX || currentPositionY != room.GetDoorList()[doorID].posY - room.posY)))// || (c.door.posX - room.posX == currentPositionX + (1 * xMultiplier) && c.door.posY - room.posY == currentPositionY))//|| (currentPositionX == room.GetDoorList()[doorID].posX - room.posX) && (c.door.posX - room.posX != (currentPositionX + (1 * xMultiplier)) && c.door.posY - room.posY != currentPositionY))
                         {
-                            //Cant move on the x axis, so we must use the y one
-                            currentPositionY += 1 * yMultiplier;
-                            alteredTileArray[currentPositionX, currentPositionY] = 1;
-                            Debug.Log("Moving Y Because X Blocked: "+ currentPositionX + ", " + currentPositionY);
-                        }
-                        else
-                        {
-                            if (currentPositionX == room.GetDoorList()[doorID].posX - room.posX)
+                            if (currentPositionY == room.GetDoorList()[doorID].posY - room.posY)
                             {
-                                //We could move x, but we are already on the correct x - so move y
-                                currentPositionY += 1 * yMultiplier;
+                                //correct y, but x is -1. Damn you L Shaped rooms. Move BACK 1 y, force x until x == door position
+                                forceX = true;
+                                currentPositionY += 1 * (-yMultiplier);
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Moving Y Because Already on Correct X: " + currentPositionX + ", " + currentPositionY);
+                                Debug.Log("Stepping back Y because X is a wall: " + currentPositionX + ", " + currentPositionY);
                             }
                             else
                             {
-                                //We could move on the x axis, so we do
+                                //Cant move on the x axis, so we must use the y one
+                                currentPositionY += 1 * yMultiplier;
+                                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Moving Y Because X Blocked: " + currentPositionX + ", " + currentPositionY);
+                            }
+                        }
+                        else
+                        {                       
+                            if (currentPositionX == room.GetDoorList()[doorID].posX - room.posX)
+                            {
+                                //We could move x, but we are already on the correct x - so move y unless y is -1
+                                if (alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == -1)
+                                {
+                                    //correct x, but y is -1. Damn you L Shaped rooms. Move BACK 1 x, force y until y == door position
+                                    forceY = true;
+                                    currentPositionX += 1 * (-xMultiplier);
+                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                    Debug.Log("Stepping back X because Y is a wall: " + currentPositionX + ", " + currentPositionY);
+                                }
+                                else
+                                {
+                                    currentPositionY += 1 * yMultiplier;
+                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                    Debug.Log("Moving Y Because Already on Correct X: " + currentPositionX + ", " + currentPositionY);
+                                }
+                            }
+                            else
+                            {
+                                //We could move on the x axis, so we do - Unless the y matches up but is NOT the door
                                 currentPositionX += 1 * xMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
                                 Debug.Log("Moving X: " + currentPositionX + ", " + currentPositionY);
@@ -158,25 +182,47 @@ public static class Pathfinding {
                             
                         }
                     }
-                    else
+                    else //Pulled Y
                     {
                         //Try to move along the y axis
                         if (alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == -1 || (alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == -2 && (currentPositionX != room.GetDoorList()[doorID].posX - room.posX || currentPositionY + (1 * yMultiplier) != room.GetDoorList()[doorID].posY - room.posY)))// (c.door.posY - room.posY == currentPositionY + (1 * yMultiplier) && c.door.posX - room.posX == currentPositionX) )// || (currentPositionY == room.GetDoorList()[doorID].posY - room.posY) && (c.door.posY - room.posY != (currentPositionY + (1 * yMultiplier)) && c.door.posX - room.posX != currentPositionX))
                         {
-                            //Cant move on the y axis, so we must use the x one
-                            currentPositionX += 1 * xMultiplier;
-                            alteredTileArray[currentPositionX, currentPositionY] = 1;
-
-                            Debug.Log("Moving X Because Y Blocked: " + currentPositionX + ", " + currentPositionY);
+                            if (currentPositionX == room.GetDoorList()[doorID].posX - room.posX)
+                            {
+                                //correct x, but y is -1. Damn you L Shaped rooms. Move BACK 1 x, force y until y == door position
+                                forceY = true;
+                                currentPositionX += 1 * (-xMultiplier);
+                                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Stepping back X because Y is a wall: " + currentPositionX + ", " + currentPositionY);
+                            }
+                            else
+                            {
+                                //Cant move on the y axis, so we must use the x one
+                                currentPositionX += 1 * xMultiplier;
+                                alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                Debug.Log("Moving X Because Y Blocked: " + currentPositionX + ", " + currentPositionY);
+                            }
                         }
                         else
                         {
                             if (currentPositionY == room.GetDoorList()[doorID].posY - room.posY)
                             {
-                                //We could move y, but we are already on the correct y - so move x
-                                currentPositionX += 1 * xMultiplier;
-                                alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Moving X Because Already on Correct Y: " + currentPositionX + ", " + currentPositionY);
+                                //We could move x, but we are already on the correct x - so move y unless y is -1
+                                if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == -1)
+                                {
+                                    //correct y, but x is -1. Damn you L Shaped rooms. Move BACK 1 y, force x until x == door position
+                                    forceX = true;
+                                    currentPositionY += 1 * (-yMultiplier);
+                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                    Debug.Log("Stepping back Y because X is a wall: " + currentPositionX + ", " + currentPositionY);
+                                }
+                                else
+                                {
+                                    //We could move y, but we are already on the correct y - so move x
+                                    currentPositionX += 1 * xMultiplier;
+                                    alteredTileArray[currentPositionX, currentPositionY] = 1;
+                                    Debug.Log("Moving X Because Already on Correct Y: " + currentPositionX + ", " + currentPositionY);
+                                }
                             }
                             else
                             {
