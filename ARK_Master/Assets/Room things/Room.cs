@@ -58,9 +58,11 @@ public class Room : MonoBehaviour
     //NEED TO DEFINE THIS
     public string roomState { get; set; }
 
+    #region Lists
     private List<RoomComponent> componentList { get; set; }
     private List<RoomObject> objectList { get; set; }
     private List<Door> doorList { get; set; }
+    #endregion
     #endregion
 
     #region List Accessors
@@ -109,7 +111,6 @@ public class Room : MonoBehaviour
 
         objectList = new List<RoomObject>();
         doorList = new List<Door>();
-
     }
     #endregion
 

@@ -34,6 +34,11 @@ public class SpawnEnemy : MonoBehaviour {
 	}
 }
 
+
+//Will probably need to make an instance instead
+//of having the method static
+//so it can return what it just cloned
+//to a list
 public class InstantiateEnemy : MonoBehaviour
 { 
     //Make a list of all the 1s in the array
@@ -41,7 +46,7 @@ public class InstantiateEnemy : MonoBehaviour
     public static void spawnEnemy(int typeOfEnemy, int enemyCount, Room currentRoom)
     {
         int tempNum = 0;
-        GameObject cloneAlien;
+        GameObject cloneEnemy;
 
         Vector2 tempPoint = new Vector2(0,0);
 
@@ -51,7 +56,6 @@ public class InstantiateEnemy : MonoBehaviour
 
         //Make list of possible spots in array
         List<Vector2> possibleList = new List<Vector2>();
-
         for (int i = 0; i < Mathf.Sqrt(currentRoom.roomLayout.Length); i++)
         {
             for (int j = 0; j < Mathf.Sqrt(currentRoom.roomLayout.Length); j++)
@@ -69,8 +73,28 @@ public class InstantiateEnemy : MonoBehaviour
 
             tempPoint = possibleList[tempNum];
 
-            cloneAlien = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
-            cloneAlien.SetActive(true);
+            switch (typeOfEnemy)
+            {
+                case 0:
+                    {
+
+                    }
+                    break;
+                case 1:
+                    {
+
+                    }
+                    break;
+                case 2:
+                    {
+                        cloneEnemy = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
+                        cloneEnemy.SetActive(true);
+                    }
+                    break;
+
+            }
+
+            
         }
     }
 }

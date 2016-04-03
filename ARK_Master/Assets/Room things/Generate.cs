@@ -6,6 +6,11 @@ public class Generate : MonoBehaviour
 {
     public static Generate instance = null;
 
+    //--
+    public int[] standardRoomCosts = {50,125,200,275};
+    //--
+
+
     #region Door
     public GameObject door;
     private GameObject cloneDoor;

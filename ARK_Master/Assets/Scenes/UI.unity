@@ -912,7 +912,7 @@ GameObject:
   - 114: {fileID: 480564257}
   - 114: {fileID: 480564256}
   m_Layer: 5
-  m_Name: Room1
+  m_Name: Room_1x1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1262,7 +1262,7 @@ GameObject:
   - 114: {fileID: 550227870}
   - 114: {fileID: 550227872}
   m_Layer: 5
-  m_Name: Room2
+  m_Name: Room2x1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2568,7 +2568,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 287913223}
   m_HandleRect: {fileID: 287913222}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2753,7 +2753,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 200
+  m_Text: 125
 --- !u!222 &1155694789
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3592,7 +3592,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 400
+  m_Text: 275
 --- !u!222 &1481880973
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4347,7 +4347,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 19.99998, y: -2.999995}
+  m_AnchoredPosition: {x: 24, y: -7}
   m_SizeDelta: {x: 20.2, y: 19}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1705278087
@@ -4383,7 +4383,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: '50
+
+    c'
 --- !u!222 &1705278088
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4792,6 +4794,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc662c4863b82554581a2218c576e5ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  standardRoomCosts: 320000007d000000c800000013010000
   door: {fileID: 148874, guid: cc714434bd1128844bf58676a1d8fcaf, type: 2}
   currentDoor: {fileID: 0}
   startRoom: {fileID: 118366, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
@@ -4838,7 +4841,7 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -6.7}
+  m_AnchoredPosition: {x: -0.000061035156, y: -6.7}
   m_SizeDelta: {x: 0, y: 293.3}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2032013961
@@ -4909,7 +4912,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 300
+  m_Text: 200
 --- !u!222 &2032013964
 CanvasRenderer:
   m_ObjectHideFlags: 0
