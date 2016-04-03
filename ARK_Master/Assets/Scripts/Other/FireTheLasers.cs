@@ -25,6 +25,7 @@ public class FireTheLasers : MonoBehaviour
         start = this.transform.position;
 
         Physics2D.IgnoreLayerCollision(9, 10);
+		LaserSound.instance.PlaySound ();
 
     }
 
