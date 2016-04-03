@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using System.Threading;
 
 public class Enemy : MonoBehaviour {
 
@@ -8,11 +10,15 @@ public class Enemy : MonoBehaviour {
     public GameObject playerLocation;
     public Animator animator;
 
+
     
 
     private bool lastX;
     private float range;
     public float health;
+	public float timer;
+	const float ATTACK_DELAY = 1.5f;
+	const double DAMAGE_AMOUNT = 10;
 
 
     // Sounds
@@ -20,7 +26,8 @@ public class Enemy : MonoBehaviour {
 
     // Use this for initialization
     void Start()
-    {
+	{
+		timer = 0f;
         stop = false;
         health = 10;
         range = 10;
@@ -32,27 +39,34 @@ public class Enemy : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (!stop)
-        {
-            Chase();
-        }
+		if (!stop) {
+			Chase ();
+		} else {
+			this.timer += Time.deltaTime;
+
+			if (Math.Round (this.timer, 1) == ATTACK_DELAY) {
+				Attack ();
+				this.timer = 0;
+			}
+
+
+		}
     }
 
+	private void Attack()
+	{
+		animator.SetTrigger ("attack");
+		Player.instance.Damage(DAMAGE_AMOUNT);
+		AlienAttack.instance.PlaySound();
+	}
 
 
     void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.name.Contains("Player"))
         {
-
-            animator.SetTrigger ("attack");
-            Player.instance.Damage(5);
-            AlienAttack.instance.PlaySound();
-
-            if (!Player.instance.isActiveAndEnabled)
-            {
-                stop = true;
-            }
+			Attack ();
+            stop = true;
         }
 
         else if (coll.gameObject.name.Contains("Laser"))
@@ -60,6 +74,14 @@ public class Enemy : MonoBehaviour {
             Damage(2);
         }
     }
+
+	void OnCollisionExit2D(Collision2D coll)
+	{
+		if (coll.gameObject.name.Contains("Player"))
+		{
+			stop = false;
+		}
+	}	
 
     private void Damage(int amount)
     {
@@ -79,8 +101,8 @@ public class Enemy : MonoBehaviour {
         Vector3 playerPos = playerLocation.transform.position;
 		//Vector3 playerPos = new Vector3(0,0,-10);
 
-        float x = playerPos.x - transform.position.x;
-        float y = playerPos.y - transform.position.y;
+		double x = Math.Round((double)(playerPos.x - transform.position.x), 1);
+		double y = Math.Round((double)(playerPos.y - transform.position.y), 1);
 
         if (x < 0)
             x *= -1;
@@ -105,8 +127,8 @@ public class Enemy : MonoBehaviour {
 		//Vector3 playerPos = new Vector3(0,0,-10);
 
 
-        float x = playerPos.x - transform.position.x;
-        float y = playerPos.y - transform.position.y;
+		double x = Math.Round((double)(playerPos.x - transform.position.x), 1);
+		double y = Math.Round((double)(playerPos.y - transform.position.y), 1);
 
         if (CheckRange())
         {
@@ -115,7 +137,6 @@ public class Enemy : MonoBehaviour {
                 vel.x -= speed;
                 currentX = true;
 				animator.SetBool("runDirection", true);
-
             }
 
             else if (x > 0)
