@@ -57,6 +57,13 @@ public class StateMachine : MonoBehaviour {
     //Long - 90
     public int numMaxRooms = 30;
 
+    //--
+    private int roomSelect = 1;
+    public GameObject RoomSelectMenu_1;
+    public GameObject RoomSelectMenu_2;
+    public GameObject RoomSelectMenu_3;
+    //--
+
     // Use this for initialization
     void Start () 
     {
@@ -387,6 +394,51 @@ public class StateMachine : MonoBehaviour {
         {
             InstantiateEnemy.spawnEnemy(enemy, currentRoom.roomEvent.Enemies.Count, currentRoom);         
         }
+    }
+
+    //--
+    //Room Select Functions
+    //--
+    public void UpdateRoomSelect(string direction)
+    {
+        if (roomSelect == 1 && direction == "down")
+        {
+            roomSelect++;
+            RoomSelectMenu_1.SetActive(false);
+            RoomSelectMenu_2.SetActive(true);
+
+        }
+        else if (roomSelect == 2 && direction == "down")
+        {
+            roomSelect++;
+            RoomSelectMenu_2.SetActive(false);
+            RoomSelectMenu_3.SetActive(true);
+        }
+        else if (roomSelect == 2 && direction == "up")
+        {
+            roomSelect--;
+            RoomSelectMenu_2.SetActive(false);
+            RoomSelectMenu_1.SetActive(true);
+        }        
+        else if (roomSelect == 3 && direction == "up")
+        {
+            roomSelect--;
+            RoomSelectMenu_3.SetActive(false);
+            RoomSelectMenu_2.SetActive(true);
+        }
+    }
+
+    public void SwitchRoomType(string roomType)
+    {
+        if (roomType == "standard")
+        {
+
+        }
+        else if (roomType == "medical")
+        {
+
+        }
+
     }
 
 
