@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -49,6 +50,7 @@ public class StateMachine : MonoBehaviour
     public GameObject DialogueBox;
     public Database db;
     public string appPath;
+    public string ImagePath;
 
     public GameObject EventInfo;
 
@@ -175,7 +177,15 @@ public class StateMachine : MonoBehaviour
     //Call this when the player's Health reaches 0, or other events that end the game
     public void GameOver()
     {
-        SaveDeadCharacters();
+        try
+        {
+            SaveDeadCharacters();
+        }
+        catch
+        {
+            //Forget it then
+        }
+        SceneManager.LoadScene("TitleMenu");
     }
 
     public void ActivateSinisterEvent()
@@ -185,7 +195,14 @@ public class StateMachine : MonoBehaviour
 
     void LoadSettings()
     {
-        LoadDeadCharacters();
+        try
+        {
+            LoadDeadCharacters();
+        }
+        catch
+        {
+            //Not implemented anyway
+        }
     }
 
     void UpdateUI()
@@ -229,6 +246,7 @@ public class StateMachine : MonoBehaviour
         BuildingMenu.SetActive(false);
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
+        ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
 
         //PlayerInfo.InitializePlayerInfo (0);
