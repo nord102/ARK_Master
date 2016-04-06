@@ -15,7 +15,7 @@ public class Generate : MonoBehaviour
     public GameObject door;
     private GameObject cloneDoor;
 
-    public Door currentDoor;
+    public Door currentDoor = null;
     #endregion
 
     #region Room GameObjects
