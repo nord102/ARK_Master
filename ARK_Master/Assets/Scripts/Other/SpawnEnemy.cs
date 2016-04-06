@@ -43,7 +43,7 @@ public class InstantiateEnemy : MonoBehaviour
 { 
     //Make a list of all the 1s in the array
 
-    public static void spawnEnemy(int typeOfEnemy, int enemyCount, Room currentRoom)
+    public static void spawnEnemy(List<int> enemies, Room currentRoom)
     {
         int tempNum = 0;
         GameObject cloneEnemy;
@@ -67,17 +67,18 @@ public class InstantiateEnemy : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < enemyCount; i++)
+        for (int i = 0; i < enemies.Count; i++)
         {
             tempNum = UnityEngine.Random.Range(0, (int)Mathf.Sqrt(possibleList.Count));
 
             tempPoint = possibleList[tempNum];
 
-            switch (typeOfEnemy)
+            switch (enemies[i])
             {
                 case 0:
                     {
-
+                        cloneEnemy = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
+                        cloneEnemy.SetActive(true);
                     }
                     break;
                 case 1:
@@ -87,8 +88,7 @@ public class InstantiateEnemy : MonoBehaviour
                     break;
                 case 2:
                     {
-                        cloneEnemy = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
-                        cloneEnemy.SetActive(true);
+
                     }
                     break;
 
