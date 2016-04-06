@@ -41,7 +41,8 @@ public class StateMachine : MonoBehaviour
     public List<PlayerInfo> PreviousPlayers = new List<PlayerInfo>();
 
     public Sprite FireImage = new Sprite();
-    public Slider playerHealthBar;
+
+    public Image playerHealthBar;
     public Slider playerShieldBar;
     public Text shipResources;
 

@@ -40,7 +40,19 @@ public class PlayerInfo {
 		}
 
         // Set the health bar's value to the current health.
-        StateMachine.instance.playerHealthBar.value = (float)CurrentHealth;
+        StateMachine.instance.playerHealthBar.fillAmount = (float)CurrentHealth / 100;
+        if (StateMachine.instance.playerHealthBar.fillAmount <= .25)
+        {
+            StateMachine.instance.playerHealthBar.color = Color.red;
+        }
+        else if (StateMachine.instance.playerHealthBar.fillAmount <= .50)
+        {
+            StateMachine.instance.playerHealthBar.color = Color.yellow;
+        }
+        else
+        {
+            StateMachine.instance.playerHealthBar.color = Color.green;
+        }
 	}
 
 	public void SetShield(double value)
@@ -54,7 +66,7 @@ public class PlayerInfo {
 			CurrentShield += value;
 		}
         // Set the health bar's value to the current health.
-        StateMachine.instance.playerShieldBar.value = (float)CurrentShield;
+        StateMachine.instance.playerShieldBar.fillAmount = (float)CurrentShield / 100;
 	}
 
 	public void SetEnergy(double value)
