@@ -85,9 +85,10 @@ public class Events
             enemyCount = e.DetermineCount();
             for(int i = 0; i < enemyCount; ++i)
             {
-                Enemies.Add(e.EnemyNo * eventDifficulty);//?
+                Enemies.Add(e.EnemyNo);// * eventDifficulty);//?
             }
         }
+        Debug.Log("There are " + Enemies.Count.ToString() + " Enemies in this event");
     }
 //		switch (eventType) {
 //		case 0:

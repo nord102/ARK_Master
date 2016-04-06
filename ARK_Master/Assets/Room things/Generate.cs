@@ -97,6 +97,18 @@ public class Generate : MonoBehaviour
 
     #endregion
 
+    /// <summary>
+    /// Make a function that removes doors 
+    /// upon completion of event
+    /// </summary>
+    /// 
+    public void RemoveDoors()
+    {
+
+
+    }
+
+
     void PlaceStartRoom()
     {
         //Create Room GameObject

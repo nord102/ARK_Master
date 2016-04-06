@@ -45,12 +45,13 @@ public class Room : MonoBehaviour
     public bool draggingState { get; set; }
 
     /// <Room Types>
-    /// Medic Bay
-    /// Storage Bay
-    /// Engine Room?
+    /// 1. Storage
+    /// 2. Medical
+    /// 3. Engineering
+    /// 4. Labratory
     /// </summary>
     public int roomType { get; set; }
-
+    
     //Room Event
     public Events roomEvent { get; set; }
 

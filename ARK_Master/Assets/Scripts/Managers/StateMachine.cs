@@ -41,8 +41,9 @@ public class StateMachine : MonoBehaviour
     public List<PlayerInfo> PreviousPlayers = new List<PlayerInfo>();
 
     public Sprite FireImage = new Sprite();
-    public Slider playerHealthBar;
-    public Slider playerShieldBar;
+
+    public Image playerHealthBar;
+    public Image playerShieldBar;
     public Text shipResources;
 
     public GameObject DialogueBox;
@@ -401,10 +402,21 @@ public class StateMachine : MonoBehaviour
         //Grab enemy that is attached to event and spawn them?
         //Pick a spot with a 1 on it and spawn the enemies (random 1's)
 
-        foreach (int enemy in currentRoom.roomEvent.Enemies)
+        //foreach (int enemy in currentRoom.roomEvent.Enemies)
+        //{
+            InstantiateEnemy.spawnEnemy(currentRoom.roomEvent.Enemies, currentRoom);
+        //}
+    }
+
+    public void EndEvent(Events myEvent)
+    {
+        Debug.Log("EVENT OVER");
+        foreach (Rewards reward in myEvent.SuccessRewards)
         {
-            InstantiateEnemy.spawnEnemy(enemy, currentRoom.roomEvent.Enemies.Count, currentRoom);
+            reward.ActivateReward();
         }
+
+        EventInfo.GetComponent<EventInfo>().EndEventInfo();
     }
 
     //--

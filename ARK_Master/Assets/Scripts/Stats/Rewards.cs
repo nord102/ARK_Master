@@ -53,17 +53,26 @@ public class Rewards : MonoBehaviour
 
     public void ActivateReward()
     {
-        StateMachine.instance.pInfo.SetHealth(HPChange);
-        StateMachine.instance.pInfo.SetEnergy(EnergyChange);
-        StateMachine.instance.pInfo.SetShield(ShieldChange);
-        StateMachine.instance.sInfo.SetResources(ShipResourcesFound);
-        if (SkillFound != -1)
+        try
         {
-            StateMachine.instance.AllAvailableSkills[SkillFound].isOwned = true;
+            Debug.Log("Health: " + HPChange + " Energy: " + EnergyChange + " Shield: " + ShieldChange + " Money: " + ShipResourcesFound);
+            StateMachine.instance.pInfo.SetHealth(HPChange);
+            StateMachine.instance.pInfo.SetEnergy(EnergyChange);
+            StateMachine.instance.pInfo.SetShield(ShieldChange);
+            StateMachine.instance.sInfo.SetResources(ShipResourcesFound);
+            if (SkillFound != -1)
+            {
+                StateMachine.instance.AllAvailableSkills[SkillFound].isOwned = true;
+            }
+            if (CharacterUnlocked != -1)
+            {
+                //Add Character to statemachine...
+            }
         }
-        if (CharacterUnlocked != -1)
+        catch
         {
-            //Add Character to statemachine...
+            //The event screwed up, activating a skill we don't own maybe?
+            Debug.Log("Error activating Reward");
         }
 
     }
