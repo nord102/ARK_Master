@@ -3349,7 +3349,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
 --- !u!222 &743068886
@@ -4288,7 +4288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -9245,8 +9245,8 @@ MonoBehaviour:
   BuildingMenu: {fileID: 803154066}
   UI: {fileID: 1446544712}
   FireImage: {fileID: 0}
-  playerHealthBar: {fileID: 564308779}
-  playerShieldBar: {fileID: 630386770}
+  playerHealthBar: {fileID: 940051923}
+  playerShieldBar: {fileID: 743068885}
   shipResources: {fileID: 1636828493}
   DialogueBox: {fileID: 132497283}
   appPath: 

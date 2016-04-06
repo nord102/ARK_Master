@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -175,7 +176,15 @@ public class StateMachine : MonoBehaviour
     //Call this when the player's Health reaches 0, or other events that end the game
     public void GameOver()
     {
-        SaveDeadCharacters();
+        try
+        {
+            SaveDeadCharacters();
+        }
+        catch
+        {
+            //Forget it then
+        }
+        SceneManager.LoadScene("TitleMenu");
     }
 
     public void ActivateSinisterEvent()
@@ -185,7 +194,14 @@ public class StateMachine : MonoBehaviour
 
     void LoadSettings()
     {
-        LoadDeadCharacters();
+        try
+        {
+            LoadDeadCharacters();
+        }
+        catch
+        {
+            //Not implemented anyway
+        }
     }
 
     void UpdateUI()
