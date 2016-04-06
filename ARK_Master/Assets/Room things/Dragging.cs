@@ -76,10 +76,13 @@ public class Dragging : MonoBehaviour
     {
         if (!draggingMode)
         {
+            Physics2D.IgnoreLayerCollision(10, 11);
             int roomValue = DetermineRoomCost(roomShape);
 
             //Check if Player can afford room
-            if (StateMachine.instance.sInfo.Resources >= roomValue)
+
+            //TAKE OUT TRUE AFTER 
+            if (StateMachine.instance.sInfo.Resources >= roomValue || true)
             {
                 //Adjusts the Resources based on the transaction
                 StateMachine.instance.sInfo.SetResources(-roomValue);
