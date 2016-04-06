@@ -49,6 +49,7 @@ public class StateMachine : MonoBehaviour
     public GameObject DialogueBox;
     public Database db;
     public string appPath;
+    public string ImagePath;
 
     public GameObject EventInfo;
 
@@ -229,6 +230,7 @@ public class StateMachine : MonoBehaviour
         BuildingMenu.SetActive(false);
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
+        ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
 
         //PlayerInfo.InitializePlayerInfo (0);

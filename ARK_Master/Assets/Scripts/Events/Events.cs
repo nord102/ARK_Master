@@ -77,6 +77,14 @@ public class Events
         SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableBronze));
         SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableSilver));
         SuccessRewards.Add(StateMachine.instance.db.GetRandomRow(lootTableGold));
+        SuccessRewards.Sort(
+             delegate (Rewards i1, Rewards i2)
+             {
+                 return i1.RewardTimer.CompareTo(i2.RewardTimer);
+             }
+         );
+        SuccessRewards.Reverse();
+
 
         //Determine the bad guys based on room type, difficulty?
         int enemyCount = 0;
