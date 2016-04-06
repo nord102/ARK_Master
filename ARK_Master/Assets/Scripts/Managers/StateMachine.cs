@@ -43,7 +43,7 @@ public class StateMachine : MonoBehaviour
     public Sprite FireImage = new Sprite();
 
     public Image playerHealthBar;
-    public Slider playerShieldBar;
+    public Image playerShieldBar;
     public Text shipResources;
 
     public GameObject DialogueBox;
