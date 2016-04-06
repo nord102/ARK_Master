@@ -401,10 +401,21 @@ public class StateMachine : MonoBehaviour
         //Grab enemy that is attached to event and spawn them?
         //Pick a spot with a 1 on it and spawn the enemies (random 1's)
 
-        foreach (int enemy in currentRoom.roomEvent.Enemies)
+        //foreach (int enemy in currentRoom.roomEvent.Enemies)
+        //{
+            InstantiateEnemy.spawnEnemy(currentRoom.roomEvent.Enemies, currentRoom);
+        //}
+    }
+
+    public void EndEvent(Events myEvent)
+    {
+        Debug.Log("EVENT OVER");
+        foreach (Rewards reward in myEvent.SuccessRewards)
         {
-            InstantiateEnemy.spawnEnemy(enemy, currentRoom.roomEvent.Enemies.Count, currentRoom);
+            reward.ActivateReward();
         }
+
+        EventInfo.GetComponent<EventInfo>().EndEventInfo();
     }
 
     //--

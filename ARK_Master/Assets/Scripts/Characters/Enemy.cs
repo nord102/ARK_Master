@@ -10,8 +10,8 @@ public class Enemy : MonoBehaviour {
     public GameObject playerLocation;
     public Animator animator;
 
-
-    
+    Room currentRoom;
+    Events currentEvent;
 
     private bool lastX;
     private float range;
@@ -33,12 +33,17 @@ public class Enemy : MonoBehaviour {
         range = 10;
         lastX = false;
         animator = GetComponent<Animator>();
-        
+        currentEvent    = Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Damage(100);
+        }
+
 		if (!stop) {
 			Chase ();
 		} else {
@@ -89,7 +94,13 @@ public class Enemy : MonoBehaviour {
 
         if (health <= 0)
         {
+            currentEvent.Enemies.Remove(0);
             Destroy(this.gameObject);
+            //Check if this was the last enemy alive - if so, end the event
+            if (currentEvent.Enemies.Count == 0)
+            {
+                StateMachine.instance.EndEvent(currentEvent);
+            }
         }
 
     }

@@ -69,7 +69,7 @@ public static class Pathfinding {
                             }
                             catch
                             {
-                                Debug.Log("WE HAVE HAD AN ERROR WITH ADDING A TRIED DOOR?");
+                                //Debug.Log("WE HAVE HAD AN ERROR WITH ADDING A TRIED DOOR?");
                             }
                         }
                     }
@@ -102,7 +102,7 @@ public static class Pathfinding {
                 int xMultiplier = 0;
                 int yMultiplier = 0;
 
-                Debug.Log("DISTANCE: " + xDistance + ", " + yDistance);
+                //Debug.Log("DISTANCE: " + xDistance + ", " + yDistance);
 
                 if (xDistance > 0)
                 {
@@ -117,12 +117,12 @@ public static class Pathfinding {
                 else { yMultiplier = 1; }
 
                 int failSafe = 0;
-                Debug.Log("CurrentPosition: " + currentPositionX + ", " + currentPositionY);
-                Debug.Log("FinalPosition: " + (room.GetDoorList()[doorID].posX - room.posX) + ", " + (room.GetDoorList()[doorID].posY - room.posY));
+                //Debug.Log("CurrentPosition: " + currentPositionX + ", " + currentPositionY);
+                //Debug.Log("FinalPosition: " + (room.GetDoorList()[doorID].posX - room.posX) + ", " + (room.GetDoorList()[doorID].posY - room.posY));
                 while (!connected && failSafe < 50)
                 {
                     failSafe += 1;
-                    Debug.Log("xMultiplier: " + xMultiplier + ", yMultiplier: " + yMultiplier);
+                    //Debug.Log("xMultiplier: " + xMultiplier + ", yMultiplier: " + yMultiplier);
 
                     //We can save a lot of time by checking whether the next tile is a 1 - that means its already a path, and we have just connected to it, this door will be fine
                     if (alteredTileArray[currentPositionX + (1 * xMultiplier), currentPositionY] == 1 || alteredTileArray[currentPositionX, currentPositionY + (1 * yMultiplier)] == 1)
@@ -142,14 +142,14 @@ public static class Pathfinding {
                                 forceX = true;
                                 currentPositionY += 1 * (-yMultiplier);
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Stepping back Y because X is a wall: " + currentPositionX + ", " + currentPositionY);
+                                //Debug.Log("Stepping back Y because X is a wall: " + currentPositionX + ", " + currentPositionY);
                             }
                             else
                             {
                                 //Cant move on the x axis, so we must use the y one
                                 currentPositionY += 1 * yMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Moving Y Because X Blocked: " + currentPositionX + ", " + currentPositionY);
+                                //Debug.Log("Moving Y Because X Blocked: " + currentPositionX + ", " + currentPositionY);
                             }
                         }
                         else
@@ -163,13 +163,13 @@ public static class Pathfinding {
                                     forceY = true;
                                     currentPositionX += 1 * (-xMultiplier);
                                     alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    Debug.Log("Stepping back X because Y is a wall: " + currentPositionX + ", " + currentPositionY);
+                                    //Debug.Log("Stepping back X because Y is a wall: " + currentPositionX + ", " + currentPositionY);
                                 }
                                 else
                                 {
                                     currentPositionY += 1 * yMultiplier;
                                     alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    Debug.Log("Moving Y Because Already on Correct X: " + currentPositionX + ", " + currentPositionY);
+                                    //Debug.Log("Moving Y Because Already on Correct X: " + currentPositionX + ", " + currentPositionY);
                                 }
                             }
                             else
@@ -177,7 +177,7 @@ public static class Pathfinding {
                                 //We could move on the x axis, so we do - Unless the y matches up but is NOT the door
                                 currentPositionX += 1 * xMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Moving X: " + currentPositionX + ", " + currentPositionY);
+                                //Debug.Log("Moving X: " + currentPositionX + ", " + currentPositionY);
                             }
                             
                         }
@@ -193,14 +193,14 @@ public static class Pathfinding {
                                 forceY = true;
                                 currentPositionX += 1 * (-xMultiplier);
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Stepping back X because Y is a wall: " + currentPositionX + ", " + currentPositionY);
+                                //Debug.Log("Stepping back X because Y is a wall: " + currentPositionX + ", " + currentPositionY);
                             }
                             else
                             {
                                 //Cant move on the y axis, so we must use the x one
                                 currentPositionX += 1 * xMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Moving X Because Y Blocked: " + currentPositionX + ", " + currentPositionY);
+                                //Debug.Log("Moving X Because Y Blocked: " + currentPositionX + ", " + currentPositionY);
                             }
                         }
                         else
@@ -214,14 +214,14 @@ public static class Pathfinding {
                                     forceX = true;
                                     currentPositionY += 1 * (-yMultiplier);
                                     alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    Debug.Log("Stepping back Y because X is a wall: " + currentPositionX + ", " + currentPositionY);
+                                    //Debug.Log("Stepping back Y because X is a wall: " + currentPositionX + ", " + currentPositionY);
                                 }
                                 else
                                 {
                                     //We could move y, but we are already on the correct y - so move x
                                     currentPositionX += 1 * xMultiplier;
                                     alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                    Debug.Log("Moving X Because Already on Correct Y: " + currentPositionX + ", " + currentPositionY);
+                                    //Debug.Log("Moving X Because Already on Correct Y: " + currentPositionX + ", " + currentPositionY);
                                 }
                             }
                             else
@@ -229,7 +229,7 @@ public static class Pathfinding {
                                 //We could move on the y axis, so we do
                                 currentPositionY += 1 * yMultiplier;
                                 alteredTileArray[currentPositionX, currentPositionY] = 1;
-                                Debug.Log("Moving Y: " + currentPositionX + ", " + currentPositionY);
+                                //Debug.Log("Moving Y: " + currentPositionX + ", " + currentPositionY);
                             }
                             
                         }
@@ -258,7 +258,7 @@ public static class Pathfinding {
             }
             t += "\n";
         }
-        Debug.Log(t);
+        //Debug.Log(t);
 
         return alteredTileArray;
     }
