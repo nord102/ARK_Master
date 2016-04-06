@@ -32,7 +32,7 @@ public class PlayerInfo {
 		else if ( CurrentHealth + value <= 0)
 		{
 			CurrentHealth = 0;
-			//StateMachine.instance.GameOver ();
+			StateMachine.instance.GameOver ();
 			Debug.Log("GAME OVER");
 
 		} else {
