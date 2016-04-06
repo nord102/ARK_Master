@@ -9,6 +9,10 @@ public class EventInfo : MonoBehaviour
     public Text txtTime;
     public GameObject Rewards;
 
+    public GameObject StarPlaceholder;
+    public Sprite GoldStar;
+    public Sprite GrayStar;
+
     private Events MyEvent;
     private float Timer = 0.0f;
     private float StartTime = 0.0f;
@@ -18,9 +22,31 @@ public class EventInfo : MonoBehaviour
         gameObject.SetActive(true);
         MyEvent = myEvent;
 
+        txtEventName.text = MyEvent.eventName;
         SetRewards();
         StartTime = Time.deltaTime;
         Timer = 0.0f;
+        SetDifficulty();
+    }
+
+    public void SetDifficulty()
+    {
+        int difficulty = MyEvent.eventDifficulty;
+
+        int i = 5 - MyEvent.eventDifficulty;
+        foreach (Transform child in StarPlaceholder.transform)
+        {
+            if (i <= 0)
+            {
+                child.GetComponent<Image>().sprite = GoldStar;
+            }
+            else
+            {
+                child.GetComponent<Image>().sprite = GrayStar;
+            }
+
+            --i;
+        }
     }
 
     public void SetRewards()
