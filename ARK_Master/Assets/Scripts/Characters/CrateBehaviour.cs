@@ -29,8 +29,7 @@ public class CrateBehaviour : MonoBehaviour {
 
             //Kill the game object - set tile to 0, change image to broken crate
             Renderer rend = gameObject.GetComponent<Renderer>();
-            //rend.material = Resources.Load<Material>("BrokenCrate");
-            rend.material = Resources.Load<Material>("Cabinet");
+            rend.material = Resources.Load<Material>("CrateBroken");
             Generate.instance.GetRoomGameObjectList()[roomNumber - 1].GetComponent<Room>().roomLayout[posX, posY] = 0;
             Destroy(gameObject.GetComponent<CrateBehaviour>());
             Destroy(gameObject.GetComponent<Collider2D>());
