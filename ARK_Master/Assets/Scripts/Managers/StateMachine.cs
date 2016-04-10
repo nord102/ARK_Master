@@ -20,6 +20,7 @@ public class StateMachine : MonoBehaviour
     private bool MiniMapOpen = false;
     private bool BuildingMenuOpen = false;
     public bool PlayerControl = false;
+    public bool eventActive = false;
 
     #region Modules
     public GameObject Module1;
@@ -274,7 +275,7 @@ public class StateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && !eventActive)
         {
             InventoryOpen = !InventoryOpen;
             if (InventoryOpen)
@@ -288,7 +289,7 @@ public class StateMachine : MonoBehaviour
 
             }
         }
-        else if (Input.GetKeyDown(KeyCode.C))
+        else if (Input.GetKeyDown(KeyCode.C) && !eventActive)
         {
             CharacterSheetOpen = !CharacterSheetOpen;
             if (CharacterSheetOpen)
@@ -376,6 +377,8 @@ public class StateMachine : MonoBehaviour
     public void FireEvent(Events myEvent)
     {
         PlayerControl = false;
+        eventActive = true;
+
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
 
         canvasScript.StartEvent(myEvent);
@@ -433,11 +436,11 @@ public class StateMachine : MonoBehaviour
 
     public void EndEvent(Events myEvent)
     {
-        
+        eventActive = false;
 
         Generate.instance.RemoveDoors();
 
-        //Generate.instance.currentDoor = null;
+        Generate.instance.currentDoor = null;
 
         Debug.Log("EVENT OVER");
         foreach (Rewards reward in myEvent.SuccessRewards)
