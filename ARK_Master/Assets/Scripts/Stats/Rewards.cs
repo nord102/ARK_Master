@@ -15,14 +15,14 @@ public class Rewards : MonoBehaviour
     public int ShipResourcesFound;
     public int SkillFound;
     public int CharacterUnlocked;
-
+    public int BuildingUnlocked;
     public int LootTableValue;
     public int EventType;
 
     public Image RewardImage;
 
     //Used by db
-    public Rewards(int Id, string RewardName, string RewardImagePath, int RewardTimer, int HPChange, int EnergyChange, int ShieldChange, int ShipResourcesFound, int SkillFound, int CharacterUnlocked, int LootTableValue, int EventType)
+    public Rewards(int Id, string RewardName, string RewardImagePath, int RewardTimer, int HPChange, int EnergyChange, int ShieldChange, int ShipResourcesFound, int SkillFound, int CharacterUnlocked, int BuildingUnlocked, int LootTableValue, int EventType)
     {   //sublime baby
         this.Id = Id;
         this.RewardName = RewardName;
@@ -34,11 +34,12 @@ public class Rewards : MonoBehaviour
         this.ShipResourcesFound = ShipResourcesFound;
         this.SkillFound = SkillFound;
         this.CharacterUnlocked = CharacterUnlocked;
+        this.BuildingUnlocked = BuildingUnlocked;
         this.LootTableValue = LootTableValue;
         this.EventType = EventType;
     }
 
-    public Rewards(string newRewardName, int newHPChange, int newEnergyChange, int newShieldChange, int newShipResourcesFound, int newSkillFound = -1, int newCharacterUnlocked = -1, Image newRewardImage = null, int newRewardTimer = 0)
+    public Rewards(string newRewardName, int newHPChange, int newEnergyChange, int newShieldChange, int newShipResourcesFound, int newSkillFound = -1, int newCharacterUnlocked = -1, int newBuildingUnlocked = -1, Image newRewardImage = null, int newRewardTimer = 0)
     {
         RewardName = newRewardName;
         HPChange = newHPChange;
@@ -47,6 +48,7 @@ public class Rewards : MonoBehaviour
         ShipResourcesFound = newShipResourcesFound;
         SkillFound = newSkillFound;
         CharacterUnlocked = newCharacterUnlocked;
+        BuildingUnlocked = newBuildingUnlocked;
         RewardImage = newRewardImage;
         RewardTimer = newRewardTimer;
     }
@@ -67,6 +69,10 @@ public class Rewards : MonoBehaviour
             if (CharacterUnlocked != -1)
             {
                 //Add Character to statemachine...
+            }
+            if (BuildingUnlocked != -1)
+            {
+                //Add Building to statemachine...
             }
         }
         catch
