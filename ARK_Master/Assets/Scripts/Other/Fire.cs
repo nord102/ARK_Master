@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using System.IO;
+using System.Text;
+
 
 public class Fire : MonoBehaviour {
 
-	public float divideTime = 1;
+	public float divideTime = 2;
 	private int hitPoints;
 	private float timer;
 
@@ -12,9 +18,9 @@ public class Fire : MonoBehaviour {
 	const int WEST = 2;
 	const int EAST = 3;
 
-
+	const int FIRE_DAMAGE = 5;
 	
-	public GameObject fire;
+	//public GameObject fire;
 	private GameObject cloneFire;
 
 	public Animator animator;
@@ -36,8 +42,23 @@ public class Fire : MonoBehaviour {
 			//Destroy (this.gameObject);
 		} else if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
 			Damage (10);
+		} else if (other.gameObject.name == "Player") {
+			Player.instance.Damage(FIRE_DAMAGE);
 		}
 
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		//Debug.Log (other.gameObject.name);
+		if (other.gameObject.tag == "Fire" || other.gameObject.name.Contains ("Fire")) {
+			//Debug.Log ("collided");
+			//Destroy (this.gameObject);
+		} else if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
+			Damage (10);
+		} else if (other.gameObject.name == "Player") {
+			Player.instance.Damage(FIRE_DAMAGE);
+		}
 	}
 
 	void Damage(int amount)
@@ -60,11 +81,11 @@ public class Fire : MonoBehaviour {
 		if (this.timer > this.divideTime && !this.flag)
 		{
 			
-			Vector3 v = this.gameObject.transform.position;
-			Vector3 newPosition = Postion (v);
+			//Vector3 v = this.gameObject.transform.position;
+			//Vector3 newPosition = Postion (v);
 
 			if (newPosition != v) {
-				cloneFire = Instantiate (fire, newPosition, Quaternion.identity) as GameObject;
+				cloneFire = Instantiate (this.gameObject, newPosition, Quaternion.identity) as GameObject;
 				cloneFire.SetActive (true);
 				this.flag = true;
 			}
@@ -73,6 +94,23 @@ public class Fire : MonoBehaviour {
 
 		//Debug.Log (this.timer);
 		//this.gameObject.renderer.size;
+	}
+
+	private List<Vector2> AvailablePosition()
+	{
+		List<Vector2> possibleList = new List<Vector2>();
+		for (int i = 0; i < Mathf.Sqrt(currentRoom.roomLayout.Length); i++)
+		{
+			for (int j = 0; j < Mathf.Sqrt(currentRoom.roomLayout.Length); j++)
+			{
+				if(currentRoom.roomLayout[i,j] == 1)
+				{
+					possibleList.Add(new Vector2(i, j));
+				}
+			}
+		}
+
+		return possibleList;
 	}
 
 
@@ -193,13 +231,6 @@ public class Fire : MonoBehaviour {
 		}
 		return closest;
 	}
-
-
-
-
-
-
-
 
 }
  

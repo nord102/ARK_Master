@@ -55,6 +55,7 @@ public class StateMachine : MonoBehaviour
     public GameObject EventInfo;
 
     public GameObject alien;
+	public GameObject fire;
 
     //Short - 30
     //Medium - 60
