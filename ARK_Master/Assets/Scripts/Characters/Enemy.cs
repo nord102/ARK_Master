@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour {
     private float range;
     public float health;
 	public float timer;
+
 	const float ATTACK_DELAY = 1.5f;
 	const double DAMAGE_AMOUNT = 10;
 
@@ -27,7 +28,7 @@ public class Enemy : MonoBehaviour {
     // Use this for initialization
     void Start()
 	{
-		timer = 0f;
+		timer = 1.5f;
         stop = false;
         health = 10;
         range = 10;
@@ -39,30 +40,35 @@ public class Enemy : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        this.timer += Time.deltaTime;
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             Damage(100);
         }
 
-		if (!stop) {
+		if (!stop)
+        {
 			Chase ();
-		} else {
-			this.timer += Time.deltaTime;
+		}
 
-			if (Math.Round (this.timer, 1) == ATTACK_DELAY) {
-				Attack ();
-				this.timer = 0;
-			}
-
-
+        else
+        {
+			Attack ();	
 		}
     }
 
 	private void Attack()
 	{
-		animator.SetTrigger ("attack");
-		Player.instance.Damage(DAMAGE_AMOUNT);
-		AlienAttack.instance.PlaySound();
+        //this.timer += Time.deltaTime;
+
+        if (Math.Round(this.timer, 1) >= ATTACK_DELAY)
+        {
+            animator.SetTrigger("attack");
+            Player.instance.Damage(DAMAGE_AMOUNT);
+            AlienAttack.instance.PlaySound();
+            this.timer = 0;
+        }
 	}
 
 
@@ -85,7 +91,8 @@ public class Enemy : MonoBehaviour {
 		if (coll.gameObject.name.Contains("Player"))
 		{
 			stop = false;
-		}
+            this.timer = 0;
+        }
 	}	
 
     private void Damage(int amount)
@@ -168,13 +175,6 @@ public class Enemy : MonoBehaviour {
                 vel.y += speed;
                 
             }
-
-            //if (currentX  != lastX)
-            //{
-              //  lastX = currentX;
-                //animator.SetBool("runDirection", false);
-            //}
-
 
             vel.z = 0;
             transform.Translate(vel);
