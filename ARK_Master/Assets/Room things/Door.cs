@@ -55,7 +55,7 @@ public class Door : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Player")// && Generate.instance.currentDoor == null)
+        if (col.gameObject.tag == "Player" && Generate.instance.currentDoor == null)
         {
             //Set the door that is being collided with
             Generate.instance.currentDoor = gameObject.GetComponent<Door>();
