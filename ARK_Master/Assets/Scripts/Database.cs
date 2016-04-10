@@ -213,10 +213,11 @@ public class Database
             int ShipResourcesFound = results.reader.GetInt32(7);
             int SkillFound = results.reader.GetInt32(8);
             int CharacterUnlocked = results.reader.GetInt32(9);
-            int LootTableValue = results.reader.GetInt32(10);
-            int EventType = results.reader.GetInt32(11);
+            int BuildingUnlocked = results.reader.GetInt32(10);
+            int LootTableValue = results.reader.GetInt32(11);
+            int EventType = results.reader.GetInt32(12);
 
-            found = new Rewards(Id, RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, LootTableValue, EventType);
+            found = new Rewards(Id, RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, BuildingUnlocked, LootTableValue, EventType);
 
             ret.Add(found);
             Debug.Log("id= " + Id + "  rewardName =" + RewardName);
