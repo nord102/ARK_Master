@@ -448,37 +448,48 @@ public class Generate : MonoBehaviour
             {
                 //Debug.Log(tempX + ", " + tempY);
                 RoomObject newRoomObject = new RoomObject(room.GetObjectList().Count, "Banana", true, tempX, tempY);
-                room.GetObjectList().Add(newRoomObject);
 
                 cloneObject1 = Instantiate(object1, new Vector3(room.posX + tempX, room.posY + tempY, 0f), Quaternion.identity) as GameObject;
                 Renderer rend = cloneObject1.GetComponent<Renderer>();
-                rend.material = GetRandomRoomObject(room.roomType);
+                int objectType = Random.Range(0, 5); //0-4, the number of materials we currently have
+                rend.material = GetRandomRoomObject(room.roomType, objectType);
+                if (objectType == ObjectType.Crate)
+                {
+                    //Attach a script that allows for destruction + ship resources
+                    cloneObject1.AddComponent<CrateBehaviour>();
+                    CrateBehaviour c = cloneObject1.GetComponent<CrateBehaviour>();
+                    c.posX = tempX;
+                    c.posY = tempY;
+                    c.roomNumber = room.roomID;
+                }
                 room.roomLayout[tempX, tempY] = -1;
+
+                room.GetObjectList().Add(newRoomObject);
             }
         }
 
     }
 
-    Material GetRandomRoomObject(int roomType)
+    Material GetRandomRoomObject(int roomType, int objectType)
     {
         Material m = null;
 
-        //0-4, the number of materials we currently have
-        switch (Random.Range(0, 5))
+        
+        switch (objectType)
         {
-            case 0:
+            case ObjectType.Cabinet:
                 m = Resources.Load<Material>("Cabinet");
                 break;
-            case 1:
+            case ObjectType.Chair:
                 m = Resources.Load<Material>("Chair");
                 break;
-            case 2:
+            case ObjectType.Computer:
                 m = Resources.Load<Material>("Computer");
                 break;
-            case 3:
+            case ObjectType.Crate:
                 m = Resources.Load<Material>("Crate");
                 break;
-            case 4:
+            case ObjectType.Table:
                 m = Resources.Load<Material>("Table");
                 break;
         }
