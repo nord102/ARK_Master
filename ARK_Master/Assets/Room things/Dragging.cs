@@ -290,8 +290,9 @@ public class Dragging : MonoBehaviour
 
             //Check for doors
             Generate.instance.CheckForDoors();
-
+            Debug.Log("WORK?1");
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0, newRoom.GetComponentList().Count);
+            Debug.Log("E" + newRoom.roomEvent.eventName);
             newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
             Generate.instance.PopulateRoom(newRoom);
         }
