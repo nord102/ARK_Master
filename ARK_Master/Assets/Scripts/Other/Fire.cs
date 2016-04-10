@@ -9,7 +9,7 @@ using System.Text;
 
 public class Fire : MonoBehaviour {
 
-	public float divideTime = 2;
+	public float divideTime = 10;
 	private int hitPoints;
 	private float timer;
 
@@ -73,19 +73,20 @@ public class Fire : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-
 		this.timer += Time.deltaTime;
 		//Debug.Log (this.timer);
 
 		//this.gameObject.transform.position.
-		if (this.timer > this.divideTime && !this.flag)
+		if (this.timer >= this.divideTime && !this.flag)
 		{
 			
-			//Vector3 v = this.gameObject.transform.position;
-			//Vector3 newPosition = Postion (v);
+			Vector3 v = this.gameObject.transform.position;
+			Vector3 newPosition = Position (v);
+			//Vector2 newPosition = AvailablePosition();
 
-			if (newPosition != v) {
+			if (newPosition != this.gameObject.transform.position) {
 				cloneFire = Instantiate (this.gameObject, newPosition, Quaternion.identity) as GameObject;
+				//Generate.instance.currentRoom.roomLayout[(int)newPosition.x, (int)newPosition.y] = -1;
 				cloneFire.SetActive (true);
 				this.flag = true;
 			}
@@ -95,26 +96,30 @@ public class Fire : MonoBehaviour {
 		//Debug.Log (this.timer);
 		//this.gameObject.renderer.size;
 	}
+		
 
-	private List<Vector2> AvailablePosition()
+	//Determining where the bad spaces are in the room
+	private List<Vector3> AvailablePosition()
 	{
-		List<Vector2> possibleList = new List<Vector2>();
-		for (int i = 0; i < Mathf.Sqrt(currentRoom.roomLayout.Length); i++)
+		
+		List<Vector3> possibleList = new List<Vector3>();
+		for (int i = 0; i < Mathf.Sqrt(Generate.instance.currentRoom.roomLayout.Length); i++)
 		{
-			for (int j = 0; j < Mathf.Sqrt(currentRoom.roomLayout.Length); j++)
+			for (int j = 0; j < Mathf.Sqrt(Generate.instance.currentRoom.roomLayout.Length); j++)
 			{
-				if(currentRoom.roomLayout[i,j] == 1)
+				if(Generate.instance.currentRoom.roomLayout[i,j] == -1 || Generate.instance.currentRoom.roomLayout[i,j] == -2)
 				{
-					possibleList.Add(new Vector2(i, j));
+					possibleList.Add(new Vector3(i, j, 0));
 				}
 			}
 		}
 
+		//int tempNum = UnityEngine.Random.Range(0, (int)Mathf.Sqrt(possibleList.Count));
 		return possibleList;
 	}
 
 
-	private Vector3 Postion(Vector3 basePositionInput)
+	private Vector3 Position(Vector3 basePositionInput)
 	{
 		int[] available = this.AvailableAdjacentSpace ();
 		int direction = this.RandomDirection (available);
@@ -177,6 +182,7 @@ public class Fire : MonoBehaviour {
 	{
 		int[] availableSpace = new int[4];
 		GameObject[] gos = GameObject.FindGameObjectsWithTag("Fire");
+		List<Vector3> borders = AvailablePosition ();
 
 		for (int i = 0; i < availableSpace.Length; i++) {
 
@@ -205,6 +211,17 @@ public class Fire : MonoBehaviour {
 
 			foreach (GameObject go in gos) {
 				if (go.transform.position == basePosition) {
+					availableSpace [i] = 0;
+					break;
+				}
+			}
+			Debug.Log (basePosition);
+			foreach (var border in borders) {
+
+				Debug.Log (border);
+				//
+				if (border == basePosition) {
+					Debug.Log ("Is this getting hit");
 					availableSpace [i] = 0;
 					break;
 				}
