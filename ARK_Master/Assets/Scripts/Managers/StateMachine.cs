@@ -185,7 +185,7 @@ public class StateMachine : MonoBehaviour
         {
             //Forget it then
         }
-        SceneManager.LoadScene("TitleMenu");
+        //SceneManager.LoadScene("TitleMenu");
     }
 
     public void ActivateSinisterEvent()
@@ -340,6 +340,12 @@ public class StateMachine : MonoBehaviour
                 //HideMainMenu();
             }
         }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log("Pressed X");
+            StateMachine.instance.EndEvent(Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent);
+        }
+
     }
 
     void GenerateAvailableSkills()
@@ -428,6 +434,12 @@ public class StateMachine : MonoBehaviour
 
     public void EndEvent(Events myEvent)
     {
+        
+
+        Generate.instance.RemoveDoors();
+
+        //Generate.instance.currentDoor = null;
+
         Debug.Log("EVENT OVER");
         foreach (Rewards reward in myEvent.SuccessRewards)
         {

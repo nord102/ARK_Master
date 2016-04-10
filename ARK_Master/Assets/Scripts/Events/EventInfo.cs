@@ -110,7 +110,7 @@ public class EventInfo : MonoBehaviour
 
     public void EndEventInfo()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
         //Resolve event
         //MyEvent.
     }
