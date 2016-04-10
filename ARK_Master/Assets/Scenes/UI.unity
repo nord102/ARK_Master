@@ -9250,6 +9250,7 @@ MonoBehaviour:
   shipResources: {fileID: 1636828493}
   DialogueBox: {fileID: 132497283}
   appPath: 
+  ImagePath: 
   EventInfo: {fileID: 185302564}
   alien: {fileID: 685741539}
   numMaxRooms: 30
@@ -9281,6 +9282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   standardRoomCosts: 320000007d000000c800000013010000
   door: {fileID: 148874, guid: cc714434bd1128844bf58676a1d8fcaf, type: 2}
+  underDoorTile: {fileID: 100058, guid: c3e5684b956499946ab28eb93b42e65a, type: 2}
   currentDoor: {fileID: 0}
   startRoom: {fileID: 118366, guid: 8e4a56f45d7d64944984ae80fe6dbb3b, type: 2}
   room_1x1: {fileID: 194214, guid: 5bd5e74cea94418439d3cf72d1ac5d65, type: 2}
