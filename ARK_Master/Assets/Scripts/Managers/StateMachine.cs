@@ -421,7 +421,7 @@ public class StateMachine : MonoBehaviour
 
 
         
-        Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
+        //Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
 
         //Grab enemy that is attached to event and spawn them?
         //Pick a spot with a 1 on it and spawn the enemies (random 1's)
