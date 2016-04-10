@@ -45,18 +45,21 @@ public class Room : MonoBehaviour
     public bool draggingState { get; set; }
 
     /// <Room Types>
-    /// Medic Bay
-    /// Storage Bay
-    /// Engine Room?
+    /// 1. Storage
+    /// 2. Medical
+    /// 3. Engineering
+    /// 4. Labratory
     /// </summary>
     public int roomType { get; set; }
-
+    
     //Room Event
     public Events roomEvent { get; set; }
 
-    //Room State?
-    //NEED TO DEFINE THIS
-    public string roomState { get; set; }
+    /// <Room States>
+    /// 1 - Event Not Finished
+    /// 0 - Event Finished
+    /// </summary>
+    public int roomState { get; set; }
 
     #region Lists
     private List<RoomComponent> componentList { get; set; }
@@ -90,13 +93,13 @@ public class Room : MonoBehaviour
     }
 
     //Constructor
-    public Room(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
+    public Room(int newRoomID, int newRoomShape, int newRoomType, int newRoomState, int newPosX, int newPosY)
     {
         Initialize(newRoomID, newRoomShape, newRoomType, newRoomState, newPosX, newPosY);
     }
 
     //Initializer
-    public void Initialize(int newRoomID, int newRoomShape, int newRoomType, string newRoomState, int newPosX, int newPosY)
+    public void Initialize(int newRoomID, int newRoomShape, int newRoomType, int newRoomState, int newPosX, int newPosY)
     {
         roomID = newRoomID;
         roomState = newRoomState;

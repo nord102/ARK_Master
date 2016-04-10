@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -41,13 +42,15 @@ public class StateMachine : MonoBehaviour
     public List<PlayerInfo> PreviousPlayers = new List<PlayerInfo>();
 
     public Sprite FireImage = new Sprite();
-    public Slider playerHealthBar;
-    public Slider playerShieldBar;
+
+    public Image playerHealthBar;
+    public Image playerShieldBar;
     public Text shipResources;
 
     public GameObject DialogueBox;
     public Database db;
     public string appPath;
+    public string ImagePath;
 
     public GameObject EventInfo;
 
@@ -174,7 +177,15 @@ public class StateMachine : MonoBehaviour
     //Call this when the player's Health reaches 0, or other events that end the game
     public void GameOver()
     {
-        SaveDeadCharacters();
+        try
+        {
+            SaveDeadCharacters();
+        }
+        catch
+        {
+            //Forget it then
+        }
+        //SceneManager.LoadScene("TitleMenu");
     }
 
     public void ActivateSinisterEvent()
@@ -184,7 +195,14 @@ public class StateMachine : MonoBehaviour
 
     void LoadSettings()
     {
-        LoadDeadCharacters();
+        try
+        {
+            LoadDeadCharacters();
+        }
+        catch
+        {
+            //Not implemented anyway
+        }
     }
 
     void UpdateUI()
@@ -228,6 +246,7 @@ public class StateMachine : MonoBehaviour
         BuildingMenu.SetActive(false);
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
+        ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
 
         //PlayerInfo.InitializePlayerInfo (0);
@@ -321,6 +340,12 @@ public class StateMachine : MonoBehaviour
                 //HideMainMenu();
             }
         }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            Debug.Log("Pressed X");
+            StateMachine.instance.EndEvent(Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent);
+        }
+
     }
 
     void GenerateAvailableSkills()
@@ -401,10 +426,27 @@ public class StateMachine : MonoBehaviour
         //Grab enemy that is attached to event and spawn them?
         //Pick a spot with a 1 on it and spawn the enemies (random 1's)
 
-        foreach (int enemy in currentRoom.roomEvent.Enemies)
+        //foreach (int enemy in currentRoom.roomEvent.Enemies)
+        //{
+            InstantiateEnemy.spawnEnemy(currentRoom.roomEvent.Enemies, currentRoom);
+        //}
+    }
+
+    public void EndEvent(Events myEvent)
+    {
+        
+
+        Generate.instance.RemoveDoors();
+
+        //Generate.instance.currentDoor = null;
+
+        Debug.Log("EVENT OVER");
+        foreach (Rewards reward in myEvent.SuccessRewards)
         {
-            InstantiateEnemy.spawnEnemy(enemy, currentRoom.roomEvent.Enemies.Count, currentRoom);
+            reward.ActivateReward();
         }
+
+        EventInfo.GetComponent<EventInfo>().EndEventInfo();
     }
 
     //--

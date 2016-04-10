@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-//using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour {
+public class Main_Menu : MonoBehaviour {
 
     public GameObject MainMenuObj;
     public GameObject AboutMenuObj;
@@ -17,7 +17,7 @@ public class MainMenu : MonoBehaviour {
 
 	public void StartButton()
     {
-        //SceneManager.LoadScene("OpeningCinematic");        
+        SceneManager.LoadScene("OpeningCinematic");        
     }
 
     public void ContinueButton()
