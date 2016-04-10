@@ -6737,6 +6737,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -9253,6 +9254,7 @@ MonoBehaviour:
   ImagePath: 
   EventInfo: {fileID: 185302564}
   alien: {fileID: 685741539}
+  fire: {fileID: 120144, guid: 00da5c1e21687864896fc0e8c2451917, type: 2}
   numMaxRooms: 30
   RoomSelectMenu_1: {fileID: 1214324845}
   RoomSelectMenu_2: {fileID: 308811198}

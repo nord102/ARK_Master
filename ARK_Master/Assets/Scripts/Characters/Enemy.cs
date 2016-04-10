@@ -101,13 +101,14 @@ public class Enemy : MonoBehaviour {
 
         if (health <= 0)
         {
-            currentEvent.Enemies.Remove(0);
-            Destroy(this.gameObject);
+            currentEvent.Enemies.Remove(2);
+            
             //Check if this was the last enemy alive - if so, end the event
-            if (currentEvent.Enemies.Count == 0)
+            if (currentEvent.Enemies.Count <= 0)
             {
                 StateMachine.instance.EndEvent(currentEvent);
             }
+			Destroy(this.gameObject);
         }
 
     }

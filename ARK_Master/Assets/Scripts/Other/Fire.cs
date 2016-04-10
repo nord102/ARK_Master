@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UI;
+using System.IO;
+using System.Text;
+
 
 public class Fire : MonoBehaviour {
 
-	public float divideTime = 1;
+	public float divideTime = 10;
 	private int hitPoints;
 	private float timer;
 
@@ -12,9 +18,9 @@ public class Fire : MonoBehaviour {
 	const int WEST = 2;
 	const int EAST = 3;
 
-
+	const int FIRE_DAMAGE = 5;
 	
-	public GameObject fire;
+	//public GameObject fire;
 	private GameObject cloneFire;
 
 	public Animator animator;
@@ -36,8 +42,23 @@ public class Fire : MonoBehaviour {
 			//Destroy (this.gameObject);
 		} else if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
 			Damage (10);
+		} else if (other.gameObject.name == "Player") {
+			Player.instance.Damage(FIRE_DAMAGE);
 		}
 
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		//Debug.Log (other.gameObject.name);
+		if (other.gameObject.tag == "Fire" || other.gameObject.name.Contains ("Fire")) {
+			//Debug.Log ("collided");
+			//Destroy (this.gameObject);
+		} else if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
+			Damage (10);
+		} else if (other.gameObject.name == "Player") {
+			Player.instance.Damage(FIRE_DAMAGE);
+		}
 	}
 
 	void Damage(int amount)
@@ -52,19 +73,20 @@ public class Fire : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-
 		this.timer += Time.deltaTime;
 		//Debug.Log (this.timer);
 
 		//this.gameObject.transform.position.
-		if (this.timer > this.divideTime && !this.flag)
+		if (this.timer >= this.divideTime && !this.flag)
 		{
 			
 			Vector3 v = this.gameObject.transform.position;
-			Vector3 newPosition = Postion (v);
+			Vector3 newPosition = Position (v);
+			//Vector2 newPosition = AvailablePosition();
 
-			if (newPosition != v) {
-				cloneFire = Instantiate (fire, newPosition, Quaternion.identity) as GameObject;
+			if (newPosition != this.gameObject.transform.position) {
+				cloneFire = Instantiate (this.gameObject, newPosition, Quaternion.identity) as GameObject;
+				//Generate.instance.currentRoom.roomLayout[(int)newPosition.x, (int)newPosition.y] = -1;
 				cloneFire.SetActive (true);
 				this.flag = true;
 			}
@@ -74,9 +96,30 @@ public class Fire : MonoBehaviour {
 		//Debug.Log (this.timer);
 		//this.gameObject.renderer.size;
 	}
+		
+
+	//Determining where the bad spaces are in the room
+	private List<Vector3> AvailablePosition()
+	{
+		
+		List<Vector3> possibleList = new List<Vector3>();
+		for (int i = 0; i < Mathf.Sqrt(Generate.instance.currentRoom.roomLayout.Length); i++)
+		{
+			for (int j = 0; j < Mathf.Sqrt(Generate.instance.currentRoom.roomLayout.Length); j++)
+			{
+				if(Generate.instance.currentRoom.roomLayout[i,j] == -1 || Generate.instance.currentRoom.roomLayout[i,j] == -2)
+				{
+					possibleList.Add(new Vector3(i, j, 0));
+				}
+			}
+		}
+
+		//int tempNum = UnityEngine.Random.Range(0, (int)Mathf.Sqrt(possibleList.Count));
+		return possibleList;
+	}
 
 
-	private Vector3 Postion(Vector3 basePositionInput)
+	private Vector3 Position(Vector3 basePositionInput)
 	{
 		int[] available = this.AvailableAdjacentSpace ();
 		int direction = this.RandomDirection (available);
@@ -139,6 +182,7 @@ public class Fire : MonoBehaviour {
 	{
 		int[] availableSpace = new int[4];
 		GameObject[] gos = GameObject.FindGameObjectsWithTag("Fire");
+		List<Vector3> borders = AvailablePosition ();
 
 		for (int i = 0; i < availableSpace.Length; i++) {
 
@@ -171,6 +215,17 @@ public class Fire : MonoBehaviour {
 					break;
 				}
 			}
+			Debug.Log (basePosition);
+			foreach (var border in borders) {
+
+				Debug.Log (border);
+				//
+				if (border == basePosition) {
+					Debug.Log ("Is this getting hit");
+					availableSpace [i] = 0;
+					break;
+				}
+			}
 
 		}
 
@@ -193,13 +248,6 @@ public class Fire : MonoBehaviour {
 		}
 		return closest;
 	}
-
-
-
-
-
-
-
 
 }
  

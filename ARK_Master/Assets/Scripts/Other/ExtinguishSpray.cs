@@ -21,7 +21,6 @@ public class ExtinguishSpray : MonoBehaviour {
 
 	public void Trajectory(Vector3 v)
 	{
-
 		this.direction = v;
 	}
 }
