@@ -16,7 +16,7 @@ public class Database
     public Database(string applicationDataPath)
     {
         conn = "URI=file:" + applicationDataPath + "/Databases/DB.db"; //Path to database.
-        lootColumnsNoId = " RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, LootTableValue, EventType ";
+        lootColumnsNoId = " RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, BuildingUnlocked, LootTableValue, EventType ";
         lootColumns = " Id," + lootColumnsNoId;
 
         /* Usage example
@@ -51,17 +51,22 @@ public class Database
         return ret;
     }
 
-    public List<Rewards> GetRandomRows(int lootTableValue, int numRows = 1, int eventType = 0)
+    public List<Rewards> GetRandomRows(int lootTableValue, int numRows = 1, int eventType = -1, int roomType = -1)
     {
-        bool includeEventType = eventType == 0 ? false : true;
+        bool includeEventType = eventType == -1 ? false : true;
+        bool includeRoomType = roomType == -1 ? false : true;
         string extraSearch = "";
 
         if(includeEventType)
         {
-            extraSearch = " AND EventType = @EventType ";
+            extraSearch += " AND EventType = @EventType OR EventType = -1";
+        }
+        if (includeRoomType)
+        {
+            extraSearch += " AND RoomType = @RoomType OR RoomType = -1";
         }
 
-        string sqlQuery = "SELECT " + lootColumns + " FROM Reward WHERE LootTableValue = @LootTableValue " + extraSearch + " ORDER BY RANDOM() LIMIT @NumRows;";
+        string sqlQuery = "SELECT " + lootColumns + " FROM Reward WHERE LootTableValue = @LootTableValue OR LootTableValue = -1 " + extraSearch + " ORDER BY RANDOM() LIMIT @NumRows;";
 
         List<DBParameter> parameters = new List<DBParameter>();
         parameters.Add(new DBParameter("@LootTableValue", lootTableValue));
@@ -69,6 +74,10 @@ public class Database
         if(includeEventType)
         {
             parameters.Add(new DBParameter("@EventType", eventType));
+        }
+        if (includeRoomType)
+        {
+            parameters.Add(new DBParameter("@RoomType", roomType));
         }
 
         DBResults results = ExecuteReader(sqlQuery, parameters);
