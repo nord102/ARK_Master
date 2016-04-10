@@ -343,7 +343,7 @@ public class StateMachine : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("Pressed X");
-            StateMachine.instance.EndEvent(Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent);
+            StateMachine.instance.EndEvent(Generate.instance.currentRoom.roomEvent);
         }
 
     }
@@ -419,16 +419,15 @@ public class StateMachine : MonoBehaviour
         }
 
 
-        Room currentRoom = Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>();
-
-
+        
+        Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
 
         //Grab enemy that is attached to event and spawn them?
         //Pick a spot with a 1 on it and spawn the enemies (random 1's)
 
         //foreach (int enemy in currentRoom.roomEvent.Enemies)
         //{
-            InstantiateEnemy.spawnEnemy(currentRoom.roomEvent.Enemies, currentRoom);
+        InstantiateEnemy.spawnEnemy(Generate.instance.currentRoom.roomEvent.Enemies, Generate.instance.currentRoom);
         //}
     }
 
