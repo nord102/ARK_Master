@@ -102,7 +102,7 @@ public class Dragging : MonoBehaviour
 
                 //Get the Room Script Component of the Room GameObject
                 newRoom = gameObjectToDrag.GetComponent<Room>();
-                newRoom.Initialize(Generate.instance.GetRoomGameObjectList().Count, globalRoomShape, 0, "Explored", (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
+                newRoom.Initialize(Generate.instance.GetRoomGameObjectList().Count, globalRoomShape, 0, 1, (int)gameObjectToDrag.transform.position.x, (int)gameObjectToDrag.transform.position.y);
 
                 //Cursor.visible = false;
                 draggingMode = true;

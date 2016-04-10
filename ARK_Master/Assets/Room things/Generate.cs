@@ -14,6 +14,7 @@ public class Generate : MonoBehaviour
     #region Door
     public GameObject door;
     private GameObject cloneDoor;
+    public GameObject underDoorTile;
 
     public Door currentDoor = null;
     #endregion
@@ -104,8 +105,37 @@ public class Generate : MonoBehaviour
     /// 
     public void RemoveDoors()
     {
+        
+        Room currentRoom = Generate.instance.GetRoomGameObjectList()[currentDoor.roomID_1 - 1].GetComponent<Room>();
+        currentRoom.roomState = 0;
 
+        Debug.Log("ROOM ID " + currentRoom.roomID);
 
+        //Check each Door in the Room where the Event was completed
+        foreach (Door roomDoor in currentRoom.GetDoorList())
+        {
+            Debug.Log("Crash");
+            if (roomDoor.doorstate == 1)
+            {
+                Room connectingRoom = Generate.instance.GetRoomGameObjectList()[roomDoor.roomID_2 - 1].GetComponent<Room>();
+
+                if (roomDoor.roomID_1 == currentRoom.roomID && connectingRoom.roomState == 0)
+                {
+                    //Change the doorState
+                    roomDoor.doorstate = 0;
+                }
+            }
+        }
+
+        foreach (GameObject door in Generate.instance.GetDoorGameObjectList())
+        {
+            if (door.GetComponent<Door>().doorstate == 0)
+            {
+                door.SetActive(false);
+            }
+        }
+
+        
     }
 
 
@@ -117,7 +147,7 @@ public class Generate : MonoBehaviour
 
         //Initialize Room
         Room newRoom = cloneStartRoom.GetComponent<Room>();
-        newRoom.Initialize(roomGameObjectList.Count, 10, 0, "Explored", 0, 0);
+        newRoom.Initialize(roomGameObjectList.Count, 10, 0, 0, 0, 0);
         newRoom.draggingState = false;
 
         //Initialize Room Components
@@ -152,6 +182,7 @@ public class Generate : MonoBehaviour
                     /// <summary>
                     /// Make Door - Coordinates at (X+,Y+1/2)
                     /// </summary>
+                    ///                    
 
                     //Make Door GameObject
                     cloneDoor = Instantiate(door, new Vector3(0f, 0f, 0f), Quaternion.identity) as GameObject;
@@ -166,6 +197,10 @@ public class Generate : MonoBehaviour
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
+
+                    //--
+                    Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
+                    //--
                 }
                 #endregion
                 #region (X-, Y) (LEFT)
@@ -188,6 +223,10 @@ public class Generate : MonoBehaviour
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
+
+                    //--
+                    Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
+                    //--
                 }
                 #endregion
                 #region (X, Y+) (UP)
@@ -210,6 +249,10 @@ public class Generate : MonoBehaviour
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
+
+                    //--
+                    Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
+                    //--
                 }
                 #endregion
                 #region (X, Y-) (DOWN)
@@ -232,6 +275,10 @@ public class Generate : MonoBehaviour
                     //Set Door GameObject Position
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
+
+                    //--
+                    Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
+                    //--
                 }
                 #endregion
 
