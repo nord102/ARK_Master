@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour {
         range = 10;
         lastX = false;
         animator = GetComponent<Animator>();
-        currentEvent    = Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent;
+        currentEvent    = Generate.instance.currentRoom.roomEvent;
     }
 
     // Update is called once per frame
@@ -95,7 +95,7 @@ public class Enemy : MonoBehaviour {
         }
 	}	
 
-    private void Damage(int amount)
+    public void Damage(int amount)
     {
         health -= amount;
 

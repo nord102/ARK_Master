@@ -124,22 +124,22 @@ public class Room : MonoBehaviour
 
         if (direction == "right")
         {
-            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+            newDoor.Initialize(GetDoorList().Count, roomID,-1,
                         (GetComponentList()[roomCom].posX + dimension - 1), (GetComponentList()[roomCom].posY + (dimension - 1) / 2), 0);
         }
         else if (direction == "left")
         {
-            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+            newDoor.Initialize(GetDoorList().Count, roomID, -1,
                        (GetComponentList()[roomCom].posX), (GetComponentList()[roomCom].posY + (dimension - 1) / 2), 0);
         }
         else if (direction == "up")
         {
-            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+            newDoor.Initialize(GetDoorList().Count, roomID, -1,
                        (GetComponentList()[roomCom].posX + (dimension - 1) / 2), (GetComponentList()[roomCom].posY + (dimension - 1)), 0);
         }
         else if (direction == "down")
         {
-            newDoor.Initialize(GetDoorList().Count, roomID, 0,
+            newDoor.Initialize(GetDoorList().Count, roomID, -1,
                         (GetComponentList()[roomCom].posX + (dimension - 1) / 2), GetComponentList()[roomCom].posY, 0);
         }
 
