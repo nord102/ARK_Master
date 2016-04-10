@@ -142,7 +142,7 @@ public class Generate : MonoBehaviour
         {
             if (door.GetComponent<Door>().doorstate == 0)
             {
-                //door.SetActive(false);
+                door.SetActive(false);
             }
         }
     }
