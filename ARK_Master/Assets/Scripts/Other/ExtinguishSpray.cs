@@ -19,8 +19,11 @@ public class ExtinguishSpray : MonoBehaviour {
 		}
 	}
 
-	public void Trajectory(Vector3 v)
+	public void Trajectory(Vector3 angle)
 	{
-		this.direction = v;
+        //this.direction = v;
+        //this.gameObject.transform.rotation = Quaternion.Angle(this.gameObject.transform.position, angle);
+        this.gameObject.SetActive(true);
+
 	}
 }
