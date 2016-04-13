@@ -111,13 +111,15 @@ public class Player : MonoBehaviour
         //c.y *= -1;
         c.z = 0;
 
-		//Vector3 position = ;
-		//float angle = Vector3.Angle (this.gameObject.transform.position, c);
-		//Vector3 position = (Vector3)Quaternion.AngleAxis (angle, this.gameObject.transform.position);
-		//Vector3.
-        
-		fireExtingusiherClone = Instantiate(fireExtingusiher,  this.gameObject.transform.position, Quaternion.identity) as GameObject;
-        //fireExtingusiherClone.SendMessage("Trajectory", c);
+        //Vector3 position = ;
+        float angle = Vector3.Angle (this.gameObject.transform.position, c);
+       // float angle = Quaternion.Angle(transform.rotation, );
+        //Vector3 position = (Vector3)Quaternion.AngleAxis (angle, this.gameObject.transform.position);
+        //Vector3.
+
+        fireExtingusiherClone = Instantiate(fireExtingusiher,  this.gameObject.transform.position, Quaternion.identity) as GameObject;
+        fireExtingusiherClone.SendMessage("Trajectory", angle);
+        fireExtingusiherClone.SetActive(true);
 
         //fireExtingusiherClone = null;
     }

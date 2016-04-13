@@ -9,6 +9,8 @@ public class SpawnEnemy : MonoBehaviour {
 	public GameObject alien;
 	private GameObject cloneAlien;
 
+	public GameObject fire;
+
 	public SpawnEnemy(int typeOfEnemy, int amount)
 	{
 		spawnEnemy (typeOfEnemy, amount);
@@ -77,8 +79,9 @@ public class InstantiateEnemy : MonoBehaviour
             {
                 case 0:
                     {
-                        cloneEnemy = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
-                        cloneEnemy.SetActive(true);
+						cloneEnemy = Instantiate(StateMachine.instance.fire, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
+						cloneEnemy.SetActive(true);
+					//Debug.Log (cloneEnemy.transform);
                     }
                     break;
                 case 1:
@@ -88,7 +91,9 @@ public class InstantiateEnemy : MonoBehaviour
                     break;
                 case 2:
                     {
-
+						cloneEnemy = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
+						cloneEnemy.SetActive(true);
+					//Debug.Log (cloneEnemy.transform);
                     }
                     break;
 

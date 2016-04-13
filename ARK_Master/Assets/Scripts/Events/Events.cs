@@ -15,6 +15,8 @@ public class Events
     //public List<EventChoice> eventChoices;
     public List<RoomEnemy> enemies = new List<RoomEnemy>();
 
+	public List<Fire> fires = new List<Fire> ();
+
     public Events(int eventType, int roomType, int numComponents)
     {
         //List<Rewards> FailureRewards = new List<Rewards>();
@@ -57,8 +59,8 @@ public class Events
                 eventName = "Fire!";
                 eventText = "The room, The room, The room is on fire!";
                 eventImage = Resources.Load<Sprite>("flames");
+				enemies.Add(new RoomEnemy(0, numEnemies, 1));
                 
-                enemies.Add(new RoomEnemy(0, numEnemies, 1));
                 //enemies.Add(new RoomEnemy(1, 2, 1));
                 //enemies.Add(new RoomEnemy(2, 1, 0));
 
@@ -68,6 +70,13 @@ public class Events
                 eventText = "The hull of the ship has been breached! Weld the breaches before the room collapses!";
                 eventImage = Resources.Load<Sprite>("breach");
                 break;
+
+			case 2: //Invasion Event
+				eventName = "Invasion!";
+				eventText = "Somebody left the door open again. A hostile alien has entered the room!";
+				eventImage = Resources.Load<Sprite>("aliens");
+				enemies.Add(new RoomEnemy(2, numEnemies, 1));
+				break;
         }
 
         //Determine the 3 rewards
@@ -185,7 +194,7 @@ public class RoomEnemy
         }
 
         int ceiling = Count + Variant;
-
+		 
         int finalCount = Random.Range(floor, ceiling);
 
         return finalCount;
