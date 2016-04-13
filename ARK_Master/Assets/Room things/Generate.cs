@@ -7,7 +7,7 @@ public class Generate : MonoBehaviour
     public static Generate instance = null;
 
     //--
-    public int[] standardRoomCosts = {50,125,200,275};
+    public int[] generalRoomCosts = {50,125,200,275};
     //--
 
     public Door currentDoor = null;

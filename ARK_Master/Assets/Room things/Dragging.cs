@@ -53,19 +53,19 @@ public class Dragging : MonoBehaviour
 
         if (roomShape == 1) //1
         {
-            roomCost = Generate.instance.standardRoomCosts[0];
+            roomCost = Generate.instance.generalRoomCosts[0];
         }
         else if (roomShape == 2 || roomShape == 3) //2
         {
-            roomCost = Generate.instance.standardRoomCosts[1];
+            roomCost = Generate.instance.generalRoomCosts[1];
         }
         else if (roomShape >= 4 && roomShape <= 9) //3
         {
-            roomCost = Generate.instance.standardRoomCosts[2];
+            roomCost = Generate.instance.generalRoomCosts[2];
         }
         else if (roomShape == 10) //4
         {
-            roomCost = Generate.instance.standardRoomCosts[3];
+            roomCost = Generate.instance.generalRoomCosts[3];
         }
 
         return roomCost;
