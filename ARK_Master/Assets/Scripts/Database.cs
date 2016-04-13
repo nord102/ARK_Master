@@ -176,12 +176,14 @@ public class Database
     public DataTable SelectTable(string commandText)
     {
         DataTable data = new DataTable();
-        SqliteConnection dbconn;
-        dbconn = new SqliteConnection(conn);
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(conn);
         dbconn.Open(); //Open connection to the database.
-        SqliteCommand comm = new SqliteCommand(commandText, dbconn);
-        SqliteDataAdapter adapt = new SqliteDataAdapter(comm);
-        adapt.Fill(data);
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = commandText;
+
+        IDataReader reader = dbcmd.ExecuteReader();
+        data.Load(reader);
 
         return data;
     }
