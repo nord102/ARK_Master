@@ -40,7 +40,7 @@ public class RoomAvailability : MonoBehaviour
 
     public RoomAvailability()
     {
-        int roomID = 1;
+        //int roomID = 1;
 
 
 
