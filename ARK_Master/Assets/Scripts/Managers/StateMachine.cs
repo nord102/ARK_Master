@@ -290,6 +290,10 @@ public class StateMachine : MonoBehaviour
         BuildingMenu.SetActive(false);
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
+
+        //GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
+        //GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
+
         ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
 
@@ -541,19 +545,27 @@ public class StateMachine : MonoBehaviour
     public void UpdateRoomTypeSelect(string direction)
     {
         Vector3 transform_Temp;
+        bool roomChange = false;
 
         if (roomTypeSelectRow == 1 && direction == "down")
         {
             roomTypeSelectRow++;
+            roomChange = true;
         }
         else if (roomTypeSelectRow == 2 && direction == "up")
         {
             roomTypeSelectRow--;
+            roomChange = true;
         }
 
-        transform_Temp = RoomTypeSelectMenu_1.transform.position;
-        RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
-        RoomTypeSelectMenu_2.transform.position = transform_Temp;
+        if (roomChange)
+        {
+            transform_Temp = RoomTypeSelectMenu_1.transform.position;
+            RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
+            RoomTypeSelectMenu_2.transform.position = transform_Temp;
+            roomChange = false;
+        }
+        
     }
 
     //Changing Room Select Type
