@@ -6,7 +6,11 @@ using UnityEngine.UI;
 using System.IO;
 using System.Text;
 using System;
+<<<<<<< HEAD
 using System.Data;
+=======
+using System.Linq;
+>>>>>>> origin/master
 
 public class StateMachine : MonoBehaviour
 {
@@ -75,6 +79,8 @@ public class StateMachine : MonoBehaviour
     public GameObject RoomTypeSelectMenu_2;
     private int roomTypeSelected = 0;
     //--
+	
+	public GameObject GoInventory;
 
     // Use this for initialization
     void Start()
@@ -309,7 +315,8 @@ public class StateMachine : MonoBehaviour
         //Start Intro Tutorial
 
         //Generate Room
-
+		
+		GoInventory.GetComponent<Inventory>().SetupInventory();
     }
 
     // Update is called once per frame
@@ -317,15 +324,16 @@ public class StateMachine : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I) && !eventActive)
         {
+			Inventory inv = GoInventory.GetComponent<Inventory>();
             InventoryOpen = !InventoryOpen;
             if (InventoryOpen)
             {
-                //ShowInventory();
+                inv.Show();
                 //sInfo.SetResources(10);
             }
             else
             {
-                //HideInventory();
+                inv.Hide();
 
             }
         }
@@ -394,6 +402,13 @@ public class StateMachine : MonoBehaviour
         AllAvailableSkills = new List<Skills>();
         AllAvailableSkills.Add(new Skills(0, FireImage, "Extinguisher", 10, 2));
         AllAvailableSkills.Add(new Skills(1, FireImage, "Laser", 20, 2));
+    }
+	
+	public void SetSkillActive(SkillType skillType, bool active = true)
+    {
+        Skills skill = AllAvailableSkills.Where(x => x.skillID == (int)skillType).FirstOrDefault();
+
+        skill.isActive = active;
     }
 
     //Determine event difficulty
