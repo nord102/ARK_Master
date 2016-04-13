@@ -2,28 +2,87 @@
 using System.Collections;
 
 public class ExtinguishSpray : MonoBehaviour {
+	public float speed = 30f;
 
-	public Animator animator;
+	public int range = 10f;
+
+	private Rigidbody2D rb;
+	public float angle = 0f;
+
+	Vector3 start;
 	Vector3 direction;
 
-	// Use this for initialization
-	void Start () {
-		animator = GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		Debug.Log (this.direction);
-		if (this.animator.isActiveAndEnabled== false) {
-			Destroy (this.gameObject);
-		}
-	}
+	//public Text output;
 
-	public void Trajectory(Vector3 angle)
+
+	void Awake()
 	{
-        //this.direction = v;
-        //this.gameObject.transform.rotation = Quaternion.Angle(this.gameObject.transform.position, angle);
-        this.gameObject.SetActive(true);
+		rb = GetComponent<Rigidbody2D>();
+		// Debug.Log(this.transform.position);
+		start = this.transform.position;
 
+		//Physics2D.IgnoreLayerCollision(9, 10);
+		//LaserSound.instance.PlaySound ();
+
+	}
+
+	///
+	/// \brief <b>Brief Description:</b> Destory the object if it hits the roof.
+	///
+	void OnCollisionEnter2D(Collision2D coll)
+	{
+		if (coll.gameObject.tag != "Player")
+		{
+			Destroy(this.gameObject);
+		}
+		//switch (coll.name)
+		//{
+		//    case "Border":
+		//        Destroy(this);
+		//        break;
+		//}
+
+	}
+
+	///
+	/// \brief <b>Brief Description:</b> Add force to the laser on the y-axis.
+	///
+	void Update()
+	{    
+		Vector3 direction = this.direction - this.start;
+		direction.Normalize ();
+
+		this.rb.velocity = direction * this.speed;
+
+
+
+		//float step = speed;
+		// transform.position = Vector3.MoveTowards(transform.position, this.direction, step);
+
+		//transform.position += (this.direction - this.start) * speed * Time.deltaTime;
+
+
+
+
+
+		//this.transform.LookAt(this.direction);
+		//this.transform.Translate(Vector3.back * speed);
+	}
+
+
+	public void Trajectory(Vector3 v)
+	{
+
+		this.direction = v;
+
+		//this.angle = Vector3.AngleBetween(this.transform.position, this.direction);
+		//Debug.Log(this.direction);
+		//this.direction.x *= 2;
+		//this.direction.y *= 2;
+
+		//Debug.Log(this.transform.position);
+
+		//Debug.Log(this.direction);
+		//Debug.Log(this.angle);
 	}
 }
