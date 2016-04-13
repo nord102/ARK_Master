@@ -34,7 +34,7 @@ public class Fire : MonoBehaviour {
 		animator = GetComponent<Animator>();
 	}
 
-	void OnCollisionEnter2D(Collision2D other) {
+	void OnCollisionEnter2D(Collision2D other) { 
 
 		//Debug.Log (other.gameObject.name);
 		if (other.gameObject.tag == "Fire" || other.gameObject.name.Contains ("Fire")) {
@@ -69,118 +69,24 @@ public class Fire : MonoBehaviour {
 			Destroy (this.gameObject);
 	}
 
-
-    private Vector3 FindAvailableSpace()
-    {
-        int[] availableSpace = new int[4];
-        List<Vector3> availableSpaces = AvailablePosition();
-        //int[] available = this.AvailableAdjacentSpace();
-
-        for (int i = 0; i < 4; i++)
-        {
-
-            availableSpace[i] = 0;
-            Vector3 basePosition = this.gameObject.transform.position;
-
-            switch (i)
-            {
-
-                case NORTH:
-                    basePosition.y -= 1f;
-                    break;
-                case SOUTH:
-                    basePosition.y += 1f;
-                    break;
-                case WEST:
-                    basePosition.x -= 1f;
-                    break;
-                case EAST:
-                    basePosition.x += 1f;
-                    break;
-
-                default:
-                    break;
-
-            }
-
-            //Debug.Log(basePosition);
-            //Debug.Log("STARTING RUN THROUGH LIST");
-            foreach (var pos in availableSpaces)
-            {
-                if (basePosition.x == pos.x && basePosition.y == pos.y)
-                {
-                    availableSpace[i] = 1;
-                    break;
-                }
-
-                //else
-                //{
-                    
-                //    Debug.Log(pos);
-                //}
-            }
-            //Debug.Log("END!");
-
-        }
-
-
-        int direction = RandomDirection(availableSpace);
-
-
-        Vector3 posit = this.gameObject.transform.position;
-
-        switch (direction)
-        {
-
-            case NORTH:
-                posit.y -= 1f;
-                break;
-            case SOUTH:
-                posit.y += 1f;
-                break;
-            case WEST:
-                posit.x -= 1f;
-                break;
-            case EAST:
-                posit.x += 1f;
-                break;
-
-            default:
-                //return base object
-                break;
-
-        }
-
-
-        return posit;
-    }
-
-
 	// Update is called once per frame
 	void Update () 
 	{
 		this.timer += Time.deltaTime;
-		//Debug.Log (this.timer);
 
-		//this.gameObject.transform.position.
 		if (this.timer >= this.divideTime && !this.flag)
 		{
 			
 			Vector3 v = this.gameObject.transform.position;
-            //Vector3 newPosition = Position (v);
-            Vector3 newPostion = FindAvailableSpace();
-			//Vector2 newPosition = AvailablePosition();
+            Vector3 newPosition = Position (v);
 
-			if (newPostion != this.gameObject.transform.position) {
-				cloneFire = Instantiate (this.gameObject, newPostion, Quaternion.identity) as GameObject;
+			if (newPosition != this.gameObject.transform.position) {
+				cloneFire = Instantiate (this.gameObject, newPosition, Quaternion.identity) as GameObject;
 				//Generate.instance.currentRoom.roomLayout[(int)newPosition.x, (int)newPosition.y] = -1;
 				cloneFire.SetActive (true);
 			}
-			this.flag = true;
+			this.timer = 0;
 		}
-
-		//Debug.Log (this.timer);
-		//this.gameObject.renderer.size;
 	}
 		
 
@@ -193,47 +99,45 @@ public class Fire : MonoBehaviour {
 		{
 			for (int j = 0; j < Mathf.Sqrt(Generate.instance.currentRoom.roomLayout.Length); j++)
 			{
-				if(Generate.instance.currentRoom.roomLayout[i,j] == 1) //-1 || Generate.instance.currentRoom.roomLayout[i,j] == -2)
+				if(Generate.instance.currentRoom.roomLayout[i,j] == -1 || Generate.instance.currentRoom.roomLayout[i,j] == -2)
 				{
-					possibleList.Add(new Vector3(i, j, 0));
+					possibleList.Add(new Vector3(Generate.instance.currentRoom.posX + i, Generate.instance.currentRoom.posY + j, 0));
 				}
 			}
 		}
-
-		//int tempNum = UnityEngine.Random.Range(0, (int)Mathf.Sqrt(possibleList.Count));
 		return possibleList;
-	}
+	} 
 
 
-	//private Vector3 Position(Vector3 basePositionInput)
-	//{
-	//	int[] available = this.AvailableAdjacentSpace ();
-	//	int direction = this.RandomDirection (available);
+	private Vector3 Position(Vector3 basePositionInput)
+	{
+		int[] available = this.AvailableAdjacentSpace ();
+		int direction = this.RandomDirection (available);
 
-	//	Vector3 basePosition = basePositionInput;
+		Vector3 basePosition = basePositionInput;
 
-	//	switch (direction) {
+		switch (direction) {
 
-	//	case NORTH:
-	//		basePosition.y -= 1f;
-	//		break;
-	//	case SOUTH:
-	//		basePosition.y += 1f;
-	//		break;
-	//	case WEST:
-	//		basePosition.x -= 1f;
-	//		break;
-	//	case EAST:
-	//		basePosition.x += 1f;
-	//		break;
+		case NORTH:
+			basePosition.y += 1f;
+			break;
+		case SOUTH:
+			basePosition.y -= 1f;
+			break;
+		case WEST:
+			basePosition.x -= 1f;
+			break;
+		case EAST:
+			basePosition.x += 1f;
+			break;
 
-	//	default:
-	//		break;
+		default:
+			break;
 			
-	//	}
+		}
 
-	//	return basePosition;
-	//}
+		return basePosition;
+	}
 
 	private int RandomDirection(int[] availableSpacesInput)
 	{
@@ -242,106 +146,99 @@ public class Fire : MonoBehaviour {
 
 		bool atLeastOneAvailabe = false;
 
-		foreach (int i in availableSpacesInput) {
+		for (int i = 0; i < availableSpacesInput.Length; i++) {
 		
-			if (i == 1) {
-			
+			if (availableSpacesInput[i] == 1) {	
 				atLeastOneAvailabe = true;
-				break;
+
+
+				switch (i) {
+				case NORTH:
+					Debug.Log ("North");
+					break;
+				case SOUTH:
+					Debug.Log ("South");
+					break;
+				case WEST:
+					Debug.Log ("West");
+					break;
+				case EAST:
+					Debug.Log ("East");
+					break;
+				}
 			}
 		}
 
-        if (atLeastOneAvailabe == false)
+        if (!atLeastOneAvailabe)
         {
             return -1;
         }
 
-        while (breakCondition && atLeastOneAvailabe) {
-			direction = Random.Range (0, 3);
+        while (breakCondition) {
+			direction = Random.Range (0, 4);
 
 			if (availableSpacesInput [direction] == 1) {
 				breakCondition = false;
+				break;
 			}
 		}
 
-
-
-		//Debug.Log (direction);
 		return direction;
 	}
 		
-	//private int[] AvailableAdjacentSpace()
-	//{
-	//	int[] availableSpace = new int[4];
-	//	GameObject[] gos = GameObject.FindGameObjectsWithTag("Fire");
-	//	List<Vector3> borders = AvailablePosition ();
+	private int[] AvailableAdjacentSpace()
+	{
+		int[] availableSpace = new int[4];
+		GameObject[] gos = GameObject.FindGameObjectsWithTag("Fire");
+		List<Vector3> borders = AvailablePosition ();
 
-	//	for (int i = 0; i < availableSpace.Length; i++) {
+		for (int i = 0; i < availableSpace.Length; i++) 
+		{
 
-	//		availableSpace [i] = 1;
-	//		Vector3 basePosition = this.gameObject.transform.position;
+			availableSpace [i] = 1;
+			Vector3 basePosition = this.gameObject.transform.position;
 
-	//		switch (i) {
+			switch (i) {
 
-	//		case NORTH:
-	//			basePosition.y -= 1f;
-	//			break;
-	//		case SOUTH:
-	//			basePosition.y += 1f;
-	//			break;
-	//		case WEST:
-	//			basePosition.x -= 1f;
-	//			break;
-	//		case EAST:
-	//			basePosition.x += 1f;
-	//			break;
+			case NORTH:
+				basePosition.y += 1f;
+				break;
+			case SOUTH:
+				basePosition.y -= 1f;
+				break;
+			case WEST:
+				basePosition.x -= 1f;
+				break;
+			case EAST:
+				basePosition.x += 1f;
+				break;
 
-	//		default:
-	//			break;
+			default:
+				break;
 
-	//		}
+			}
 
-	//		foreach (GameObject go in gos) {
-	//			if (go.transform.position == basePosition) {
-	//				availableSpace [i] = 0;
-	//				break;
-	//			}
-	//		}
- //           //Debug.Log(basePosition);
- //           foreach (var border in borders)
- //           {
+			foreach (GameObject go in gos) {
+				if (go.transform.position == basePosition) {
+					Debug.Log("Removed because it interates with something bad.");
+					availableSpace [i] = 0;
+					break;
+				}
+			}
 
- //              // Debug.Log(border);
- //               //
- //               if (border == basePosition)
- //               {
- //                   Debug.Log("Is this getting hit");
- //                   availableSpace[i] = 0;
- //                   break;
- //               }
- //           }
+            foreach (var border in borders)
+            {
+                if (border == basePosition)
+                {
+                    Debug.Log("Removed as it collides with other fire.");
+                    availableSpace[i] = 0;
+                    break;
+                }
+            }
 
- //       }
+        }
 
-	//	return availableSpace;
-	//}
-
-	//GameObject FindClosestEnemy() {
-	//	GameObject[] gos;
-	//	gos = GameObject.FindGameObjectsWithTag("Fire");
-	//	GameObject closest = null;
-	//	float distance = Mathf.Infinity;
-	//	Vector3 position = transform.position;
-	//	foreach (GameObject go in gos) {
-	//		Vector3 diff = go.transform.position - position;
-	//		float curDistance = diff.sqrMagnitude;
-	//		if (curDistance < distance) {
-	//			closest = go;
-	//			distance = curDistance;
-	//		}
-	//	}
-	//	return closest;
-	//}
-
+		return availableSpace;
+	}
 }
  
