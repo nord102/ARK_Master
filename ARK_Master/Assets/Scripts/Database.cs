@@ -173,6 +173,19 @@ public class Database
         return ret;
     }
 
+    public DataTable SelectTable(string commandText)
+    {
+        DataTable data = new DataTable();
+        SqliteConnection dbconn;
+        dbconn = new SqliteConnection(conn);
+        dbconn.Open(); //Open connection to the database.
+        SqliteCommand comm = new SqliteCommand(commandText, dbconn);
+        SqliteDataAdapter adapt = new SqliteDataAdapter(comm);
+        adapt.Fill(data);
+
+        return data;
+    }
+
     private int ExecuteNonQuery(string commandText, List<DBParameter> parameters)
     {
         IDbConnection dbconn;
