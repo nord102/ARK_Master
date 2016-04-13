@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour {
         range = 10;
         lastX = false;
         animator = GetComponent<Animator>();
-        currentEvent    = Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent;
+        currentEvent    = Generate.instance.currentRoom.roomEvent;
     }
 
     // Update is called once per frame
@@ -95,19 +95,20 @@ public class Enemy : MonoBehaviour {
         }
 	}	
 
-    private void Damage(int amount)
+    public void Damage(int amount)
     {
         health -= amount;
 
         if (health <= 0)
         {
-            currentEvent.Enemies.Remove(0);
-            Destroy(this.gameObject);
+            currentEvent.Enemies.Remove(2);
+            
             //Check if this was the last enemy alive - if so, end the event
-            if (currentEvent.Enemies.Count == 0)
+            if (currentEvent.Enemies.Count <= 0)
             {
                 StateMachine.instance.EndEvent(currentEvent);
             }
+			Destroy(this.gameObject);
         }
 
     }

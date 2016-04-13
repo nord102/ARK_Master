@@ -55,13 +55,26 @@ public class Door : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.tag == "Player")// && Generate.instance.currentDoor == null)
+        if (col.gameObject.tag == "Player" && Generate.instance.currentDoor == null)
         {
             //Set the door that is being collided with
             Generate.instance.currentDoor = gameObject.GetComponent<Door>();
-            
 
-            Events newRoomEvent = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_1 - 1].GetComponent<Room>().roomEvent;
+            Room doorRoom_1 = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_1 - 1].GetComponent<Room>();
+            Room doorRoom_2 = Generate.instance.GetRoomGameObjectList()[gameObject.GetComponent<Door>().roomID_2 - 1].GetComponent<Room>();
+            Events newRoomEvent = null;
+
+            if(doorRoom_1.roomState == 1)
+            {
+                Generate.instance.currentRoom = doorRoom_1;
+                newRoomEvent = doorRoom_1.roomEvent;
+            }
+            else if (doorRoom_2.roomState == 1)
+            {
+                Generate.instance.currentRoom = doorRoom_2;
+                newRoomEvent = doorRoom_2.roomEvent;
+            }
+
             StateMachine.instance.FireEvent(newRoomEvent);
         }
     }

@@ -10,13 +10,13 @@ public class Generate : MonoBehaviour
     public int[] standardRoomCosts = {50,125,200,275};
     //--
 
+    public Door currentDoor = null;
+    public Room currentRoom = null;
 
     #region Door
     public GameObject door;
     private GameObject cloneDoor;
     public GameObject underDoorTile;
-
-    public Door currentDoor = null;
     #endregion
 
     #region Room GameObjects
@@ -99,34 +99,42 @@ public class Generate : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// Make a function that removes doors 
-    /// upon completion of event
+    /// Removes doors upon completion of event
     /// </summary>
-    /// 
     public void RemoveDoors()
     {
+        Room connectingRoom = new Room();
+        bool idCheck = false;
+        currentRoom.roomState = 0;    
         
-        Room currentRoom = Generate.instance.GetRoomGameObjectList()[currentDoor.roomID_1 - 1].GetComponent<Room>();
-        currentRoom.roomState = 0;
-
-        Debug.Log("ROOM ID " + currentRoom.roomID);
-
         //Check each Door in the Room where the Event was completed
         foreach (Door roomDoor in currentRoom.GetDoorList())
         {
-            Debug.Log("Crash");
+            //If the door is currently active
             if (roomDoor.doorstate == 1)
             {
-                Room connectingRoom = Generate.instance.GetRoomGameObjectList()[roomDoor.roomID_2 - 1].GetComponent<Room>();
+                //Checking for RoomID_1 and RoomID_2
+                if (roomDoor.roomID_1 == currentRoom.roomID)
+                {
+                    connectingRoom = Generate.instance.GetRoomGameObjectList()[roomDoor.roomID_2 - 1].GetComponent<Room>();
+                    idCheck = true;
+                }
+                else if (roomDoor.roomID_2 == currentRoom.roomID)
+                {
+                    connectingRoom = Generate.instance.GetRoomGameObjectList()[roomDoor.roomID_1 - 1].GetComponent<Room>();
+                    idCheck = true;
+                }
 
-                if (roomDoor.roomID_1 == currentRoom.roomID && connectingRoom.roomState == 0)
+                //Only set doorstate if the door is connecteding two rooms
+                if (connectingRoom.roomState == 0 && idCheck)
                 {
                     //Change the doorState
                     roomDoor.doorstate = 0;
                 }
-            }
+            }            
         }
 
+        //Disables all doors that need to be removed
         foreach (GameObject door in Generate.instance.GetDoorGameObjectList())
         {
             if (door.GetComponent<Door>().doorstate == 0)
@@ -134,11 +142,8 @@ public class Generate : MonoBehaviour
                 door.SetActive(false);
             }
         }
-
-        
     }
-
-
+    
     void PlaceStartRoom()
     {
         //Create Room GameObject
@@ -165,9 +170,7 @@ public class Generate : MonoBehaviour
         GameObject recentRoomGameObject = roomGameObjectList[roomGameObjectList.Count - 1];
         Room recentRoom = recentRoomGameObject.GetComponent<Room>();
 
-        //--
         recentRoom.InitializeDoorList();
-        //--
 
         Door newDoor = new Door();
 
@@ -198,9 +201,8 @@ public class Generate : MonoBehaviour
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
 
-                    //--
+                    //Create tile under door
                     Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
-                    //--
                 }
                 #endregion
                 #region (X-, Y) (LEFT)
@@ -224,9 +226,9 @@ public class Generate : MonoBehaviour
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
 
-                    //--
+                    //Create tile under door
                     Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
-                    //--
+
                 }
                 #endregion
                 #region (X, Y+) (UP)
@@ -250,9 +252,8 @@ public class Generate : MonoBehaviour
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
 
-                    //--
+                    //Create tile under door
                     Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
-                    //--
                 }
                 #endregion
                 #region (X, Y-) (DOWN)
@@ -276,9 +277,8 @@ public class Generate : MonoBehaviour
                     cloneDoor.transform.position = new Vector3(newDoor.posX, newDoor.posY, 1f);
                     doorMade = true;
 
-                    //--
+                    //Create tile under door
                     Instantiate(underDoorTile, new Vector3(newDoor.posX, newDoor.posY, 2f), Quaternion.identity);
-                    //--
                 }
                 #endregion
 
@@ -286,22 +286,32 @@ public class Generate : MonoBehaviour
                 {
                     doorMade = false;
 
-                    //Add door to global Dor GameObjectList
+                    //Add door to global door GameObjectList
                     doorGameObjectList.Add(cloneDoor);
 
-                    //--
-                    //Debug.Log("DoorPOSCHANGED: " + (newDoor.posX - recentRoom.posX) + " " + (newDoor.posY - recentRoom.posY));
+                    #region Add doors to recentRoom and connectedRoom door lists
+                    //Add to Recent room door list
                     int index = recentRoom.GetDoorList().FindIndex(d => d.posX == newDoor.posX && d.posY == newDoor.posY);
                     newDoor.SetDoorID(index);
-                    recentRoom.GetDoorList()[index] = newDoor;
-                    //--
-
-                    //Add to Recent room door list
+                    recentRoom.GetDoorList()[index] = newDoor;                   
                     recentRoom.GetDoorList().Add(newDoor);
 
                     //Add to Connected room door list
                     GameObject connectingRoomGameObject = roomGameObjectList[globalRoomCom.roomID - 1];
                     Room connectingRoom = connectingRoomGameObject.GetComponent<Room>();
+
+                    connectingRoom.InitializeDoorList();                              
+                    index = connectingRoom.GetDoorList().FindIndex(d => d.posX == newDoor.posX && d.posY == newDoor.posY);
+                    newDoor.SetDoorID(index);
+
+                    //Swap roomIDs
+                    int temp = newDoor.roomID_1;
+                    newDoor.roomID_1 = newDoor.roomID_2;
+                    newDoor.roomID_2 = temp;
+
+                    connectingRoom.GetDoorList()[index] = newDoor;
+                    connectingRoom.GetDoorList().Add(newDoor);
+                    #endregion
 
                     #region Take Out Walls at Door Location
                     //Create Door
@@ -438,37 +448,48 @@ public class Generate : MonoBehaviour
             {
                 //Debug.Log(tempX + ", " + tempY);
                 RoomObject newRoomObject = new RoomObject(room.GetObjectList().Count, "Banana", true, tempX, tempY);
-                room.GetObjectList().Add(newRoomObject);
 
                 cloneObject1 = Instantiate(object1, new Vector3(room.posX + tempX, room.posY + tempY, 0f), Quaternion.identity) as GameObject;
                 Renderer rend = cloneObject1.GetComponent<Renderer>();
-                rend.material = GetRandomRoomObject(room.roomType);
+                int objectType = Random.Range(0, 5); //0-4, the number of materials we currently have
+                rend.material = GetRandomRoomObject(room.roomType, objectType);
+                if (objectType == ObjectType.Crate)
+                {
+                    //Attach a script that allows for destruction + ship resources
+                    cloneObject1.AddComponent<CrateBehaviour>();
+                    CrateBehaviour c = cloneObject1.GetComponent<CrateBehaviour>();
+                    c.posX = tempX;
+                    c.posY = tempY;
+                    c.roomNumber = room.roomID;
+                }
                 room.roomLayout[tempX, tempY] = -1;
+
+                room.GetObjectList().Add(newRoomObject);
             }
         }
 
     }
 
-    Material GetRandomRoomObject(int roomType)
+    Material GetRandomRoomObject(int roomType, int objectType)
     {
         Material m = null;
 
-        //0-4, the number of materials we currently have
-        switch (Random.Range(0, 5))
+        
+        switch (objectType)
         {
-            case 0:
+            case ObjectType.Cabinet:
                 m = Resources.Load<Material>("Cabinet");
                 break;
-            case 1:
+            case ObjectType.Chair:
                 m = Resources.Load<Material>("Chair");
                 break;
-            case 2:
+            case ObjectType.Computer:
                 m = Resources.Load<Material>("Computer");
                 break;
-            case 3:
+            case ObjectType.Crate:
                 m = Resources.Load<Material>("Crate");
                 break;
-            case 4:
+            case ObjectType.Table:
                 m = Resources.Load<Material>("Table");
                 break;
         }

@@ -7,7 +7,7 @@ public static class EventSystem{
 	public static Events GenerateRoomEvent(int roomType, int numComponents)
 	{
 		//All rooms have default events that could happen (0:Fire, 1:Breach, 2:Enemy)
-		List<int> availableEvents = new List<int> (){0,1}; //+ 2
+		List<int> availableEvents = new List<int> (){0,1,2}; //+ 2
 
 		//Add event type 3 (Encounter previous character) if there are dead previous characters, and other conditions are met?
 		if (StateMachine.instance.PreviousPlayers.Count != 0) { // and anything else? time passed? events solved?

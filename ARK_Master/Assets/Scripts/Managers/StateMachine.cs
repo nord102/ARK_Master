@@ -20,6 +20,7 @@ public class StateMachine : MonoBehaviour
     private bool MiniMapOpen = false;
     private bool BuildingMenuOpen = false;
     public bool PlayerControl = false;
+    public bool eventActive = false;
 
     #region Modules
     public GameObject Module1;
@@ -55,6 +56,7 @@ public class StateMachine : MonoBehaviour
     public GameObject EventInfo;
 
     public GameObject alien;
+	public GameObject fire;
 
     //Short - 30
     //Medium - 60
@@ -274,7 +276,7 @@ public class StateMachine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKeyDown(KeyCode.I) && !eventActive)
         {
             InventoryOpen = !InventoryOpen;
             if (InventoryOpen)
@@ -288,7 +290,7 @@ public class StateMachine : MonoBehaviour
 
             }
         }
-        else if (Input.GetKeyDown(KeyCode.C))
+        else if (Input.GetKeyDown(KeyCode.C) && !eventActive)
         {
             CharacterSheetOpen = !CharacterSheetOpen;
             if (CharacterSheetOpen)
@@ -343,7 +345,7 @@ public class StateMachine : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("Pressed X");
-            StateMachine.instance.EndEvent(Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>().roomEvent);
+            StateMachine.instance.EndEvent(Generate.instance.currentRoom.roomEvent);
         }
 
     }
@@ -376,6 +378,8 @@ public class StateMachine : MonoBehaviour
     public void FireEvent(Events myEvent)
     {
         PlayerControl = false;
+        eventActive = true;
+
         MyCanvas canvasScript = DialogueBox.GetComponent<MyCanvas>();
 
         canvasScript.StartEvent(myEvent);
@@ -419,26 +423,25 @@ public class StateMachine : MonoBehaviour
         }
 
 
-        Room currentRoom = Generate.instance.GetRoomGameObjectList()[Generate.instance.currentDoor.roomID_1 - 1].GetComponent<Room>();
-
-
+        
+        //Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
 
         //Grab enemy that is attached to event and spawn them?
         //Pick a spot with a 1 on it and spawn the enemies (random 1's)
 
         //foreach (int enemy in currentRoom.roomEvent.Enemies)
         //{
-            InstantiateEnemy.spawnEnemy(currentRoom.roomEvent.Enemies, currentRoom);
+        InstantiateEnemy.spawnEnemy(Generate.instance.currentRoom.roomEvent.Enemies, Generate.instance.currentRoom);
         //}
     }
 
     public void EndEvent(Events myEvent)
     {
-        
+        eventActive = false;
 
         Generate.instance.RemoveDoors();
 
-        //Generate.instance.currentDoor = null;
+        Generate.instance.currentDoor = null;
 
         Debug.Log("EVENT OVER");
         foreach (Rewards reward in myEvent.SuccessRewards)
