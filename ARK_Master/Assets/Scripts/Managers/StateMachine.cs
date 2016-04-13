@@ -6,11 +6,8 @@ using UnityEngine.UI;
 using System.IO;
 using System.Text;
 using System;
-<<<<<<< HEAD
 using System.Data;
-=======
 using System.Linq;
->>>>>>> origin/master
 
 public class StateMachine : MonoBehaviour
 {
