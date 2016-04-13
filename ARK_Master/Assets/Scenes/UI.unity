@@ -9986,6 +9986,7 @@ MonoBehaviour:
   ImagePath: 
   EventInfo: {fileID: 185302564}
   alien: {fileID: 685741539}
+  fire: {fileID: 0}
   numMaxRooms: 30
   RoomShapeSelectMenu_1: {fileID: 1214324845}
   RoomShapeSelectMenu_2: {fileID: 308811198}
