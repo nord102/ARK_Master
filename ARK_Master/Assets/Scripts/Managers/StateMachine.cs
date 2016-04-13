@@ -5,6 +5,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.IO;
 using System.Text;
+using System;
+<<<<<<< HEAD
+using System.Data;
+=======
+using System.Linq;
+>>>>>>> origin/master
 
 public class StateMachine : MonoBehaviour
 {
@@ -56,7 +62,7 @@ public class StateMachine : MonoBehaviour
     public GameObject EventInfo;
 
     public GameObject alien;
-	public GameObject fire;
+    public GameObject fire;
 
     //Short - 30
     //Medium - 60
@@ -64,11 +70,17 @@ public class StateMachine : MonoBehaviour
     public int numMaxRooms = 30;
 
     //--
-    private int roomSelect = 1;
-    public GameObject RoomSelectMenu_1;
-    public GameObject RoomSelectMenu_2;
-    public GameObject RoomSelectMenu_3;
+    private int roomShapeSelectRow = 1;
+    public GameObject RoomShapeSelectMenu_1;
+    public GameObject RoomShapeSelectMenu_2;
+    public GameObject RoomShapeSelectMenu_3;
+    private int roomTypeSelectRow = 1;
+    public GameObject RoomTypeSelectMenu_1;
+    public GameObject RoomTypeSelectMenu_2;
+    private int roomTypeSelected = 0;
     //--
+	
+	public GameObject GoInventory;
 
     // Use this for initialization
     void Start()
@@ -209,6 +221,7 @@ public class StateMachine : MonoBehaviour
 
     void UpdateUI()
     {
+        #region Skills
         //Update Modules in wrench  
         foreach (object[] obj in UIModules2)
         {
@@ -237,10 +250,42 @@ public class StateMachine : MonoBehaviour
 
             }
         }
+        #endregion
+
+        //Update Room Shape Lists with Available Rooms
+            switch (roomShapeSelectRow)
+            {
+                case 1:
+                    RoomSelector(GlobalVariables.roomAvailability, RoomShapeSelectMenu_1);
+                    break;
+                case 2:
+                    RoomSelector(GlobalVariables.roomAvailability, RoomShapeSelectMenu_2);
+                    break;
+                case 3:
+                    RoomSelector(GlobalVariables.roomAvailability, RoomShapeSelectMenu_3);
+                    break;
+            }
 
         //Update Info Panel
 
 
+    }
+
+    public void RoomSelector(DataTable availibilty, GameObject RoomSelectMenu)//), string roomName, bool unlocked)
+    {
+        foreach (Transform child in RoomSelectMenu.transform)
+        {
+            try
+            {
+                DataRow[] availibiltyRow = availibilty.Select("Name = " + child.name + " AND RoomType = " + roomTypeSelected + " AND RowNum = " + roomShapeSelectRow);
+
+                child.gameObject.SetActive((bool)availibiltyRow[0]["LocalUnlocked"]);
+            }
+            catch
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
     }
 
     void Setup()
@@ -270,7 +315,8 @@ public class StateMachine : MonoBehaviour
         //Start Intro Tutorial
 
         //Generate Room
-
+		
+		GoInventory.GetComponent<Inventory>().SetupInventory();
     }
 
     // Update is called once per frame
@@ -278,15 +324,16 @@ public class StateMachine : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I) && !eventActive)
         {
+			Inventory inv = GoInventory.GetComponent<Inventory>();
             InventoryOpen = !InventoryOpen;
             if (InventoryOpen)
             {
-                //ShowInventory();
+                inv.Show();
                 //sInfo.SetResources(10);
             }
             else
             {
-                //HideInventory();
+                inv.Hide();
 
             }
         }
@@ -299,7 +346,7 @@ public class StateMachine : MonoBehaviour
                 BuildingMenuOpen = true;
                 PlayerControl = false;
                 BuildingMenu.SetActive(true);
-                SwitchRoomType("Standard");
+                SwitchRoomType("Storage");
                 mainCamera.orthographicSize = 18;
 
             }
@@ -355,6 +402,13 @@ public class StateMachine : MonoBehaviour
         AllAvailableSkills = new List<Skills>();
         AllAvailableSkills.Add(new Skills(0, FireImage, "Extinguisher", 10, 2));
         AllAvailableSkills.Add(new Skills(1, FireImage, "Laser", 20, 2));
+    }
+	
+	public void SetSkillActive(SkillType skillType, bool active = true)
+    {
+        Skills skill = AllAvailableSkills.Where(x => x.skillID == (int)skillType).FirstOrDefault();
+
+        skill.isActive = active;
     }
 
     //Determine event difficulty
@@ -423,7 +477,7 @@ public class StateMachine : MonoBehaviour
         }
 
 
-        
+
         //Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
 
         //Grab enemy that is attached to event and spawn them?
@@ -459,37 +513,73 @@ public class StateMachine : MonoBehaviour
     //Room Select Scrolling
     public void UpdateRoomSelect(string direction)
     {
-        if (roomSelect == 1 && direction == "down")
+        if (roomShapeSelectRow == 1 && direction == "down")
         {
-            roomSelect++;
-            RoomSelectMenu_1.SetActive(false);
-            RoomSelectMenu_2.SetActive(true);
+            roomShapeSelectRow++;
+            RoomShapeSelectMenu_1.SetActive(false);
+            RoomShapeSelectMenu_2.SetActive(true);
 
         }
-        else if (roomSelect == 2 && direction == "down")
+        else if (roomShapeSelectRow == 2 && direction == "down")
         {
-            roomSelect++;
-            RoomSelectMenu_2.SetActive(false);
-            RoomSelectMenu_3.SetActive(true);
+            roomShapeSelectRow++;
+            RoomShapeSelectMenu_2.SetActive(false);
+            RoomShapeSelectMenu_3.SetActive(true);
         }
-        else if (roomSelect == 2 && direction == "up")
+        else if (roomShapeSelectRow == 2 && direction == "up")
         {
-            roomSelect--;
-            RoomSelectMenu_2.SetActive(false);
-            RoomSelectMenu_1.SetActive(true);
+            roomShapeSelectRow--;
+            RoomShapeSelectMenu_2.SetActive(false);
+            RoomShapeSelectMenu_1.SetActive(true);
         }
-        else if (roomSelect == 3 && direction == "up")
+        else if (roomShapeSelectRow == 3 && direction == "up")
         {
-            roomSelect--;
-            RoomSelectMenu_3.SetActive(false);
-            RoomSelectMenu_2.SetActive(true);
+            roomShapeSelectRow--;
+            RoomShapeSelectMenu_3.SetActive(false);
+            RoomShapeSelectMenu_2.SetActive(true);
         }
+    }
+
+
+    public void UpdateRoomTypeSelect(string direction)
+    {
+        Vector3 transform_Temp;
+
+        if (roomTypeSelectRow == 1 && direction == "down")
+        {
+            roomTypeSelectRow++;
+        }
+        else if (roomTypeSelectRow == 2 && direction == "up")
+        {
+            roomTypeSelectRow--;
+        }
+
+        transform_Temp = RoomTypeSelectMenu_1.transform.position;
+        RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
+        RoomTypeSelectMenu_2.transform.position = transform_Temp;
     }
 
     //Changing Room Select Type
     public void SwitchRoomType(string roomType)
     {
-        foreach (Transform child in RoomSelectMenu_1.transform)
+        if (roomType == "Storage")
+        {
+            roomTypeSelected = 1;
+        }
+        else if (roomType == "Medical")
+        {
+            roomTypeSelected = 2;
+        }
+        else if (roomType == "Engineering")
+        {
+            roomTypeSelected = 3;
+        }
+        else if (roomType == "Labratory")
+        {
+            roomTypeSelected = 4;
+        }
+
+        foreach (Transform child in RoomShapeSelectMenu_1.transform)
         {
             foreach (Transform smallerChild in child.transform)
             {
@@ -501,11 +591,10 @@ public class StateMachine : MonoBehaviour
                 {
                     smallerChild.gameObject.SetActive(false);
                 }
-                
             }
         }
 
-        foreach (Transform child in RoomSelectMenu_2.transform)
+        foreach (Transform child in RoomShapeSelectMenu_2.transform)
         {
             foreach (Transform smallerChild in child.transform)
             {
@@ -520,7 +609,7 @@ public class StateMachine : MonoBehaviour
             }
         }
 
-        foreach (Transform child in RoomSelectMenu_3.transform)
+        foreach (Transform child in RoomShapeSelectMenu_3.transform)
         {
             foreach (Transform smallerChild in child.transform)
             {
@@ -535,7 +624,9 @@ public class StateMachine : MonoBehaviour
             }
         }
     }
-    
+
+
+
     public void ToggleRoom()
     {
 

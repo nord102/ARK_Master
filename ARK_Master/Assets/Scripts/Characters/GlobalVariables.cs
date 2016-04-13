@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 
 public static class GlobalVariables
 {
-    public static List<int> unlockedCharacters = new List<int>();
+    public static DataTable unlockedCharacters = new DataTable();
     public static List<int> unlockedBuildings = new List<int>();
     public static List<int> unlockedSkills = new List<int>();
+    public static DataTable roomAvailability = new DataTable();
     public static int selectedCharacter = -1;      
 
     //Do this immediately on opening the game!

@@ -50,7 +50,7 @@ public class EventInfo : MonoBehaviour
         // Returns null if load fails
 
         Texture2D Tex2D;
-        byte[] FileData;
+        byte[] FileData = new byte[5];
 
         if (File.Exists(FilePath))
         {
