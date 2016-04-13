@@ -81,7 +81,7 @@ public class InstantiateEnemy : MonoBehaviour
                     {
 						cloneEnemy = Instantiate(StateMachine.instance.fire, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
 						cloneEnemy.SetActive(true);
-					Debug.Log (cloneEnemy.transform);
+					//Debug.Log (cloneEnemy.transform);
                     }
                     break;
                 case 1:
@@ -93,7 +93,7 @@ public class InstantiateEnemy : MonoBehaviour
                     {
 						cloneEnemy = Instantiate(StateMachine.instance.alien, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
 						cloneEnemy.SetActive(true);
-					Debug.Log (cloneEnemy.transform);
+					//Debug.Log (cloneEnemy.transform);
                     }
                     break;
 
