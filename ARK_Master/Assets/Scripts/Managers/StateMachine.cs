@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using System.IO;
 using System.Text;
+using System;
 
 public class StateMachine : MonoBehaviour
 {
@@ -63,10 +64,13 @@ public class StateMachine : MonoBehaviour
     public int numMaxRooms = 30;
 
     //--
-    private int roomSelect = 1;
-    public GameObject RoomSelectMenu_1;
-    public GameObject RoomSelectMenu_2;
-    public GameObject RoomSelectMenu_3;
+    private int roomShapeSelect = 1;
+    public GameObject RoomShapeSelectMenu_1;
+    public GameObject RoomShapeSelectMenu_2;
+    public GameObject RoomShapeSelectMenu_3;
+    private int roomTypeSelect = 1;
+    public GameObject RoomTypeSelectMenu_1;
+    public GameObject RoomTypeSelectMenu_2;
     //--
 
     // Use this for initialization
@@ -298,7 +302,7 @@ public class StateMachine : MonoBehaviour
                 BuildingMenuOpen = true;
                 PlayerControl = false;
                 BuildingMenu.SetActive(true);
-                SwitchRoomType("Standard");
+                SwitchRoomType("Storage");
                 mainCamera.orthographicSize = 18;
 
             }
@@ -458,37 +462,73 @@ public class StateMachine : MonoBehaviour
     //Room Select Scrolling
     public void UpdateRoomSelect(string direction)
     {
-        if (roomSelect == 1 && direction == "down")
+        if (roomShapeSelect == 1 && direction == "down")
         {
-            roomSelect++;
-            RoomSelectMenu_1.SetActive(false);
-            RoomSelectMenu_2.SetActive(true);
+            roomShapeSelect++;
+            RoomShapeSelectMenu_1.SetActive(false);
+            RoomShapeSelectMenu_2.SetActive(true);
 
         }
-        else if (roomSelect == 2 && direction == "down")
+        else if (roomShapeSelect == 2 && direction == "down")
         {
-            roomSelect++;
-            RoomSelectMenu_2.SetActive(false);
-            RoomSelectMenu_3.SetActive(true);
+            roomShapeSelect++;
+            RoomShapeSelectMenu_2.SetActive(false);
+            RoomShapeSelectMenu_3.SetActive(true);
         }
-        else if (roomSelect == 2 && direction == "up")
+        else if (roomShapeSelect == 2 && direction == "up")
         {
-            roomSelect--;
-            RoomSelectMenu_2.SetActive(false);
-            RoomSelectMenu_1.SetActive(true);
+            roomShapeSelect--;
+            RoomShapeSelectMenu_2.SetActive(false);
+            RoomShapeSelectMenu_1.SetActive(true);
         }
-        else if (roomSelect == 3 && direction == "up")
+        else if (roomShapeSelect == 3 && direction == "up")
         {
-            roomSelect--;
-            RoomSelectMenu_3.SetActive(false);
-            RoomSelectMenu_2.SetActive(true);
+            roomShapeSelect--;
+            RoomShapeSelectMenu_3.SetActive(false);
+            RoomShapeSelectMenu_2.SetActive(true);
         }
+    }
+
+    
+    public void UpdateRoomTypeSelect(string direction)
+    {
+        Vector3 transform_Temp;
+
+        if (roomTypeSelect == 1 && direction == "down")
+        {
+            roomTypeSelect++;
+        }
+        else if (roomTypeSelect == 2 && direction == "up")
+        {
+            roomTypeSelect--;
+        }
+
+        transform_Temp = RoomTypeSelectMenu_1.transform.position;
+        RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
+        RoomTypeSelectMenu_2.transform.position = transform_Temp;
     }
 
     //Changing Room Select Type
     public void SwitchRoomType(string roomType)
     {
-        foreach (Transform child in RoomSelectMenu_1.transform)
+        foreach (Transform child in RoomShapeSelectMenu_1.transform)
+        {
+            foreach (Transform smallerChild in child.transform)
+            {
+                if (smallerChild.name == roomType)
+                {
+                    smallerChild.gameObject.SetActive(true);
+
+                    smallerChild.GetComponent<Text>().text = roomTypeSelect.ToString();
+                }
+                else
+                {
+                    smallerChild.gameObject.SetActive(false);
+                }               
+            }
+        }
+
+        foreach (Transform child in RoomShapeSelectMenu_2.transform)
         {
             foreach (Transform smallerChild in child.transform)
             {
@@ -500,26 +540,10 @@ public class StateMachine : MonoBehaviour
                 {
                     smallerChild.gameObject.SetActive(false);
                 }
-                
             }
         }
 
-        foreach (Transform child in RoomSelectMenu_2.transform)
-        {
-            foreach (Transform smallerChild in child.transform)
-            {
-                if (smallerChild.name == roomType)
-                {
-                    smallerChild.gameObject.SetActive(true);
-                }
-                else
-                {
-                    smallerChild.gameObject.SetActive(false);
-                }
-            }
-        }
-
-        foreach (Transform child in RoomSelectMenu_3.transform)
+        foreach (Transform child in RoomShapeSelectMenu_3.transform)
         {
             foreach (Transform smallerChild in child.transform)
             {

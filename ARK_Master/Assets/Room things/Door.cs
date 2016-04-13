@@ -57,6 +57,18 @@ public class Door : MonoBehaviour
     {
         if (col.gameObject.tag == "Player" && Generate.instance.currentDoor == null)
         {
+
+
+            //Check if collision is in specific spot
+            //if yes, then go
+            //if no, then dont do anything
+
+
+
+
+
+
+
             //Set the door that is being collided with
             Generate.instance.currentDoor = gameObject.GetComponent<Door>();
 
