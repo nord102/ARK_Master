@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1658330a07872b4b910abbd168d870c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  divideTime: 10
+  divideTime: 3
   animator: {fileID: 0}
 --- !u!212 &21223376
 SpriteRenderer:

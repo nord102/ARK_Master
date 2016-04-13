@@ -118,7 +118,7 @@ public class Player : MonoBehaviour
         //Vector3.
 
         fireExtingusiherClone = Instantiate(fireExtingusiher,  this.gameObject.transform.position, Quaternion.identity) as GameObject;
-        fireExtingusiherClone.SendMessage("Trajectory", angle);
+        //fireExtingusiherClone.SendMessage("Trajectory", angle);
         fireExtingusiherClone.SetActive(true);
 
         //fireExtingusiherClone = null;
