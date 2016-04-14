@@ -1,88 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ExtinguishSpray : MonoBehaviour {
-	public float speed = 30f;
-
-	public int range = 10f;
-
+	public float speed = 0.1f;
 	private Rigidbody2D rb;
 	public float angle = 0f;
+    private float timer = 0f;
+    public float lifeSpan = 2f;
 
 	Vector3 start;
 	Vector3 direction;
 
-	//public Text output;
+    //public Text output;
+    bool distanceFlag = false;
 
 
 	void Awake()
 	{
 		rb = GetComponent<Rigidbody2D>();
-		// Debug.Log(this.transform.position);
 		start = this.transform.position;
+        ExtinguisherSound.instance.PlaySound();
 
-		//Physics2D.IgnoreLayerCollision(9, 10);
-		//LaserSound.instance.PlaySound ();
-
-	}
-
-	///
-	/// \brief <b>Brief Description:</b> Destory the object if it hits the roof.
-	///
-	void OnCollisionEnter2D(Collision2D coll)
-	{
-		if (coll.gameObject.tag != "Player")
-		{
-			Destroy(this.gameObject);
-		}
-		//switch (coll.name)
-		//{
-		//    case "Border":
-		//        Destroy(this);
-		//        break;
-		//}
-
-	}
+    }
 
 	///
 	/// \brief <b>Brief Description:</b> Add force to the laser on the y-axis.
 	///
 	void Update()
-	{    
-		Vector3 direction = this.direction - this.start;
-		direction.Normalize ();
+	{
+        this.timer += Time.deltaTime;
 
-		this.rb.velocity = direction * this.speed;
+        if(Math.Round(this.timer, 1) >= this.lifeSpan)
+        {
+            Destroy(this.gameObject);
 
+        }
 
+        if (!distanceFlag)
+        {
+            Vector3 direction = this.direction - this.start;
+            direction.Normalize();
 
-		//float step = speed;
-		// transform.position = Vector3.MoveTowards(transform.position, this.direction, step);
+            this.rb.velocity = direction * this.speed;
+            distanceFlag = true;
+        }
 
-		//transform.position += (this.direction - this.start) * speed * Time.deltaTime;
-
-
-
-
-
-		//this.transform.LookAt(this.direction);
-		//this.transform.Translate(Vector3.back * speed);
-	}
+        else
+        {
+            Vector3 direction = this.direction - this.start;
+            this.rb.velocity = direction * 0;
+        }
+    }
 
 
 	public void Trajectory(Vector3 v)
 	{
-
 		this.direction = v;
-
-		//this.angle = Vector3.AngleBetween(this.transform.position, this.direction);
-		//Debug.Log(this.direction);
-		//this.direction.x *= 2;
-		//this.direction.y *= 2;
-
-		//Debug.Log(this.transform.position);
-
-		//Debug.Log(this.direction);
-		//Debug.Log(this.angle);
 	}
 }

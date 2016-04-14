@@ -19,6 +19,9 @@ public class Fire : MonoBehaviour {
 	const int EAST = 3;
 
 	const int FIRE_DAMAGE = 5;
+
+
+    public int extinguisherDamageOnFire = 2;
 	
 	//public GameObject fire;
 	private GameObject cloneFire;
@@ -37,7 +40,7 @@ public class Fire : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D other) { 
 
 		if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
-			Damage (10);
+			Damage (this.extinguisherDamageOnFire);
 		} else if (other.gameObject.name == "Player") {
 			Player.instance.Damage(FIRE_DAMAGE);
 		}
@@ -47,7 +50,7 @@ public class Fire : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
  		if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
-			Damage (10);
+			Damage (this.extinguisherDamageOnFire);
 		} else if (other.gameObject.name == "Player") {
 			Player.instance.Damage(FIRE_DAMAGE);
 		}
