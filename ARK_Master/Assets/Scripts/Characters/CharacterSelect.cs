@@ -10,16 +10,16 @@ public class CharacterSelect : MonoBehaviour {
 
     public void Start()
     {
-        if ((bool)GlobalVariables.unlockedCharacters.Select("CharacterID = 2")[0]["Unlocked"])
-        {
-            //Unlock Firefighter
-            panel1.SetActive(false);
-        }
-        if ((bool)GlobalVariables.unlockedCharacters.Select("CharacterID = 3")[0]["Unlocked"])
-        {
-            //Unlock Soldier
-            panel1.SetActive(true);
-        }
+        //if ((bool)GlobalVariables.unlockedCharacters.Select("CharacterID = 2")[0]["Unlocked"])
+        //{
+        //    //Unlock Firefighter
+        //    panel1.SetActive(false);
+        //}
+        //if ((bool)GlobalVariables.unlockedCharacters.Select("CharacterID = 3")[0]["Unlocked"])
+        //{
+        //    //Unlock Soldier
+        //    panel1.SetActive(true);
+        //}
     }
 
     public void CharacterSelected(int selectedCharacter)
