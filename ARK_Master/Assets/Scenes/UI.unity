@@ -9628,6 +9628,18 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5025914, guid: a5b58b5f0ca607e4ba04e10f5b58ad25, type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5025914, guid: a5b58b5f0ca607e4ba04e10f5b58ad25, type: 2}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5025914, guid: a5b58b5f0ca607e4ba04e10f5b58ad25, type: 2}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a5b58b5f0ca607e4ba04e10f5b58ad25, type: 2}
   m_IsPrefabParent: 0
@@ -10405,7 +10417,7 @@ MonoBehaviour:
   ImagePath: 
   EventInfo: {fileID: 185302564}
   alien: {fileID: 685741539}
-  fire: {fileID: 0}
+  fire: {fileID: 120144, guid: 00da5c1e21687864896fc0e8c2451917, type: 2}
   numMaxRooms: 30
   RoomShapeSelectMenu_1: {fileID: 1214324845}
   RoomShapeSelectMenu_2: {fileID: 308811198}
