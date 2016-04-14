@@ -78,6 +78,7 @@ public class StateMachine : MonoBehaviour
     //--
 	
 	public GameObject GoInventory;
+    public GameObject RewardsWon;
 
     // Use this for initialization
     void Start()
@@ -396,9 +397,11 @@ public class StateMachine : MonoBehaviour
 
     void GenerateAvailableSkills()
     {
+        //IMAGES
+        //Put in Images/Resources/Inventory
         AllAvailableSkills = new List<Skills>();
-        AllAvailableSkills.Add(new Skills(0, FireImage, "Extinguisher", 10, 2));
-        AllAvailableSkills.Add(new Skills(1, FireImage, "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/Tester"), "Extinguisher", 10, 2));//Resource.Load
+        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/Tester"), "Laser", 20, 2));
     }
 	
 	public void SetSkillActive(SkillType skillType, bool active = true)
@@ -500,7 +503,36 @@ public class StateMachine : MonoBehaviour
             reward.ActivateReward();
         }
 
-        EventInfo.GetComponent<EventInfo>().EndEventInfo();
+        EventInfo eventInfo = EventInfo.GetComponent<EventInfo>();
+
+        eventInfo.EndEventInfo();
+
+        //--Rewards
+        foreach (Transform child in RewardsWon.transform)
+        {
+            Destroy(child);
+        }
+
+        List<Rewards> rewardsWon = eventInfo.GetRewardsWon();
+        List<int> irewardsWon = rewardsWon.Select(x => x.Id).ToList();
+        //Show rewards on RewardsWon
+        MyCanvas cScript = DialogueBox.GetComponent<MyCanvas>();
+        cScript.PlaceRewards(RewardsWon);
+
+        List<int> iallRewards = cScript.MyEvent.SuccessRewards.Select(x => x.Id).ToList();
+
+        List<int> rewardsNotWon = iallRewards.Intersect(irewardsWon).ToList();
+        foreach(Transform child in RewardsWon.transform)
+        {
+            int skillId = child.GetComponent<Data>().MySkill.skillID;
+            if(rewardsNotWon.Contains(skillId))
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
+        RewardsWon.transform.parent.gameObject.SetActive(true);
+        //--Rewards/
     }
 
     //--
