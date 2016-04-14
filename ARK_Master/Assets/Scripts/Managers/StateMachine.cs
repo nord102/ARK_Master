@@ -274,9 +274,17 @@ public class StateMachine : MonoBehaviour
         {
             try
             {
-                DataRow[] availibiltyRow = availibilty.Select("Name = " + child.name + " AND RoomType = " + roomTypeSelected + " AND RowNum = " + roomShapeSelectRow);
-
-                child.gameObject.SetActive((bool)availibiltyRow[0]["LocalUnlocked"]);
+                DataRow[] availibiltyRow = availibilty.Select("Name = '" + child.name + "' AND RoomType = " + roomTypeSelected + " AND RowNum = " + roomShapeSelectRow);
+                string teststr = (string)availibiltyRow[0][4];
+                if (teststr == "1")
+                {
+                    child.gameObject.SetActive(true);
+                }
+                else
+                {
+                    child.gameObject.SetActive(false);
+                }
+                
             }
             catch
             {
@@ -291,8 +299,8 @@ public class StateMachine : MonoBehaviour
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
 
-        //GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
-        //GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
+        GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
+        GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
 
         ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
@@ -632,6 +640,8 @@ public class StateMachine : MonoBehaviour
                 }
             }
         }
+
+        UpdateUI();
     }
 
 
