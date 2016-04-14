@@ -9,11 +9,11 @@ public enum SkillType {  Nothing = -1, Extinguisher = 0, Laser };
 
 public class Inventory : MonoBehaviour//, IHasChanged
 {
-    [SerializeField]
-    Transform slots;
+    //[SerializeField]
+    //Transform slots;
 
-    [SerializeField]
-    Text inventoryText;
+    //[SerializeField]
+    //Text inventoryText;
 
     public int Rows = 3;
     public int Columns = 5;
@@ -151,29 +151,32 @@ public class Inventory : MonoBehaviour//, IHasChanged
                 //Set data
                 newImageSkill = AllSkills.Where(x => x.skillID == (int)Contents[i]).FirstOrDefault();
                 newImage.GetComponent<Data>().MySkill = newImageSkill;
+
+                //Set Image
+                newImage.GetComponent<Image>().sprite = newImageSkill.symbol;
             }
         }
     }
 
     //Don't see a point in this
-    public void HasChanged()
-    {
-        System.Text.StringBuilder builder = new System.Text.StringBuilder();
-        builder.Append(" - ");
+    //public void HasChanged()
+    //{
+    //    System.Text.StringBuilder builder = new System.Text.StringBuilder();
+    //    builder.Append(" - ");
 
-        foreach (Transform slotTransform in slots)
-        {
-            GameObject item = slotTransform.GetComponent<Slot>().item;
+    //    foreach (Transform slotTransform in slots)
+    //    {
+    //        GameObject item = slotTransform.GetComponent<Slot>().item;
 
-            if (item)
-            {
-                builder.Append(item.name);
-                builder.Append(" - ");
-            }
-        }
+    //        if (item)
+    //        {
+    //            builder.Append(item.name);
+    //            builder.Append(" - ");
+    //        }
+    //    }
 
-        //inventoryText.text = builder.ToString();
-    }
+    //    //inventoryText.text = builder.ToString();
+    //}
 
     void Update ()
     {
@@ -181,10 +184,10 @@ public class Inventory : MonoBehaviour//, IHasChanged
 	}
 }
 
-namespace UnityEngine.EventSystems
-{
-    public interface IHasChanged : UnityEngine.EventSystems.IEventSystemHandler
-    {
-        void HasChanged();
-    }
-}
+//namespace UnityEngine.EventSystems
+//{
+//    public interface IHasChanged : UnityEngine.EventSystems.IEventSystemHandler
+//    {
+//        void HasChanged();
+//    }
+//}
