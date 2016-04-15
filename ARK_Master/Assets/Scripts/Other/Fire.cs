@@ -19,6 +19,9 @@ public class Fire : MonoBehaviour {
 	const int EAST = 3;
 
 	const int FIRE_DAMAGE = 5;
+
+
+    public int extinguisherDamageOnFire = 2;
 	
 	//public GameObject fire;
 	private GameObject cloneFire;
@@ -36,12 +39,8 @@ public class Fire : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other) { 
 
-		//Debug.Log (other.gameObject.name);
-		if (other.gameObject.tag == "Fire" || other.gameObject.name.Contains ("Fire")) {
-			//Debug.Log ("collided");
-			//Destroy (this.gameObject);
-		} else if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
-			Damage (10);
+		if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
+			Damage (this.extinguisherDamageOnFire);
 		} else if (other.gameObject.name == "Player") {
 			Player.instance.Damage(FIRE_DAMAGE);
 		}
@@ -50,12 +49,8 @@ public class Fire : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		//Debug.Log (other.gameObject.name);
-		if (other.gameObject.tag == "Fire" || other.gameObject.name.Contains ("Fire")) {
-			//Debug.Log ("collided");
-			//Destroy (this.gameObject);
-		} else if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
-			Damage (10);
+ 		if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
+			Damage (this.extinguisherDamageOnFire);
 		} else if (other.gameObject.name == "Player") {
 			Player.instance.Damage(FIRE_DAMAGE);
 		}
@@ -150,22 +145,6 @@ public class Fire : MonoBehaviour {
 		
 			if (availableSpacesInput[i] == 1) {	
 				atLeastOneAvailabe = true;
-
-
-				switch (i) {
-				case NORTH:
-					Debug.Log ("North");
-					break;
-				case SOUTH:
-					Debug.Log ("South");
-					break;
-				case WEST:
-					Debug.Log ("West");
-					break;
-				case EAST:
-					Debug.Log ("East");
-					break;
-				}
 			}
 		}
 
@@ -220,7 +199,6 @@ public class Fire : MonoBehaviour {
 
 			foreach (GameObject go in gos) {
 				if (go.transform.position == basePosition) {
-					Debug.Log("Removed because it interates with something bad.");
 					availableSpace [i] = 0;
 					break;
 				}
@@ -230,7 +208,6 @@ public class Fire : MonoBehaviour {
             {
                 if (border == basePosition)
                 {
-                    Debug.Log("Removed as it collides with other fire.");
                     availableSpace[i] = 0;
                     break;
                 }
