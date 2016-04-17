@@ -503,8 +503,8 @@ public class StateMachine : MonoBehaviour
 
     public void EndEvent(Events myEvent)
     {
-        eventActive = false;
-
+        //eventActive = false;
+        PlayerControl = false;
         Generate.instance.RemoveDoors();
 
         Generate.instance.currentDoor = null;
@@ -519,31 +519,42 @@ public class StateMachine : MonoBehaviour
 
         eventInfo.EndEventInfo();
 
-        //--Rewards
-        foreach (Transform child in RewardsWon.transform)
-        {
-            Destroy(child);
-        }
-
         List<Rewards> rewardsWon = eventInfo.GetRewardsWon();
         List<int> irewardsWon = rewardsWon.Select(x => x.Id).ToList();
         //Show rewards on RewardsWon
         MyCanvas cScript = DialogueBox.GetComponent<MyCanvas>();
-        cScript.PlaceRewards(RewardsWon);
+        GameObject r = Instantiate(RewardsWon);
+        cScript.PlaceRewards(r);
 
         List<int> iallRewards = cScript.MyEvent.SuccessRewards.Select(x => x.Id).ToList();
 
         List<int> rewardsNotWon = iallRewards.Intersect(irewardsWon).ToList();
-        foreach(Transform child in RewardsWon.transform)
+        foreach(Transform child in r.transform)
         {
-            int skillId = child.GetComponent<Data>().MySkill.skillID;
-            if(rewardsNotWon.Contains(skillId))
+            try
             {
-                child.gameObject.SetActive(false);
+                Data d = child.GetComponent<Data>();
+                try
+                {
+                    int skillId = child.GetComponent<Data>().MySkill.skillID;
+                    if (rewardsNotWon.Contains(skillId))
+                    {
+                        child.gameObject.SetActive(false);
+                    }
+                }
+                catch
+                {
+                    //You never set the skill id!?
+                }
+            }
+            catch
+            {
+                //Ignore it?
             }
         }
-
-        RewardsWon.transform.parent.gameObject.SetActive(true);
+        r.SetActive(true);
+        //Destroy(r);
+        //r.transform.parent.gameObject.SetActive(true);
         //--Rewards/
     }
 
@@ -579,6 +590,7 @@ public class StateMachine : MonoBehaviour
             RoomShapeSelectMenu_3.SetActive(false);
             RoomShapeSelectMenu_2.SetActive(true);
         }
+        UpdateUI();
     }
 
 
