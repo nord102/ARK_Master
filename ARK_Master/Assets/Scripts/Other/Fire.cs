@@ -30,11 +30,14 @@ public class Fire : MonoBehaviour {
 
 	private bool flag = false;
 
+	Events currentEvent;
+
 	// Use this for initialization
 	void Start () 
 	{
 		hitPoints = 10;
 		animator = GetComponent<Animator>();
+		currentEvent    = Generate.instance.currentRoom.roomEvent;
 	}
 
 	void OnCollisionEnter2D(Collision2D other) { 
@@ -60,8 +63,16 @@ public class Fire : MonoBehaviour {
 	{
 		this.hitPoints -= amount;
 
-		if (this.hitPoints <= 0)
+		if (this.hitPoints <= 0) {
+
+			currentEvent.Enemies.Remove (0);
+
+			//Check if this was the last enemy alive - if so, end the event
+			if (currentEvent.Enemies.Count <= 0) {
+				StateMachine.instance.EndEvent (currentEvent);
+			}
 			Destroy (this.gameObject);
+		}
 	}
 
 	// Update is called once per frame
@@ -78,6 +89,7 @@ public class Fire : MonoBehaviour {
 			if (newPosition != this.gameObject.transform.position) {
 				cloneFire = Instantiate (this.gameObject, newPosition, Quaternion.identity) as GameObject;
 				//Generate.instance.currentRoom.roomLayout[(int)newPosition.x, (int)newPosition.y] = -1;
+				currentEvent.Enemies.Add(0);
 				cloneFire.SetActive (true);
 			}
 			this.timer = 0;
@@ -94,7 +106,10 @@ public class Fire : MonoBehaviour {
 		{
 			for (int j = 0; j < Mathf.Sqrt(Generate.instance.currentRoom.roomLayout.Length); j++)
 			{
-				if(Generate.instance.currentRoom.roomLayout[i,j] == -1 || Generate.instance.currentRoom.roomLayout[i,j] == -2)
+				if(Generate.instance.currentRoom.roomLayout[i,j] == -1 || 
+					Generate.instance.currentRoom.roomLayout[i,j] == -2 ||
+					Generate.instance.currentRoom.roomLayout[i,j] == -3
+				)
 				{
 					possibleList.Add(new Vector3(Generate.instance.currentRoom.posX + i, Generate.instance.currentRoom.posY + j, 0));
 				}
