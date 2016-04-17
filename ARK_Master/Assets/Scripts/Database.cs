@@ -201,6 +201,17 @@ public class Database
         return dbcmd.ExecuteNonQuery();
     }
 
+    public int ExecuteNonQuery(string commandText)
+    {
+        IDbConnection dbconn;
+        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open(); //Open connection to the database.
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        dbcmd.CommandText = commandText;
+
+        return dbcmd.ExecuteNonQuery();
+    }
+
     private void AddParameters(IDbCommand dbcmd, List<DBParameter> parameters)
     {
         IDbDataParameter parameter = null;

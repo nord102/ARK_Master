@@ -9,7 +9,7 @@ public class PlayerInfo {
 	public double CurrentPlayer;
 	public double MaxHealth = 100;
 	public double CurrentHealth = 100;
-	public double MaxShield = 0;
+	public double MaxShield = 100;
 	public double CurrentShield = 0;
 	public double MaxEnergy = 10;
 	public double CurrentEnergy = 10;
@@ -59,7 +59,7 @@ public class PlayerInfo {
 	{
 		if (CurrentShield + value > MaxShield) {
 			CurrentShield = MaxShield;
-		} else if (CurrentShield - value <= 0) {
+		} else if (CurrentShield + value <= 0) {
 			SetHealth(CurrentShield);
 			CurrentShield = 0;
 		} else {

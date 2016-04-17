@@ -462,7 +462,7 @@ public class Generate : MonoBehaviour
                     c.posY = tempY;
                     c.roomNumber = room.roomID;
                 }
-                room.roomLayout[tempX, tempY] = -1;
+                room.roomLayout[tempX, tempY] = -3;
 
                 room.GetObjectList().Add(newRoomObject);
             }
