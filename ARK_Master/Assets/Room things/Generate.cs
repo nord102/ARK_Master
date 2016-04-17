@@ -6,6 +6,8 @@ public class Generate : MonoBehaviour
 {
     public static Generate instance = null;
 
+	public const int ROOM_OBJECT = -3;
+
     //--
     public int[] generalRoomCosts = {50,125,200,275};
     //--
@@ -462,7 +464,7 @@ public class Generate : MonoBehaviour
                     c.posY = tempY;
                     c.roomNumber = room.roomID;
                 }
-                room.roomLayout[tempX, tempY] = -1;
+				room.roomLayout[tempX, tempY] = ROOM_OBJECT;
 
                 room.GetObjectList().Add(newRoomObject);
             }

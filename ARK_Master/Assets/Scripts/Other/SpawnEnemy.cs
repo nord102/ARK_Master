@@ -86,7 +86,8 @@ public class InstantiateEnemy : MonoBehaviour
                     break;
                 case 1:
                     {
-
+						cloneEnemy = Instantiate(StateMachine.instance.hole, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
+						cloneEnemy.SetActive(true);
                     }
                     break;
                 case 2:

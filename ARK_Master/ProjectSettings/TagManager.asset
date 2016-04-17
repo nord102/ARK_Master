@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 2
   tags:
   - Door
+  - Fire
+  - Reward
+  - InventorySlot
+  - Equipped
+  - Intentory
+  - Weld
+  - RoomObject
   layers:
   - Default
   - TransparentFX

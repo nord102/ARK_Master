@@ -60,6 +60,7 @@ public class StateMachine : MonoBehaviour
 
     public GameObject alien;
     public GameObject fire;
+	public GameObject hole;
 
     //Short - 30
     //Medium - 60
