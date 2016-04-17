@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -66,6 +66,7 @@ public class Events
                 eventName = "Hull Breach!";
                 eventText = "The hull of the ship has been breached! Weld the breaches before the room collapses!";
                 eventImage = Resources.Load<Sprite>("breach");
+				enemies.Add(new RoomEnemy(1, numEnemies, 1));
                 break;
 
 			case 2: //Invasion Event

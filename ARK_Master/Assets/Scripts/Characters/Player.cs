@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
 	const int LASER_EQUIPED = 1;
 	const int FIRE_EXTINGUSHER_EQUIPED = 2;
+	const int WELDER_EQUIPED = 3;
 
     public static Player instance = null;
     private const int SPEED = 10;
@@ -19,6 +20,8 @@ public class Player : MonoBehaviour
     public GameObject fireExtingusiher;
     private GameObject fireExtingusiherClone;
 
+	public GameObject weld;
+	private GameObject weldClone;
 
     private int health;
     private int mana;
@@ -82,6 +85,8 @@ public class Player : MonoBehaviour
 			equiped = LASER_EQUIPED;
 		} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
 			equiped = FIRE_EXTINGUSHER_EQUIPED;
+		} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
+			equiped = WELDER_EQUIPED;
 		}
 
 		if (Input.GetButtonDown ("Fire1")) {
@@ -93,7 +98,11 @@ public class Player : MonoBehaviour
 				break;
 
 			case FIRE_EXTINGUSHER_EQUIPED:
-				UseExtinguisher();
+				UseExtinguisher ();
+				break;
+			
+			case WELDER_EQUIPED:
+				UseWelder ();
 				break;
 			}
 		}
@@ -166,6 +175,19 @@ public class Player : MonoBehaviour
 
         //}
     }
+
+	internal void UseWelder()
+	{
+		
+		Vector3 temp = Input.mousePosition;
+		temp.z = -10; 
+
+		Vector3 c = cam.ScreenToWorldPoint(temp);
+		c.z = 0;
+
+		weldClone = Instantiate(weld, this.gameObject.transform.position, Quaternion.identity) as GameObject;
+		weldClone.SendMessage("Trajectory", c);
+	}
 
 
 }
