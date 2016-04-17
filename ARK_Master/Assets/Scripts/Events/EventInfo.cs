@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 public class EventInfo : MonoBehaviour
 {
@@ -110,9 +111,24 @@ public class EventInfo : MonoBehaviour
 
     public void EndEventInfo()
     {
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
         //Resolve event
-        //MyEvent.
+        ResolveRewards();
+    }
+
+    public void ResolveRewards()
+    {
+        List<Rewards> rewardsWon = GetRewardsWon();
+        foreach(Rewards reward in rewardsWon)
+        {
+            reward.ActivateReward();
+        }
+    }
+
+    public List<Rewards> GetRewardsWon()
+    {
+        int secondsPassed = (int)Timer - (int)StartTime;
+        return MyEvent.SuccessRewards.Where(x => secondsPassed <= x.RewardTimer).ToList();
     }
 
     public void SetTime(int Seconds)

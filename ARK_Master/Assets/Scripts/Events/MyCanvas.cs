@@ -7,7 +7,7 @@ using System.IO;
 
 public class MyCanvas : MonoBehaviour
 {
-    private Events MyEvent { get; set; }
+    public Events MyEvent { get; set; }
 	//public GameObject ChoicePrefab;
     //public GameObject Canvas;
     public Text txtTitle;
@@ -121,13 +121,8 @@ public class MyCanvas : MonoBehaviour
         return null;                     // Return null if load failed
     }
 
-    private void StartEvent()
+    public void PlaceRewards(GameObject thisRewardParent)
     {
-        EmptyRewards();
-        MyImage.GetComponent<Image>().sprite = MyEvent.eventImage;
-        txtTitle.text = MyEvent.eventName;
-        txtDescription.text = MyEvent.eventText;
-
         //Show Rewards
         GameObject newReward = null;
         int startX = 0;
@@ -146,7 +141,7 @@ public class MyCanvas : MonoBehaviour
             newReward = Instantiate(RewardPrefab) as GameObject;
 
             newReward.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-            newReward.transform.SetParent(RewardsParent.transform, false);
+            newReward.transform.SetParent(thisRewardParent.transform, false);
             newReward.transform.position = new Vector3(0, 0, 0);
             newReward.transform.localPosition = new Vector3(startX, yPos, startZ); //Finally
 
@@ -159,7 +154,7 @@ public class MyCanvas : MonoBehaviour
             timer.GetComponent<Text>().text = r.RewardTimer.ToString() + "s";
             rewardValue.GetComponent<Text>().text = r.RewardName;
 
-            if(rewardCount == 0)
+            if (rewardCount == 0)
             {
                 trophySprite = Bronze;
             }
@@ -176,11 +171,23 @@ public class MyCanvas : MonoBehaviour
             Sprite RewardImage = LoadNewSprite(r.RewardImagePath);
             rewardImage.GetComponent<Image>().sprite = RewardImage;
 
+            rewardImage.GetComponent<Data>().MyReward = r;
+
             RewardList.Add(newReward);
             newReward = null;
 
             ++rewardCount;
         }
+    }
+
+    private void StartEvent()
+    {
+        EmptyRewards();
+        MyImage.GetComponent<Image>().sprite = MyEvent.eventImage;
+        txtTitle.text = MyEvent.eventName;
+        txtDescription.text = MyEvent.eventText;
+
+        PlaceRewards(RewardsParent);
 
         SetDifficulty();
 

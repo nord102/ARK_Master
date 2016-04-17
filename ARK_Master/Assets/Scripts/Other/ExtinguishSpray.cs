@@ -1,29 +1,61 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class ExtinguishSpray : MonoBehaviour {
+	public float speed = 0.1f;
+	private Rigidbody2D rb;
+	public float angle = 0f;
+    private float timer = 0f;
+    public float lifeSpan = 2f;
 
-	public Animator animator;
+	Vector3 start;
 	Vector3 direction;
 
-	// Use this for initialization
-	void Start () {
-		animator = GetComponent<Animator>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		Debug.Log (this.direction);
-		if (this.animator.isActiveAndEnabled== false) {
-			Destroy (this.gameObject);
-		}
-	}
+    //public Text output;
+    bool distanceFlag = false;
 
-	public void Trajectory(Vector3 angle)
+
+	void Awake()
 	{
-        //this.direction = v;
-        //this.gameObject.transform.rotation = Quaternion.Angle(this.gameObject.transform.position, angle);
-        this.gameObject.SetActive(true);
+		rb = GetComponent<Rigidbody2D>();
+		start = this.transform.position;
+        ExtinguisherSound.instance.PlaySound();
 
+    }
+
+	///
+	/// \brief <b>Brief Description:</b> Add force to the laser on the y-axis.
+	///
+	void Update()
+	{
+        this.timer += Time.deltaTime;
+
+        if(Math.Round(this.timer, 1) >= this.lifeSpan)
+        {
+            Destroy(this.gameObject);
+
+        }
+
+        if (!distanceFlag)
+        {
+            Vector3 direction = this.direction - this.start;
+            direction.Normalize();
+
+            this.rb.velocity = direction * this.speed;
+            distanceFlag = true;
+        }
+
+        else
+        {
+            Vector3 direction = this.direction - this.start;
+            this.rb.velocity = direction * 0;
+        }
+    }
+
+
+	public void Trajectory(Vector3 v)
+	{
+		this.direction = v;
 	}
 }

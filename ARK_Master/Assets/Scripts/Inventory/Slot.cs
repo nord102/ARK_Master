@@ -23,7 +23,7 @@ public class Slot : MonoBehaviour, IDropHandler
         {
             //Change parent, reset position
             DragHandler.itemBeingDragged.transform.SetParent(transform);
-            ExecuteEvents.ExecuteHierarchy<IHasChanged>(gameObject, null, (x, y) => x.HasChanged());
+            //ExecuteEvents.ExecuteHierarchy<IHasChanged>(gameObject, null, (x, y) => x.HasChanged());
             DragHandler.itemBeingDragged.transform.localPosition = new Vector3(0, 0, 0);
             //Set 
         }
