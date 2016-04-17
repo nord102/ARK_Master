@@ -17,6 +17,11 @@ public static class GlobalVariables
         //Read in unlock text file?
 
         //Load lists with the values
+        Database db = new Database(Application.dataPath);
+
+        GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
+        GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
+
     }
 
 }

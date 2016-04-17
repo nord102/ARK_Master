@@ -58,6 +58,9 @@ public class MainMenu : MonoBehaviour
 
         //Enable the Start Menu Text Buttons
         EnableStartMenu();
+
+        //Load Global Settings
+        GlobalVariables.LoadGlobalUnlocks();
     }
 
     /************************************************************************************
