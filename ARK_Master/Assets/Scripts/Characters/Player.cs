@@ -82,11 +82,11 @@ public class Player : MonoBehaviour
         this.gameObject.transform.position = pos;
 
 		if (Input.GetKeyDown (KeyCode.Alpha1)) {
-			equiped = LASER_EQUIPED;
+            equiped = LASER_EQUIPED; StateMachine.instance.UpdateUI();
 		} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
-			equiped = FIRE_EXTINGUSHER_EQUIPED;
+            equiped = FIRE_EXTINGUSHER_EQUIPED; StateMachine.instance.UpdateUI();
 		} else if (Input.GetKeyDown (KeyCode.Alpha3)) {
-			equiped = WELDER_EQUIPED;
+            equiped = WELDER_EQUIPED; StateMachine.instance.UpdateUI();
 		}
 
 		if (Input.GetButtonDown ("Fire1")) {

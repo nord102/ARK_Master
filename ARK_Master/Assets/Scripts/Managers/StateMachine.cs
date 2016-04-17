@@ -34,6 +34,10 @@ public class StateMachine : MonoBehaviour
     public GameObject Module1;
     public GameObject Module2;
     public GameObject Module3;
+
+    public GameObject Module1Selected;
+    public GameObject Module2Selected;
+    public GameObject Module3Selected;
     #endregion
 
     public Camera mainCamera;
@@ -223,7 +227,7 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         #region Skills
         //Update Modules in wrench  
@@ -233,6 +237,23 @@ public class StateMachine : MonoBehaviour
             obj[1] = false;
             Image temp = (Image)g.GetComponent<Image>();
             temp.sprite = null;
+        }
+
+        Module1Selected.SetActive(false);
+        Module2Selected.SetActive(false);
+        Module3Selected.SetActive(false);
+
+        switch (player.equiped)
+        {
+            case 1:
+                Module1Selected.SetActive(true);
+                break;
+            case 2:
+                Module2Selected.SetActive(true);
+                break;
+            case 3:
+                Module3Selected.SetActive(true);
+                break;
         }
 
         foreach (Skills s in AllAvailableSkills)
@@ -246,6 +267,7 @@ public class StateMachine : MonoBehaviour
                     Image temp = (Image)g.GetComponent<Image>();
                     if (!(bool)obj[1] && !added)
                     {
+                        g.SetActive(true);
                         temp.sprite = s.symbol;
                         obj[1] = true;
                         added = true;
@@ -344,6 +366,7 @@ public class StateMachine : MonoBehaviour
         //Generate Room
 		
 		GoInventory.GetComponent<Inventory>().SetupInventory();
+        UpdateUI();
     }
 
     // Update is called once per frame
@@ -351,18 +374,18 @@ public class StateMachine : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I) && !eventActive)
         {
-			Inventory inv = GoInventory.GetComponent<Inventory>();
-            InventoryOpen = !InventoryOpen;
-            if (InventoryOpen)
-            {
-                inv.Show();
-                //sInfo.SetResources(10);
-            }
-            else
-            {
-                inv.Hide();
+            //Inventory inv = GoInventory.GetComponent<Inventory>();
+            //InventoryOpen = !InventoryOpen;
+            //if (InventoryOpen)
+            //{
+            //    inv.Show();
+            //    //sInfo.SetResources(10);
+            //}
+            //else
+            //{
+            //    inv.Hide();
 
-            }
+            //}
         }
         else if (Input.GetKeyDown(KeyCode.C) && !eventActive)
         {
@@ -429,8 +452,15 @@ public class StateMachine : MonoBehaviour
         //IMAGES
         //Put in Images/Resources/Inventory
         AllAvailableSkills = new List<Skills>();
-        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/Tester"), "Extinguisher", 10, 2));//Resource.Load
-        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/Tester"), "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/laser"), "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/extinguisher"), "Extinguisher", 10, 2));//Resource.Load
+        AllAvailableSkills.Add(new Skills(2, Resources.Load<Sprite>("Inventory/torch"), "Welder", 30, 2));
+        AllAvailableSkills[0].isActive = true;
+        AllAvailableSkills[1].isActive = true;
+        AllAvailableSkills[2].isActive = true;
+        AllAvailableSkills[0].isOwned = true;
+        AllAvailableSkills[1].isOwned = true;
+        AllAvailableSkills[2].isOwned = true;  
     }
 	
 	public void SetSkillActive(SkillType skillType, bool active = true)
