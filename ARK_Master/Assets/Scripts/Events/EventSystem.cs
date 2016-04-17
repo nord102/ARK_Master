@@ -6,25 +6,30 @@ public static class EventSystem{
 
 	public static Events GenerateRoomEvent(int roomType, int numComponents)
 	{
-		//All rooms have default events that could happen (0:Fire, 1:Breach, 2:Enemy)
-		List<int> availableEvents = new List<int> (){0,1,2}; //+ 2
+		//All rooms have default events that could happen (0:Fire, 1:Breach, 2:Enemy, 3:Sinister, 4:Fire+Alien, 5:Fire+Breach, 6:Breach+Alien)
+		List<int> availableEvents = new List<int> (){0, 1, 2, 4, 5, 6}; //+ 2
 
 		//Add event type 3 (Encounter previous character) if there are dead previous characters, and other conditions are met?
-		if (StateMachine.instance.PreviousPlayers.Count != 0) { // and anything else? time passed? events solved?
-			availableEvents.Add(3);
-		}
+        //if (StateMachine.instance.PreviousPlayers.Count != 0) { // and anything else? time passed? events solved?
+        //    availableEvents.Add(3);
+        //}
+
+        if (Generate.instance.GetRoomGameObjectList().Count % (StateMachine.instance.numMaxRooms / 3) == 0)
+        {
+            availableEvents.Add(3);
+        }
 
 		//Add extra event types based on room type
-		switch (roomType) {
-		case 0: //Standard Room type, don't add anything
-			break;
-        case 1: //Med Bay
-            availableEvents.Add(4); 
-			break;
-        case 2: //Engineering
-            availableEvents.Add(5);
-            break;
-		}
+        //switch (roomType) {
+        //case 0: //Standard Room type, don't add anything
+        //    break;
+        //case 1: //Med Bay
+        //    availableEvents.Add(4); 
+        //    break;
+        //case 2: //Engineering
+        //    availableEvents.Add(5);
+        //    break;
+        //}
 
 		//Pick a random index number, that's the type of event
 		return new Events (availableEvents[Random.Range (0, availableEvents.Count)],roomType,numComponents);

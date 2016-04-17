@@ -60,9 +60,6 @@ public class Events
                 eventText = "The room, The room, The room is on fire!";
                 eventImage = Resources.Load<Sprite>("flames");
 				enemies.Add(new RoomEnemy(0, numEnemies, 1));
-                
-                //enemies.Add(new RoomEnemy(1, 2, 1));
-                //enemies.Add(new RoomEnemy(2, 1, 0));
 
                 break;
             case 1: //Breach Event
@@ -77,6 +74,37 @@ public class Events
 				eventImage = Resources.Load<Sprite>("aliens");
 				enemies.Add(new RoomEnemy(2, numEnemies, 1));
 				break;
+
+            case 3: //Sinister Event
+                eventName = "Something Sinister!";
+				eventText = "That outfit looks familiar, could it be...?";
+				eventImage = Resources.Load<Sprite>("sinister");
+				enemies.Add(new RoomEnemy(3, 1, 0));
+                break;
+
+            case 4: //Fire + Alien
+                eventName = "Fire and Aliens!";
+				eventText = "Fires and Aliens, Together at last!";
+				eventImage = Resources.Load<Sprite>("aliens");
+				enemies.Add(new RoomEnemy(2, numEnemies / 2, 1));
+                enemies.Add(new RoomEnemy(0, numEnemies / 2, 1));
+                break;
+
+            case 5: //Fire + Breach
+                eventName = "Fire and Breach!";
+				eventText = "How do this fire burn in a vaccuum!?";
+				eventImage = Resources.Load<Sprite>("flames");
+				enemies.Add(new RoomEnemy(1, numEnemies / 2, 1));
+                enemies.Add(new RoomEnemy(0, numEnemies / 2, 1));
+                break;
+
+            case 6: //Breach + Alien
+                eventName = "Breach + Aliens!";
+				eventText = "So that's how they're getting inside!";
+				eventImage = Resources.Load<Sprite>("alien");
+				enemies.Add(new RoomEnemy(1, numEnemies / 2, 1));
+                enemies.Add(new RoomEnemy(2, numEnemies / 2, 1));
+                break;
         }
 
         //Determine the 3 rewards
