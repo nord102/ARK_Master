@@ -2271,6 +2271,12 @@ CanvasRenderer:
 GameObject:
   m_PrefabParentObject: {fileID: 152424, guid: 123c16c65758167469c380bdafa8923c, type: 2}
   m_PrefabInternal: {fileID: 957196887}
+--- !u!114 &447597202 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11438880, guid: 123c16c65758167469c380bdafa8923c,
+    type: 2}
+  m_PrefabInternal: {fileID: 957196887}
+  m_Script: {fileID: 11500000, guid: cf615ff0268e07145b9d7591c00f72d6, type: 3}
 --- !u!4 &447597204 stripped
 Transform:
   m_PrefabParentObject: {fileID: 444008, guid: 123c16c65758167469c380bdafa8923c, type: 2}
@@ -5401,6 +5407,10 @@ Prefab:
       propertyPath: fireExtingusiher
       value: 
       objectReference: {fileID: 157370, guid: f79c1b65a69674b4d9466879824e4a21, type: 2}
+    - target: {fileID: 152424, guid: 123c16c65758167469c380bdafa8923c, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 123c16c65758167469c380bdafa8923c, type: 2}
   m_IsPrefabParent: 0
@@ -10597,6 +10607,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerControl: 0
   eventActive: 0
+  player: {fileID: 447597202}
+  AnimatorMechanic: {fileID: 9100000, guid: ec40b1f620f85de4b91da8ddeafa8661, type: 2}
+  AnimatorFirefighter: {fileID: 9100000, guid: 9ddcd120445dfbf45af9e3f97b4ab6ce, type: 2}
+  AnimatorSoldier: {fileID: 0}
   Module1: {fileID: 374068943}
   Module2: {fileID: 448236520}
   Module3: {fileID: 1893296003}

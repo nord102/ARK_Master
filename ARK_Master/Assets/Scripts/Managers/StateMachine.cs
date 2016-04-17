@@ -25,6 +25,11 @@ public class StateMachine : MonoBehaviour
     public bool PlayerControl = false;
     public bool eventActive = false;
 
+    public Player player;
+    public RuntimeAnimatorController AnimatorMechanic;
+    public RuntimeAnimatorController AnimatorFirefighter;
+    public RuntimeAnimatorController AnimatorSoldier;
+
     #region Modules
     public GameObject Module1;
     public GameObject Module2;
@@ -300,9 +305,6 @@ public class StateMachine : MonoBehaviour
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
 
-        GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
-        GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
-
         ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
 
@@ -317,6 +319,20 @@ public class StateMachine : MonoBehaviour
         UIModules2.Add(new object[] { Module3, false });
 
         PlayerControl = true;
+
+        switch( GlobalVariables.selectedCharacter)
+        {
+            case 1:
+                player.animator.runtimeAnimatorController = AnimatorMechanic;
+                break;
+            case 2:
+                player.animator.runtimeAnimatorController = AnimatorFirefighter;
+                break;
+            case 3:
+                player.animator.runtimeAnimatorController = AnimatorSoldier;
+                break;
+        }
+
 
         //Get Player to input their name
         //pInfo.PlayerName = GetPlayerName();
