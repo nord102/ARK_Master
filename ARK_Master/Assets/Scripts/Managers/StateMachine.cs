@@ -25,10 +25,19 @@ public class StateMachine : MonoBehaviour
     public bool PlayerControl = false;
     public bool eventActive = false;
 
+    public Player player;
+    public RuntimeAnimatorController AnimatorMechanic;
+    public RuntimeAnimatorController AnimatorFirefighter;
+    public RuntimeAnimatorController AnimatorSoldier;
+
     #region Modules
     public GameObject Module1;
     public GameObject Module2;
     public GameObject Module3;
+
+    public GameObject Module1Selected;
+    public GameObject Module2Selected;
+    public GameObject Module3Selected;
     #endregion
 
     public Camera mainCamera;
@@ -60,6 +69,7 @@ public class StateMachine : MonoBehaviour
 
     public GameObject alien;
     public GameObject fire;
+	public GameObject hole;
 
     //Short - 30
     //Medium - 60
@@ -76,6 +86,9 @@ public class StateMachine : MonoBehaviour
     public GameObject RoomTypeSelectMenu_2;
     private int roomTypeSelected = 0;
     //--
+
+    public Canvas gameOverMenu;
+    public Canvas winMenu;
 	
 	public GameObject GoInventory;
     public GameObject RewardsWon;
@@ -197,7 +210,14 @@ public class StateMachine : MonoBehaviour
         {
             //Forget it then
         }
-        //SceneManager.LoadScene("TitleMenu");
+        gameOverMenu.enabled = true;
+        PlayerControl = false;
+    }
+
+    public void WinGame()
+    {
+        winMenu.enabled = true;
+        PlayerControl = false;
     }
 
     public void ActivateSinisterEvent()
@@ -217,7 +237,7 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         #region Skills
         //Update Modules in wrench  
@@ -227,6 +247,23 @@ public class StateMachine : MonoBehaviour
             obj[1] = false;
             Image temp = (Image)g.GetComponent<Image>();
             temp.sprite = null;
+        }
+
+        Module1Selected.SetActive(false);
+        Module2Selected.SetActive(false);
+        Module3Selected.SetActive(false);
+
+        switch (player.equiped)
+        {
+            case 1:
+                Module1Selected.SetActive(true);
+                break;
+            case 2:
+                Module2Selected.SetActive(true);
+                break;
+            case 3:
+                Module3Selected.SetActive(true);
+                break;
         }
 
         foreach (Skills s in AllAvailableSkills)
@@ -240,6 +277,7 @@ public class StateMachine : MonoBehaviour
                     Image temp = (Image)g.GetComponent<Image>();
                     if (!(bool)obj[1] && !added)
                     {
+                        g.SetActive(true);
                         temp.sprite = s.symbol;
                         obj[1] = true;
                         added = true;
@@ -300,9 +338,6 @@ public class StateMachine : MonoBehaviour
         appPath = Application.dataPath;
         db = new Database(Application.dataPath);
 
-        GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
-        GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
-
         ImagePath = appPath + "/Images/Rewards/";
         PreviousPlayers = new List<PlayerInfo>();
 
@@ -318,6 +353,20 @@ public class StateMachine : MonoBehaviour
 
         PlayerControl = true;
 
+        switch( GlobalVariables.selectedCharacter)
+        {
+            case 1:
+                player.animator.runtimeAnimatorController = AnimatorMechanic;
+                break;
+            case 2:
+                player.animator.runtimeAnimatorController = AnimatorFirefighter;
+                break;
+            case 3:
+                player.animator.runtimeAnimatorController = AnimatorSoldier;
+                break;
+        }
+
+
         //Get Player to input their name
         //pInfo.PlayerName = GetPlayerName();
 
@@ -327,6 +376,7 @@ public class StateMachine : MonoBehaviour
         //Generate Room
 		
 		GoInventory.GetComponent<Inventory>().SetupInventory();
+        UpdateUI();
     }
 
     // Update is called once per frame
@@ -334,18 +384,18 @@ public class StateMachine : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I) && !eventActive)
         {
-			Inventory inv = GoInventory.GetComponent<Inventory>();
-            InventoryOpen = !InventoryOpen;
-            if (InventoryOpen)
-            {
-                inv.Show();
-                //sInfo.SetResources(10);
-            }
-            else
-            {
-                inv.Hide();
+            //Inventory inv = GoInventory.GetComponent<Inventory>();
+            //InventoryOpen = !InventoryOpen;
+            //if (InventoryOpen)
+            //{
+            //    inv.Show();
+            //    //sInfo.SetResources(10);
+            //}
+            //else
+            //{
+            //    inv.Hide();
 
-            }
+            //}
         }
         else if (Input.GetKeyDown(KeyCode.C) && !eventActive)
         {
@@ -412,8 +462,15 @@ public class StateMachine : MonoBehaviour
         //IMAGES
         //Put in Images/Resources/Inventory
         AllAvailableSkills = new List<Skills>();
-        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/Tester"), "Extinguisher", 10, 2));//Resource.Load
-        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/Tester"), "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/t_laser"), "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/t_extinguisher"), "Extinguisher", 10, 2));//Resource.Load
+        AllAvailableSkills.Add(new Skills(2, Resources.Load<Sprite>("Inventory/t_torch"), "Welder", 30, 2));
+        AllAvailableSkills[0].isActive = true;
+        AllAvailableSkills[1].isActive = true;
+        AllAvailableSkills[2].isActive = true;
+        AllAvailableSkills[0].isOwned = true;
+        AllAvailableSkills[1].isOwned = true;
+        AllAvailableSkills[2].isOwned = true;  
     }
 	
 	public void SetSkillActive(SkillType skillType, bool active = true)
@@ -458,7 +515,7 @@ public class StateMachine : MonoBehaviour
         canvasScript.Close();
         PlayerControl = true;
 
-
+        #region Put Player in Event Room
         float playerPosX = Player.instance.gameObject.transform.position.x;
         float playerPosY = Player.instance.gameObject.transform.position.y;
         float doorPosX = Generate.instance.currentDoor.posX;
@@ -487,24 +544,16 @@ public class StateMachine : MonoBehaviour
         {
             Player.instance.gameObject.transform.position = new Vector3(doorPosX, doorPosY + 1.25f, 0f); ;
         }
+        #endregion
 
-
-
-        //Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
-
-        //Grab enemy that is attached to event and spawn them?
-        //Pick a spot with a 1 on it and spawn the enemies (random 1's)
-
-        //foreach (int enemy in currentRoom.roomEvent.Enemies)
-        //{
+        //Spawn Enemies
         InstantiateEnemy.spawnEnemy(Generate.instance.currentRoom.roomEvent.Enemies, Generate.instance.currentRoom);
-        //}
     }
 
     public void EndEvent(Events myEvent)
     {
-        eventActive = false;
-
+        //eventActive = false;
+        PlayerControl = false;
         Generate.instance.RemoveDoors();
 
         Generate.instance.currentDoor = null;
@@ -519,39 +568,52 @@ public class StateMachine : MonoBehaviour
 
         eventInfo.EndEventInfo();
 
-        //--Rewards
-        foreach (Transform child in RewardsWon.transform)
-        {
-            Destroy(child);
-        }
-
         List<Rewards> rewardsWon = eventInfo.GetRewardsWon();
         List<int> irewardsWon = rewardsWon.Select(x => x.Id).ToList();
         //Show rewards on RewardsWon
         MyCanvas cScript = DialogueBox.GetComponent<MyCanvas>();
-        cScript.PlaceRewards(RewardsWon);
+        GameObject r = Instantiate(RewardsWon);
+        cScript.PlaceRewards(r);
 
         List<int> iallRewards = cScript.MyEvent.SuccessRewards.Select(x => x.Id).ToList();
 
         List<int> rewardsNotWon = iallRewards.Intersect(irewardsWon).ToList();
-        foreach(Transform child in RewardsWon.transform)
+        foreach(Transform child in r.transform)
         {
-            int skillId = child.GetComponent<Data>().MySkill.skillID;
-            if(rewardsNotWon.Contains(skillId))
+            try
             {
-                child.gameObject.SetActive(false);
+                Data d = child.GetComponent<Data>();
+                try
+                {
+                    int skillId = child.GetComponent<Data>().MySkill.skillID;
+                    if (rewardsNotWon.Contains(skillId))
+                    {
+                        child.gameObject.SetActive(false);
+                    }
+                }
+                catch
+                {
+                    //You never set the skill id!?
+                }
+            }
+            catch
+            {
+                //Ignore it?
             }
         }
-
-        RewardsWon.transform.parent.gameObject.SetActive(true);
+        r.SetActive(true);
+        //Destroy(r);
+        //r.transform.parent.gameObject.SetActive(true);
         //--Rewards/
+
+        if (Generate.instance.GetRoomGameObjectList().Count == numMaxRooms)
+        {
+            WinGame();
+        }
     }
-
-    //--
-    //Room Select Functions
-    //--
-
-    //Room Select Scrolling
+    
+    #region Room Type / Shape Select Functions
+    //Room Shape Select Scrolling
     public void UpdateRoomSelect(string direction)
     {
         if (roomShapeSelectRow == 1 && direction == "down")
@@ -579,9 +641,11 @@ public class StateMachine : MonoBehaviour
             RoomShapeSelectMenu_3.SetActive(false);
             RoomShapeSelectMenu_2.SetActive(true);
         }
+
+        UpdateUI();
     }
-
-
+    
+    //Room Type Select Scrolling
     public void UpdateRoomTypeSelect(string direction)
     {
         Vector3 transform_Temp;
@@ -604,8 +668,7 @@ public class StateMachine : MonoBehaviour
             RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
             RoomTypeSelectMenu_2.transform.position = transform_Temp;
             roomChange = false;
-        }
-        
+        }        
     }
 
     //Changing Room Select Type
@@ -675,12 +738,5 @@ public class StateMachine : MonoBehaviour
 
         UpdateUI();
     }
-
-
-
-    public void ToggleRoom()
-    {
-
-
-    }
+    #endregion 
 }

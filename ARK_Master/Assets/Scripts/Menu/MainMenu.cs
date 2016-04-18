@@ -15,9 +15,6 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    //Audio
-    public Audio audioSource;
-
     //Canvases
     public Canvas optionsMenu;
     public Canvas aboutMenu;
@@ -58,6 +55,9 @@ public class MainMenu : MonoBehaviour
 
         //Enable the Start Menu Text Buttons
         EnableStartMenu();
+
+        //Load Global Settings
+        GlobalVariables.LoadGlobalUnlocks();
     }
 
     /************************************************************************************
@@ -72,7 +72,6 @@ public class MainMenu : MonoBehaviour
     {
         if (menuOption == 1)             //Start Game
         {
-            //audioSource.PlaySound(0);
             Application.LoadLevel(1);
         }
         else if (menuOption == 2)       //Options Menu

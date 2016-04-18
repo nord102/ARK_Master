@@ -43,6 +43,18 @@ public class MyCanvas : MonoBehaviour
         StartEvent();
     }
 
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Tab))
+        {
+            EmptyRewards();
+            MyEvent = EventSystem.GenerateRoomEvent(0, 1);
+            Generate.instance.currentRoom.roomEvent = MyEvent;
+            ResetDifficulty();
+            StartEvent();
+        }
+    }
+
     public void Close()
     {
         EmptyRewards();
@@ -141,7 +153,7 @@ public class MyCanvas : MonoBehaviour
             newReward = Instantiate(RewardPrefab) as GameObject;
 
             newReward.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-            newReward.transform.SetParent(thisRewardParent.transform, false);
+//            newReward.transform.SetParent(thisRewardParent.transform, false);
             newReward.transform.position = new Vector3(0, 0, 0);
             newReward.transform.localPosition = new Vector3(startX, yPos, startZ); //Finally
 
@@ -171,7 +183,16 @@ public class MyCanvas : MonoBehaviour
             Sprite RewardImage = LoadNewSprite(r.RewardImagePath);
             rewardImage.GetComponent<Image>().sprite = RewardImage;
 
-            rewardImage.GetComponent<Data>().MyReward = r;
+            try
+            {
+                Data d = newReward.GetComponent<Data>();
+                d.MyReward = r;
+            }
+            catch
+            {
+                //Some rewards don't have this?
+            }
+
 
             RewardList.Add(newReward);
             newReward = null;
@@ -182,7 +203,7 @@ public class MyCanvas : MonoBehaviour
 
     private void StartEvent()
     {
-        EmptyRewards();
+        //EmptyRewards();
         MyImage.GetComponent<Image>().sprite = MyEvent.eventImage;
         txtTitle.text = MyEvent.eventName;
         txtDescription.text = MyEvent.eventText;

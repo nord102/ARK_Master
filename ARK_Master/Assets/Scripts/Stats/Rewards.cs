@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Data;
 
 public class Rewards : MonoBehaviour
 {
@@ -69,10 +70,20 @@ public class Rewards : MonoBehaviour
             if (CharacterUnlocked != -1)
             {
                 //Add Character to statemachine...
+                //StateMachine.instance.db.ExecuteNonQuery("Update CharacterAvailability Set LocalUnlocked = 1 Where CharacterID = " + CharacterUnlocked);
             }
             if (BuildingUnlocked != -1)
             {
                 //Add Building to statemachine...
+                foreach (DataRow d in GlobalVariables.roomAvailability.Rows)
+                {
+                    if ((string)d[6] == string.Empty + BuildingUnlocked)
+                    {
+                        d[4] = "1";
+                        break;
+                    }
+                }
+                //StateMachine.instance.db.ExecuteNonQuery("Update RoomAvailability Set LocalUnlocked = 1 Where RoomID = " + BuildingUnlocked);
             }
         }
         catch
