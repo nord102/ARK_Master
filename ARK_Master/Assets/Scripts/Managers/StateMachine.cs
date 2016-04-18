@@ -86,6 +86,9 @@ public class StateMachine : MonoBehaviour
     public GameObject RoomTypeSelectMenu_2;
     private int roomTypeSelected = 0;
     //--
+
+    public Canvas gameOverMenu;
+    public Canvas winMenu;
 	
 	public GameObject GoInventory;
     public GameObject RewardsWon;
@@ -207,7 +210,14 @@ public class StateMachine : MonoBehaviour
         {
             //Forget it then
         }
-        //SceneManager.LoadScene("TitleMenu");
+        gameOverMenu.enabled = true;
+        PlayerControl = false;
+    }
+
+    public void WinGame()
+    {
+        winMenu.enabled = true;
+        PlayerControl = false;
     }
 
     public void ActivateSinisterEvent()
@@ -452,9 +462,9 @@ public class StateMachine : MonoBehaviour
         //IMAGES
         //Put in Images/Resources/Inventory
         AllAvailableSkills = new List<Skills>();
-        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/laser"), "Laser", 20, 2));
-        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/extinguisher"), "Extinguisher", 10, 2));//Resource.Load
-        AllAvailableSkills.Add(new Skills(2, Resources.Load<Sprite>("Inventory/torch"), "Welder", 30, 2));
+        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/t_laser"), "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/t_extinguisher"), "Extinguisher", 10, 2));//Resource.Load
+        AllAvailableSkills.Add(new Skills(2, Resources.Load<Sprite>("Inventory/t_torch"), "Welder", 30, 2));
         AllAvailableSkills[0].isActive = true;
         AllAvailableSkills[1].isActive = true;
         AllAvailableSkills[2].isActive = true;
@@ -505,7 +515,7 @@ public class StateMachine : MonoBehaviour
         canvasScript.Close();
         PlayerControl = true;
 
-
+        #region Put Player in Event Room
         float playerPosX = Player.instance.gameObject.transform.position.x;
         float playerPosY = Player.instance.gameObject.transform.position.y;
         float doorPosX = Generate.instance.currentDoor.posX;
@@ -534,18 +544,10 @@ public class StateMachine : MonoBehaviour
         {
             Player.instance.gameObject.transform.position = new Vector3(doorPosX, doorPosY + 1.25f, 0f); ;
         }
+        #endregion
 
-
-
-        //Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
-
-        //Grab enemy that is attached to event and spawn them?
-        //Pick a spot with a 1 on it and spawn the enemies (random 1's)
-
-        //foreach (int enemy in currentRoom.roomEvent.Enemies)
-        //{
+        //Spawn Enemies
         InstantiateEnemy.spawnEnemy(Generate.instance.currentRoom.roomEvent.Enemies, Generate.instance.currentRoom);
-        //}
     }
 
     public void EndEvent(Events myEvent)
@@ -603,13 +605,15 @@ public class StateMachine : MonoBehaviour
         //Destroy(r);
         //r.transform.parent.gameObject.SetActive(true);
         //--Rewards/
+
+        if (Generate.instance.GetRoomGameObjectList().Count == numMaxRooms)
+        {
+            WinGame();
+        }
     }
-
-    //--
-    //Room Select Functions
-    //--
-
-    //Room Select Scrolling
+    
+    #region Room Type / Shape Select Functions
+    //Room Shape Select Scrolling
     public void UpdateRoomSelect(string direction)
     {
         if (roomShapeSelectRow == 1 && direction == "down")
@@ -637,10 +641,11 @@ public class StateMachine : MonoBehaviour
             RoomShapeSelectMenu_3.SetActive(false);
             RoomShapeSelectMenu_2.SetActive(true);
         }
+
         UpdateUI();
     }
-
-
+    
+    //Room Type Select Scrolling
     public void UpdateRoomTypeSelect(string direction)
     {
         Vector3 transform_Temp;
@@ -663,8 +668,7 @@ public class StateMachine : MonoBehaviour
             RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
             RoomTypeSelectMenu_2.transform.position = transform_Temp;
             roomChange = false;
-        }
-        
+        }        
     }
 
     //Changing Room Select Type
@@ -734,12 +738,5 @@ public class StateMachine : MonoBehaviour
 
         UpdateUI();
     }
-
-
-
-    public void ToggleRoom()
-    {
-
-
-    }
+    #endregion 
 }
