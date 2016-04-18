@@ -21,7 +21,6 @@ public static class GlobalVariables
 
         GlobalVariables.roomAvailability = db.SelectTable("SELECT * FROM RoomAvailability");
         GlobalVariables.unlockedCharacters = db.SelectTable("SELECT * FROM CharacterAvailability");
-
     }
 
 }

@@ -13023,19 +13023,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 378
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 128
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 270.89948
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_AnchorMin.x
@@ -13055,15 +13055,59 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_Pivot.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
       propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 110472, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22407878, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 22407878, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 130514, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22306940, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_RenderMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11484552, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11484552, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 0.945
+      objectReference: {fileID: 0}
+    - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.945
+      objectReference: {fileID: 0}
+    - target: {fileID: 22435938, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.945
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1783372336 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 110472, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+  m_PrefabInternal: {fileID: 1783372335}
 --- !u!1 &1784114184
 GameObject:
   m_ObjectHideFlags: 0
@@ -13470,7 +13514,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1822079932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98283bfa0e9d71845b32540936ceb459, type: 3}
+  m_Script: {fileID: 11500000, guid: da3befaf32afd4148b6e49a8a19e00e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 0}
@@ -14559,7 +14603,6 @@ MonoBehaviour:
   mainCamera: {fileID: 1693632302}
   BuildingMenu: {fileID: 803154066}
   UI: {fileID: 1446544712}
-  FireImage: {fileID: 0}
   playerHealthBar: {fileID: 940051923}
   playerShieldBar: {fileID: 743068885}
   shipResources: {fileID: 1636828493}
@@ -14571,13 +14614,16 @@ MonoBehaviour:
   fire: {fileID: 120144, guid: 00da5c1e21687864896fc0e8c2451917, type: 2}
   hole: {fileID: 118152, guid: 583002a945aebfb418bfe49fc4121282, type: 2}
   numMaxRooms: 30
+  sinisterEventNum: 0
   RoomShapeSelectMenu_1: {fileID: 1214324845}
   RoomShapeSelectMenu_2: {fileID: 308811198}
   RoomShapeSelectMenu_3: {fileID: 1492544134}
   RoomTypeSelectMenu_1: {fileID: 1080657532}
   RoomTypeSelectMenu_2: {fileID: 1360602705}
+  gameOverMenu: {fileID: 0}
+  winMenu: {fileID: 0}
   GoInventory: {fileID: 1358281356}
-  RewardsWon: {fileID: 110472, guid: 7bbb29d26182318429f154ddf0ca921a, type: 2}
+  RewardsWon: {fileID: 1783372336}
 --- !u!4 &1965047332
 Transform:
   m_ObjectHideFlags: 0
@@ -15053,7 +15099,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: '2x2
 
-    325'
+    350'
 --- !u!222 &2039026022
 CanvasRenderer:
   m_ObjectHideFlags: 0
