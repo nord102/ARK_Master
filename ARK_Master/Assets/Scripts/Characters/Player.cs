@@ -130,11 +130,7 @@ public class Player : MonoBehaviour
 		fireExtingusiherClone.SetActive(true);
         fireExtingusiherClone.SendMessage("Trajectory", c);
 
-        
-		//fireExtingusiherClone.transform.Rotate(Vector3.Angle (this.gameObject.transform.position, c));
-
-
-        //fireExtingusiherClone = null;
+     
     }
 
     public void Damage(double amount)

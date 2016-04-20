@@ -18,10 +18,12 @@ public class Fire : MonoBehaviour {
 	const int WEST = 2;
 	const int EAST = 3;
 
-	const int FIRE_DAMAGE = 5;
 
+    const double FIREFIGHTER_DAMAGE = 5;
+    const double OTHER_DAMAGE = 10;
 
-    public int extinguisherDamageOnFire = 2;
+    public int extinguisherDamageOnFire = 4;
+    public int regularExtingisherDamage = 2;
 	
 	//public GameObject fire;
 	private GameObject cloneFire;
@@ -40,28 +42,42 @@ public class Fire : MonoBehaviour {
 		currentEvent    = Generate.instance.currentRoom.roomEvent;
 	}
 
-	void OnCollisionEnter2D(Collision2D other) { 
-
-		if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
-			Damage (this.extinguisherDamageOnFire);
-		} else if (other.gameObject.name == "Player") {
-			Player.instance.Damage(FIRE_DAMAGE);
-		}
-
-	}
-
 	void OnTriggerEnter2D(Collider2D other)
 	{
  		if (other.gameObject.tag == "ExtinguisherSpray" || other.gameObject.name.Contains ("ExtinguisherSpray")) {
-			Damage (this.extinguisherDamageOnFire);
+			Damage ();
 		} else if (other.gameObject.name == "Player") {
-			Player.instance.Damage(FIRE_DAMAGE);
+
+            double damage = 0;
+
+            switch (GlobalVariables.selectedCharacter)
+            {
+                case GlobalVariables.FIREFIGHTER:
+                    damage = FIREFIGHTER_DAMAGE;
+                    break;
+
+                default:
+                    damage = OTHER_DAMAGE;
+                    break;
+            }
+
+            Player.instance.Damage(damage);
 		}
 	}
 
-	public void Damage(int amount)
+	public void Damage()
 	{
-		this.hitPoints -= amount;
+        switch(GlobalVariables.selectedCharacter)
+        {
+            case GlobalVariables.FIREFIGHTER:
+                this.hitPoints -= this.extinguisherDamageOnFire;
+                break;
+
+            default:
+                this.hitPoints -= regularExtingisherDamage;
+                break;
+        }
+		
 
 		if (this.hitPoints <= 0) {
 

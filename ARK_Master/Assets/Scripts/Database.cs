@@ -16,8 +16,8 @@ public class Database
     public Database(string applicationDataPath)
     {
         //HAD TO CHANGE THIS APPLICATION DATA PATH///////////////////////////////////////////////////////////////////////
-        conn = "URI=file:C:/Users/nord102/Desktop/Databases/DB.db";
-        //conn = "URI=file:" + applicationDataPath + "/Databases/DB.db"; //Path to database.
+        //conn = "URI=file:C:/Users/nord102/Desktop/Databases/DB.db";
+        conn = "URI=file:" + applicationDataPath + "/Databases/DB.db"; //Path to database.
         //DATAPATHC:/Users/nord102/Documents/GitHub/ARK_Master/ARK_Master/ARK_Master/Assets
 
 

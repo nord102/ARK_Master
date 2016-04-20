@@ -5,6 +5,11 @@ using System.Data;
 
 public static class GlobalVariables
 {
+    public const int MECHANIC = 0;
+    public const int FIREFIGHTER = 1;
+    public const int FIGHTER = 2;
+
+
     public static DataTable unlockedCharacters = new DataTable();
     public static List<int> unlockedBuildings = new List<int>();
     public static List<int> unlockedSkills = new List<int>();

@@ -38,13 +38,6 @@ public class FireTheLasers : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        //switch (coll.name)
-        //{
-        //    case "Border":
-        //        Destroy(this);
-        //        break;
-        //}
-
     }
 
     ///
@@ -56,35 +49,12 @@ public class FireTheLasers : MonoBehaviour
 		direction.Normalize ();
 
 		this.rb.velocity = direction * this.speed;
-
-        //float step = speed;
-       // transform.position = Vector3.MoveTowards(transform.position, this.direction, step);
-
-       //transform.position += (this.direction - this.start) * speed * Time.deltaTime;
-
-
-
-
-
-        //this.transform.LookAt(this.direction);
-        //this.transform.Translate(Vector3.back * speed);
     }
 
 
     public void Trajectory(Vector3 v)
     {
-
         this.direction = v;
-
-        //this.angle = Vector3.AngleBetween(this.transform.position, this.direction);
-        //Debug.Log(this.direction);
-        //this.direction.x *= 2;
-        //this.direction.y *= 2;
-
-        //Debug.Log(this.transform.position);
-
-        //Debug.Log(this.direction);
-        //Debug.Log(this.angle);
     }
 
 }
