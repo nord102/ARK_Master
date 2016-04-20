@@ -55,8 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09ecfa1c94a018345bfaa477607421a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  divideTime: 2
-  weldHeal: 5
+  divideTime: 4
   animator: {fileID: 0}
 --- !u!212 &21258982
 SpriteRenderer:
