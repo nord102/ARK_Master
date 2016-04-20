@@ -313,8 +313,8 @@ public class StateMachine : MonoBehaviour
         BuildingMenu.SetActive(false);
 
         //HAD TO CHANGE THIS APPLICATION DATA PATH///////////////////////////////////////////////////////////////////////
-        //appPath = Application.dataPath;
-        appPath = "C:/Users/nord102/Desktop";
+        appPath = Application.dataPath;
+        //appPath = "C:/Users/nord102/Desktop";
 
 
         db = new Database(Application.dataPath);
@@ -525,12 +525,6 @@ public class StateMachine : MonoBehaviour
         Generate.instance.currentDoor = null;
 
         #region Rewards
-        
-        
-        foreach (Rewards reward in myEvent.SuccessRewards)
-        {
-            reward.ActivateReward();
-        }
 
         EventInfo eventInfo = EventInfo.GetComponent<EventInfo>();
 

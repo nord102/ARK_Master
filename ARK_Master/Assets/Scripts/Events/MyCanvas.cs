@@ -153,7 +153,7 @@ public class MyCanvas : MonoBehaviour
             newReward = Instantiate(RewardPrefab) as GameObject;
 
             newReward.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
-//            newReward.transform.SetParent(thisRewardParent.transform, false);
+            newReward.transform.SetParent(thisRewardParent.transform, false);
             newReward.transform.position = new Vector3(0, 0, 0);
             newReward.transform.localPosition = new Vector3(startX, yPos, startZ); //Finally
 
