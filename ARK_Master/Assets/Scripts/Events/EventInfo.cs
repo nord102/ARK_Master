@@ -94,15 +94,6 @@ public class EventInfo : MonoBehaviour
     public void SetRewards()
     {
         //this is so bad
-
-        //foreach(Transform child in Rewards
-
-
-
-
-
-
-        //
         List<GameObject> rewardGameObjectList = new List<GameObject>();
 
         foreach (Transform child in rewards.transform)

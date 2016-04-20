@@ -322,8 +322,8 @@ public class StateMachine : MonoBehaviour
         BuildingMenu.SetActive(false);
 
         //HAD TO CHANGE THIS APPLICATION DATA PATH///////////////////////////////////////////////////////////////////////
-        //appPath = Application.dataPath;
-        appPath = "C:/Users/nord102/Desktop";
+        appPath = Application.dataPath;
+        //appPath = "C:/Users/nord102/Desktop";
 
 
         db = new Database(Application.dataPath);
@@ -426,6 +426,7 @@ public class StateMachine : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.U))
         {
             EnableAllRooms();
+            Dragging.instance.freeRooms = true;
         }
 
     }
@@ -548,13 +549,7 @@ public class StateMachine : MonoBehaviour
 
 
         #region Rewards
-        
-        //Applies all Rewards to the Player..isn't this wrong?
-        foreach (Rewards reward in myEvent.SuccessRewards)
-        {
-            reward.ActivateReward();
-        }
-
+       
         //Hides the Event Display that was at the top of the screen
         EventInfo eventInfo = EventInfo.GetComponent<EventInfo>();
         eventInfo.EndEventInfo();
