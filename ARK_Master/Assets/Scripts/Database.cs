@@ -15,7 +15,14 @@ public class Database
 
     public Database(string applicationDataPath)
     {
-        conn = "URI=file:" + applicationDataPath + "/Databases/DB.db"; //Path to database.
+        //HAD TO CHANGE THIS APPLICATION DATA PATH///////////////////////////////////////////////////////////////////////
+        conn = "URI=file:C:/Users/nord102/Desktop/Databases/DB.db";
+        //conn = "URI=file:" + applicationDataPath + "/Databases/DB.db"; //Path to database.
+        //DATAPATHC:/Users/nord102/Documents/GitHub/ARK_Master/ARK_Master/ARK_Master/Assets
+
+
+
+ 
         lootColumnsNoId = " RewardName, RewardImagePath, RewardTimer, HPChange, EnergyChange, ShieldChange, ShipResourcesFound, SkillFound, CharacterUnlocked, BuildingUnlocked, LootTableValue, EventType ";
         lootColumns = " Id," + lootColumnsNoId;
 

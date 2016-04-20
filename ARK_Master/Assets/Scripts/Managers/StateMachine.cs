@@ -11,7 +11,6 @@ using System.Linq;
 
 public class StateMachine : MonoBehaviour
 {
-
     public static StateMachine instance = null;
     public ShipInfo sInfo;
     public PlayerInfo pInfo;
@@ -34,7 +33,6 @@ public class StateMachine : MonoBehaviour
     public GameObject Module1;
     public GameObject Module2;
     public GameObject Module3;
-
     public GameObject Module1Selected;
     public GameObject Module2Selected;
     public GameObject Module3Selected;
@@ -54,11 +52,11 @@ public class StateMachine : MonoBehaviour
     private string PreviousPlayerFilePath = "Sinister.txt";
     public List<PlayerInfo> PreviousPlayers = new List<PlayerInfo>();
 
-    public Sprite FireImage = new Sprite();
-
+    #region UI 
     public Image playerHealthBar;
     public Image playerShieldBar;
     public Text shipResources;
+    #endregion
 
     public GameObject DialogueBox;
     public Database db;
@@ -75,8 +73,9 @@ public class StateMachine : MonoBehaviour
     //Medium - 60
     //Long - 90
     public int numMaxRooms = 30;
+    public int sinisterEventNum = 0;
 
-    //--
+    #region RoomSelect Variables
     private int roomShapeSelectRow = 1;
     public GameObject RoomShapeSelectMenu_1;
     public GameObject RoomShapeSelectMenu_2;
@@ -85,7 +84,10 @@ public class StateMachine : MonoBehaviour
     public GameObject RoomTypeSelectMenu_1;
     public GameObject RoomTypeSelectMenu_2;
     private int roomTypeSelected = 0;
-    //--
+    #endregion
+
+    public Canvas gameOverMenu;
+    public Canvas winMenu;
 	
 	public GameObject GoInventory;
     public GameObject RewardsWon;
@@ -207,12 +209,19 @@ public class StateMachine : MonoBehaviour
         {
             //Forget it then
         }
-        //SceneManager.LoadScene("TitleMenu");
+        gameOverMenu.enabled = true;
+        PlayerControl = false;
+    }
+
+    public void WinGame()
+    {
+        winMenu.enabled = true;
+        PlayerControl = false;
     }
 
     public void ActivateSinisterEvent()
     {
-
+        sinisterEventNum++;
     }
 
     void LoadSettings()
@@ -281,7 +290,7 @@ public class StateMachine : MonoBehaviour
         //Update Room Shape Lists with Available Rooms
             switch (roomShapeSelectRow)
             {
-                case 1:
+                case 1:                    
                     RoomSelector(GlobalVariables.roomAvailability, RoomShapeSelectMenu_1);
                     break;
                 case 2:
@@ -297,35 +306,17 @@ public class StateMachine : MonoBehaviour
 
     }
 
-    public void RoomSelector(DataTable availibilty, GameObject RoomSelectMenu)//), string roomName, bool unlocked)
-    {
-        foreach (Transform child in RoomSelectMenu.transform)
-        {
-            try
-            {
-                DataRow[] availibiltyRow = availibilty.Select("Name = '" + child.name + "' AND RoomType = " + roomTypeSelected + " AND RowNum = " + roomShapeSelectRow);
-                string teststr = (string)availibiltyRow[0][4];
-                if (teststr == "1")
-                {
-                    child.gameObject.SetActive(true);
-                }
-                else
-                {
-                    child.gameObject.SetActive(false);
-                }
-                
-            }
-            catch
-            {
-                child.gameObject.SetActive(false);
-            }
-        }
-    }
+    
 
     void Setup()
     {
         BuildingMenu.SetActive(false);
-        appPath = Application.dataPath;
+
+        //HAD TO CHANGE THIS APPLICATION DATA PATH///////////////////////////////////////////////////////////////////////
+        //appPath = Application.dataPath;
+        appPath = "C:/Users/nord102/Desktop";
+
+
         db = new Database(Application.dataPath);
 
         ImagePath = appPath + "/Images/Rewards/";
@@ -356,15 +347,6 @@ public class StateMachine : MonoBehaviour
                 break;
         }
 
-
-        //Get Player to input their name
-        //pInfo.PlayerName = GetPlayerName();
-
-        //Generate Rooms
-        //Start Intro Tutorial
-
-        //Generate Room
-		
 		GoInventory.GetComponent<Inventory>().SetupInventory();
         UpdateUI();
     }
@@ -417,44 +399,37 @@ public class StateMachine : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.M))
         {
-            MiniMapOpen = !MiniMapOpen;
-            if (MiniMapOpen)
-            {
-                //ShowMiniMap();
-            }
-            else
-            {
-                //HideMiniMap();
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            MainMenuOpen = !MainMenuOpen;
-            if (MainMenuOpen)
-            {
-                //ShowMainMenu();
-            }
-            else
-            {
-                //HideMainMenu();
-            }
+            //MiniMapOpen = !MiniMapOpen;
+            //if (MiniMapOpen)
+            //{
+            //    //ShowMiniMap();
+            //}
+            //else
+            //{
+            //    //HideMiniMap();
+            //}
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("Pressed X");
             StateMachine.instance.EndEvent(Generate.instance.currentRoom.roomEvent);
         }
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            EnableAllRooms();
+        }
 
     }
 
+    #region Skill Related Functions
     void GenerateAvailableSkills()
     {
         //IMAGES
         //Put in Images/Resources/Inventory
         AllAvailableSkills = new List<Skills>();
-        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/laser"), "Laser", 20, 2));
-        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/extinguisher"), "Extinguisher", 10, 2));//Resource.Load
-        AllAvailableSkills.Add(new Skills(2, Resources.Load<Sprite>("Inventory/torch"), "Welder", 30, 2));
+        AllAvailableSkills.Add(new Skills(1, Resources.Load<Sprite>("Inventory/t_laser"), "Laser", 20, 2));
+        AllAvailableSkills.Add(new Skills(0, Resources.Load<Sprite>("Inventory/t_extinguisher"), "Extinguisher", 10, 2));//Resource.Load
+        AllAvailableSkills.Add(new Skills(2, Resources.Load<Sprite>("Inventory/t_torch"), "Welder", 30, 2));
         AllAvailableSkills[0].isActive = true;
         AllAvailableSkills[1].isActive = true;
         AllAvailableSkills[2].isActive = true;
@@ -469,7 +444,9 @@ public class StateMachine : MonoBehaviour
 
         skill.isActive = active;
     }
+    #endregion
 
+    #region Event Related Functions
     //Determine event difficulty
     //Based on Number of Rooms placed, Number of Components in the Event Room, and Room Type
     public int DetermineEventDifficulty(int roomType, int numComponents)
@@ -505,7 +482,7 @@ public class StateMachine : MonoBehaviour
         canvasScript.Close();
         PlayerControl = true;
 
-
+        #region Put Player in Event Room
         float playerPosX = Player.instance.gameObject.transform.position.x;
         float playerPosY = Player.instance.gameObject.transform.position.y;
         float doorPosX = Generate.instance.currentDoor.posX;
@@ -534,18 +511,10 @@ public class StateMachine : MonoBehaviour
         {
             Player.instance.gameObject.transform.position = new Vector3(doorPosX, doorPosY + 1.25f, 0f); ;
         }
+        #endregion
 
-
-
-        //Debug.Log("CURRENT ROOM IS " + Generate.instance.currentRoom.roomID);
-
-        //Grab enemy that is attached to event and spawn them?
-        //Pick a spot with a 1 on it and spawn the enemies (random 1's)
-
-        //foreach (int enemy in currentRoom.roomEvent.Enemies)
-        //{
+        //Spawn Enemies
         InstantiateEnemy.spawnEnemy(Generate.instance.currentRoom.roomEvent.Enemies, Generate.instance.currentRoom);
-        //}
     }
 
     public void EndEvent(Events myEvent)
@@ -553,10 +522,11 @@ public class StateMachine : MonoBehaviour
         //eventActive = false;
         PlayerControl = false;
         Generate.instance.RemoveDoors();
-
         Generate.instance.currentDoor = null;
 
-        Debug.Log("EVENT OVER");
+        #region Rewards
+        
+        
         foreach (Rewards reward in myEvent.SuccessRewards)
         {
             reward.ActivateReward();
@@ -603,13 +573,51 @@ public class StateMachine : MonoBehaviour
         //Destroy(r);
         //r.transform.parent.gameObject.SetActive(true);
         //--Rewards/
+        #endregion
+
+        //Max Rooms have been placed and the last Sinister Event has been completed
+        if (Generate.instance.GetRoomGameObjectList().Count == numMaxRooms && sinisterEventNum == numMaxRooms / 10)
+        {
+            WinGame();
+        }
+    }
+    #endregion 
+
+    #region Room Type / Shape Select Functions
+    public void EnableAllRooms()
+    {
+        foreach (DataRow row in GlobalVariables.roomAvailability.Rows)
+        {
+            row["LocalUnlocked"] = 1;
+        }
     }
 
-    //--
-    //Room Select Functions
-    //--
+    public void RoomSelector(DataTable availibilty, GameObject RoomSelectMenu)
+    {
+        foreach (Transform child in RoomSelectMenu.transform)
+        {
+            try
+            {
+                DataRow[] availibiltyRow = availibilty.Select("Name = '" + child.name + "' AND RoomType = " + roomTypeSelected + " AND RowNum = " + roomShapeSelectRow);
+                string teststr = (string)availibiltyRow[0][4];
+                if (teststr == "1")
+                {
+                    child.gameObject.SetActive(true);
+                }
+                else
+                {
+                    child.gameObject.SetActive(false);
+                }
 
-    //Room Select Scrolling
+            }
+            catch
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    //Room Shape Select Scrolling
     public void UpdateRoomSelect(string direction)
     {
         if (roomShapeSelectRow == 1 && direction == "down")
@@ -637,10 +645,11 @@ public class StateMachine : MonoBehaviour
             RoomShapeSelectMenu_3.SetActive(false);
             RoomShapeSelectMenu_2.SetActive(true);
         }
+
         UpdateUI();
     }
-
-
+    
+    //Room Type Select Scrolling
     public void UpdateRoomTypeSelect(string direction)
     {
         Vector3 transform_Temp;
@@ -663,8 +672,7 @@ public class StateMachine : MonoBehaviour
             RoomTypeSelectMenu_1.transform.position = RoomTypeSelectMenu_2.transform.position;
             RoomTypeSelectMenu_2.transform.position = transform_Temp;
             roomChange = false;
-        }
-        
+        }        
     }
 
     //Changing Room Select Type
@@ -734,12 +742,5 @@ public class StateMachine : MonoBehaviour
 
         UpdateUI();
     }
-
-
-
-    public void ToggleRoom()
-    {
-
-
-    }
+    #endregion 
 }

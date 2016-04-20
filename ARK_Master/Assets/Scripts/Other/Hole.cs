@@ -17,10 +17,11 @@ public class Hole : MonoBehaviour {
 	const int WEST = 2;
 	const int EAST = 3;
 
-	const int LACK_OF_OXYGEN_DAMAGE = 5;
+	const int LACK_OF_OXYGEN_DAMAGE_MECHANIC = 1;
+    const int LACK_OF_OXYGEN_DAMAGE_OTHER = 3;
 
-
-	public int weldHeal = 5;
+    public const  int MECHANIC_WELD = 4;
+    public const int OTHER_WELD = 2;
 
 	//public GameObject fire;
 	private GameObject cloneFire;
@@ -44,15 +45,29 @@ public class Hole : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		if (other.gameObject.tag == "Weld") {
-			FixHole (this.weldHeal);
+			FixHole ();
 		} else if (other.gameObject.tag == "RoomObject") {
 			Destroy (other.gameObject);
 		}
 	}
 
-	public void FixHole(int amount)
-	{	
-		this.hitPoints -= amount;
+	public void FixHole()
+	{
+
+        int amount = 0;
+
+        switch (GlobalVariables.selectedCharacter)
+        {
+            case GlobalVariables.MECHANIC:
+                amount = MECHANIC_WELD;
+                break;
+
+            default:
+                amount = OTHER_WELD;
+                break;
+        }
+
+        this.hitPoints -= amount;
 
 		if (this.hitPoints <= 0) {
 			currentEvent.Enemies.Remove (1);
@@ -84,7 +99,22 @@ public class Hole : MonoBehaviour {
 			}
 			this.timer = 0;
 
-			Player.instance.Damage (LACK_OF_OXYGEN_DAMAGE);
+
+            double damage = 0;
+
+            switch (GlobalVariables.selectedCharacter)
+            {
+                case GlobalVariables.MECHANIC:
+                    damage = LACK_OF_OXYGEN_DAMAGE_MECHANIC;
+                    break;
+
+                default:
+                    damage = LACK_OF_OXYGEN_DAMAGE_OTHER;
+                    break;
+            }
+
+
+            Player.instance.Damage (damage);
 		}
 	}
 
@@ -105,9 +135,6 @@ public class Hole : MonoBehaviour {
 		}
 		return possibleList;
 	}
-
-
-
 
 
 	private Vector3 Position(Vector3 basePositionInput)

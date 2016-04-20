@@ -34,7 +34,6 @@ public class ExtinguishSpray : MonoBehaviour {
         if(Math.Round(this.timer, 1) >= this.lifeSpan)
         {
             Destroy(this.gameObject);
-
         }
 
         if (!distanceFlag)
@@ -49,6 +48,7 @@ public class ExtinguishSpray : MonoBehaviour {
         else
         {
             Vector3 direction = this.direction - this.start;
+            direction.Normalize();
             this.rb.velocity = direction * 0;
         }
     }
