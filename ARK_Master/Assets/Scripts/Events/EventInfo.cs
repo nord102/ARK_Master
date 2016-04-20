@@ -7,17 +7,20 @@ using System.Linq;
 
 public class EventInfo : MonoBehaviour
 {
+
     public Text txtEventName;
     public Text txtTime;
-    public GameObject Rewards;
+    public GameObject rewards;
 
+    #region Difficulty Display
     public GameObject StarPlaceholder;
     public Sprite GoldStar;
     public Sprite GrayStar;
+    #endregion
 
     private Events MyEvent;
-    private float Timer = 0.0f;
-    private float StartTime = 0.0f;
+    private float timer = 0.0f;
+    private float startTime = 0.0f;
 
     public void StartEventInfo(Events myEvent)
     {
@@ -26,11 +29,15 @@ public class EventInfo : MonoBehaviour
 
         txtEventName.text = MyEvent.eventName;
         SetRewards();
-        StartTime = Time.deltaTime;
-        Timer = 0.0f;
+
+        //Set Times
+        startTime = Time.deltaTime;
+        timer = 0.0f;
+
+        //Set the Difficulty Stars
         SetDifficulty();
     }
-
+    #region Loading Sprite and Texture
     //http://forum.unity3d.com/threads/generating-sprites-dynamically-from-png-or-jpeg-files-in-c.343735/
     public Sprite LoadNewSprite(string FilePath, float PixelsPerUnit = 100.0f)
     {
@@ -62,15 +69,16 @@ public class EventInfo : MonoBehaviour
         }
         return null;                     // Return null if load failed
     }
+    #endregion
 
+    //Assigning how many stars to display based on the event difficulty
     public void SetDifficulty()
     {
-        int difficulty = MyEvent.eventDifficulty;
+        int difficultyCount = MyEvent.eventDifficulty;
 
-        int i = 5 - MyEvent.eventDifficulty;
         foreach (Transform child in StarPlaceholder.transform)
         {
-            if (i <= 0)
+            if (difficultyCount > 0)
             {
                 child.GetComponent<Image>().sprite = GoldStar;
             }
@@ -79,26 +87,35 @@ public class EventInfo : MonoBehaviour
                 child.GetComponent<Image>().sprite = GrayStar;
             }
 
-            --i;
+            difficultyCount--;            
         }
     }
 
     public void SetRewards()
     {
         //this is so bad
-        List<GameObject> rewards = new List<GameObject>();
 
-        foreach (Transform child in Rewards.transform)
+        //foreach(Transform child in Rewards
+
+
+
+
+
+
+        //
+        List<GameObject> rewardGameObjectList = new List<GameObject>();
+
+        foreach (Transform child in rewards.transform)
         {
-            rewards.Add(child.gameObject);
+            rewardGameObjectList.Add(child.gameObject);
         }
 
         int i = 0;
         foreach (Rewards r in MyEvent.SuccessRewards)
         {
             
-            GameObject timer = rewards[i].transform.Find("Timer").gameObject;
-            GameObject rewardImage = rewards[i].transform.Find("RewardImage").gameObject;
+            GameObject timer = rewardGameObjectList[i].transform.Find("Timer").gameObject;
+            GameObject rewardImage = rewardGameObjectList[i].transform.Find("RewardImage").gameObject;
 
             timer.GetComponent<Text>().text = r.RewardTimer.ToString() + "s";
             //set image
@@ -125,33 +142,27 @@ public class EventInfo : MonoBehaviour
         }
     }
 
+    //Creates a list of Rewards that the Player Won from the event
     public List<Rewards> GetRewardsWon()
     {
-        int secondsPassed = (int)Timer - (int)StartTime;
+        int secondsPassed = (int)timer - (int)startTime;
         return MyEvent.SuccessRewards.Where(x => secondsPassed <= x.RewardTimer).ToList();
     }
 
+    //Updates the timer on the Event Info display
     public void SetTime(int Seconds)
     {
         int secs = Seconds % 60;
         int mins = Seconds / 60;
         string time = string.Format("{0:00}:{1:00}", mins, secs);
-
         txtTime.text = time;
     }
-
-    public void StartThisEvent()
-    {
-        Events e = new Events(1, 1, 1);
-        StartEventInfo(e);
-    }
-	
-	// Update is called once per frame
+    
+	//Ticks the timer
 	void Update ()
     {
-        //http://answers.unity3d.com/questions/64498/time-counter-up.html
-        Timer += Time.deltaTime;
+        timer += Time.deltaTime;
 
-        SetTime((int)Timer - (int)StartTime);
+        SetTime((int)timer - (int)startTime);
     }
 }
