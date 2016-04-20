@@ -21,7 +21,7 @@ public class Welding : MonoBehaviour {
 	{
 		rb = GetComponent<Rigidbody2D>();
 		start = this.transform.position;
-		//ExtinguisherSound.instance.PlaySound();
+	    WeldSound.instance.PlaySound();
 
 	}
 
@@ -50,7 +50,8 @@ public class Welding : MonoBehaviour {
 		else
 		{
 			Vector3 direction = this.direction - this.start;
-			this.rb.velocity = direction * 0;
+            direction.Normalize();
+            this.rb.velocity = direction * 0;
 		}
 	}
 
