@@ -201,16 +201,19 @@ public class StateMachine : MonoBehaviour
     //Call this when the player's Health reaches 0, or other events that end the game
     public void GameOver()
     {
+        gameOverMenu.enabled = true;
+        PlayerControl = false;
+
         try
         {
-            SaveDeadCharacters();
+            //SaveDeadCharacters();
         }
         catch
         {
             //Forget it then
         }
-        gameOverMenu.enabled = true;
-        PlayerControl = false;
+
+        
     }
 
     public void WinGame()
@@ -310,6 +313,12 @@ public class StateMachine : MonoBehaviour
 
     void Setup()
     {
+        //--
+        winMenu.enabled = false;
+        gameOverMenu.enabled = false;
+        //--
+
+
         BuildingMenu.SetActive(false);
 
         //HAD TO CHANGE THIS APPLICATION DATA PATH///////////////////////////////////////////////////////////////////////
@@ -417,6 +426,7 @@ public class StateMachine : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.U))
         {
             EnableAllRooms();
+            Dragging.instance.freeRooms = true;
         }
 
     }
@@ -524,12 +534,26 @@ public class StateMachine : MonoBehaviour
         Generate.instance.RemoveDoors();
         Generate.instance.currentDoor = null;
 
+        ///First, get the time that the Player took to complete the event
+        ///Next, make a list of the rewards that the Player gets based on that time
+        ///ergo, comparing the times
+        ///then apply those rewards to the Player
+        ///and display them to the screen
+        ///Why is this difficult?
+        ///
+
+        //--
+        
+
+        //--
+
+
         #region Rewards
-
+       
+        //Hides the Event Display that was at the top of the screen
         EventInfo eventInfo = EventInfo.GetComponent<EventInfo>();
-
         eventInfo.EndEventInfo();
-
+    
         List<Rewards> rewardsWon = eventInfo.GetRewardsWon();
         List<int> irewardsWon = rewardsWon.Select(x => x.Id).ToList();
         //Show rewards on RewardsWon
