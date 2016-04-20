@@ -26,6 +26,10 @@ public class Dragging : MonoBehaviour
 
     RaycastHit hit;
 
+    private int roomValue = 0;
+
+    public bool freeRooms = false;
+
     public bool draggingMode = false;
 
     //Boundary Detection
@@ -77,15 +81,16 @@ public class Dragging : MonoBehaviour
         if (!draggingMode)
         {
             Physics2D.IgnoreLayerCollision(10, 11);
-            int roomValue = DetermineRoomCost(roomShape);
+            roomValue = DetermineRoomCost(roomShape);
 
             //Check if Player can afford room
-
-            //TAKE OUT TRUE AFTER 
-            if (StateMachine.instance.sInfo.Resources >= roomValue || true)
+            if (StateMachine.instance.sInfo.Resources >= roomValue || freeRooms)
             {
                 //Adjusts the Resources based on the transaction
-                StateMachine.instance.sInfo.SetResources(-roomValue);
+                if (!freeRooms)
+                {
+                    StateMachine.instance.sInfo.SetResources(-roomValue);
+                }
 
                 #region DraggingRoom
                 //Get the chosen room shape
@@ -294,6 +299,21 @@ public class Dragging : MonoBehaviour
             newRoom.roomEvent = EventSystem.GenerateRoomEvent(0, newRoom.GetComponentList().Count);
             newRoom.roomLayout = Pathfinding.DeterminePaths(newRoom);
             Generate.instance.PopulateRoom(newRoom);
+        }
+
+        if (Input.GetMouseButton(1) && draggingMode)
+        {
+            draggingMode = false;
+            Debug.Log("I AM NOT DRAGGING");
+
+            Generate.instance.GetRoomGameObjectList().Remove(gameObjectToDrag);
+
+            if (!freeRooms)
+            {
+                StateMachine.instance.sInfo.SetResources(+roomValue);
+            }
+
+            Destroy(gameObjectToDrag);
         }
     }
 }
