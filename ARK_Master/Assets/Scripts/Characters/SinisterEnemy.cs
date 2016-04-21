@@ -104,6 +104,8 @@ public class SinisterEnemy : MonoBehaviour
         else if (coll.gameObject.name.Contains("Laser"))
         {
             Damage(2);
+
+
         }
     }
 
@@ -122,13 +124,13 @@ public class SinisterEnemy : MonoBehaviour
 
         if (health <= 0)
         {
-            //currentEvent.Enemies.Remove(2);
+            currentEvent.Enemies.Remove(3);
 
             //Check if this was the last enemy alive - if so, end the event
-            //if (currentEvent.Enemies.Count <= 0)
-            //{
-            //    StateMachine.instance.EndEvent(currentEvent);
-            //}
+            if (currentEvent.Enemies.Count <= 0)
+            {
+                StateMachine.instance.EndEvent(currentEvent);
+            }
             Destroy(this.gameObject);
         }
 

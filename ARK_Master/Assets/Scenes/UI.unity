@@ -11819,7 +11819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1574964887
 Animator:
   serializedVersion: 3
@@ -14979,6 +14979,7 @@ MonoBehaviour:
   alien: {fileID: 685741539}
   fire: {fileID: 120144, guid: 00da5c1e21687864896fc0e8c2451917, type: 2}
   hole: {fileID: 118152, guid: 583002a945aebfb418bfe49fc4121282, type: 2}
+  sinisterEnemy: {fileID: 1574964886}
   numMaxRooms: 30
   sinisterEventNum: 0
   RoomShapeSelectMenu_1: {fileID: 1214324845}
