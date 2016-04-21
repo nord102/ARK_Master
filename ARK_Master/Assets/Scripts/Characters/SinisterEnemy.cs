@@ -37,7 +37,7 @@ public class SinisterEnemy : MonoBehaviour
     const float ATTACK_DELAY = 1.5f;
     const double DAMAGE_AMOUNT = 10;
 
-    const float PROBE_TIME = 0.5f;
+    const float PROBE_TIME = 1.0f;
 
 
     // Sounds
@@ -52,7 +52,7 @@ public class SinisterEnemy : MonoBehaviour
         range = 1;
         lastX = false;
         animator = GetComponent<Animator>();
-        // currentEvent = Generate.instance.currentRoom.roomEvent;
+        currentEvent = Generate.instance.currentRoom.roomEvent;
 
         probeTimer = 0f;
     }

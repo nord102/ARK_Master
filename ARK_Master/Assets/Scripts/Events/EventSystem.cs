@@ -12,7 +12,8 @@ public static class EventSystem
         //Add Sinister Event
         if (Generate.instance.GetRoomGameObjectList().Count % (StateMachine.instance.numMaxRooms / 3) == 0)
         {
-            availableEvents.Add(3);
+            return new Events(3, roomType, numComponents);
+            //availableEvents.Add(3);
         }
 
 		//Add a normal Event

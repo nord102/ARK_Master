@@ -97,6 +97,13 @@ public class InstantiateEnemy : MonoBehaviour
 					//Debug.Log (cloneEnemy.transform);
                     }
                     break;
+                case 3:
+                    {
+                        cloneEnemy = Instantiate(StateMachine.instance.sinisterEnemy, new Vector3(currentRoom.posX + tempPoint.x, currentRoom.posY + tempPoint.y, 0f), Quaternion.identity) as GameObject;
+                        cloneEnemy.SetActive(true);
+                        //Debug.Log (cloneEnemy.transform);
+                    }
+                    break;
 
             }
 

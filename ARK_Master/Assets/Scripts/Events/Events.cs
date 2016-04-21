@@ -102,7 +102,7 @@ public class Events
             case 6: //Breach + Alien
                 eventName = "Breach + Aliens!";
 				eventText = "So that's how they're getting inside!";
-				eventImage = Resources.Load<Sprite>("alien");
+				eventImage = Resources.Load<Sprite>("aliens");
 				enemies.Add(new RoomEnemy(1, numEnemies / 2, 1));
                 enemies.Add(new RoomEnemy(2, numEnemies / 2, 1));
                 break;

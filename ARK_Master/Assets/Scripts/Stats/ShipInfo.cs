@@ -13,7 +13,7 @@ public class ShipInfo {
 
     public ShipInfo()
     {
-        Resources = 100;
+        Resources = 500;
         // Set the health bar's value to the current health.
         StateMachine.instance.shipResources.text = Resources.ToString();
     }
